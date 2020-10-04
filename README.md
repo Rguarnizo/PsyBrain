@@ -1,4 +1,4 @@
-# psybrain
+# PsyBrain
 
 A new Flutter project.
 

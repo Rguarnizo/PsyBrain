@@ -1,4 +1,4 @@
-package com.example.psybrain
+package com.example.PsyBrain
 
 import io.flutter.embedding.android.FlutterActivity
 
