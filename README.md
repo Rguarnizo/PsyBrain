@@ -1,16 +1,18 @@
 # PsyBrain
+Psybrain es una aplicación que le permite a los usuarios conocer su estado de ánimo mediante técnicas de analisis de texto con IA (NLP), y permite conectar usuarios con profesionales de la salud mental que etsán dispuestos a ayudar a las personas. </br>
 
-A new Flutter project.
+Esta aplicación toma relevancia en la situación actual de la pandemia ocasionada por el COVID-19 en Colombia: hemos visto como las personas se han confinado y de ciert manera esto ha contribuido a que las personas se comporten socialemente de una forma distinta con respecto a la anterior normalidad. 
 
-## Getting Started
+## Core by Flutter ❤
 
-This project is a starting point for a Flutter application.
+La aplicación ha sido pensada como móvil, en este contexto usaremos Flutter <3 como framework de desarrollo aplicando los diferentes conocimientos adquiridos en la materia de Ingeniería de Software I.
 
-A few resources to get you started if this is your first Flutter project:
+## Based in SCRUM
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Implementamos la metodología agil SCRUM para llevar a cabo el desarrollo de la app de la mejor forma: agil, rápida, centralizada y de calidad. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Nota para desarrolladores
+
+Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia 😊💪 </br>
+
+Una idea del ❤. Finalement, profitez bien et bon developing 💯💯 . 
