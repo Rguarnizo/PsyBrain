@@ -2,3 +2,5 @@ Este es un archivo de prueba para ver la integracion con azure devops
 
 
 Estoy probando de nuevo la sincronización de Azure repos con Github
+
+Esta es la prueba para ver si se puede de manera inversa, es decir, desde github a repos.
