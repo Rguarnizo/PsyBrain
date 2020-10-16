@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "964942264999",
+    "firebase_url": "https://psybrain-3d391.firebaseio.com",
+    "project_id": "psybrain-3d391",
+    "storage_bucket": "psybrain-3d391.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964942264999:android:e668d540bd9601fbc53982",
+        "android_client_info": {
+          "package_name": "com.PsyBrain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964942264999-stjgkrf8r36im3t8ssur1o9838duilfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh8o8JPtahYE5bDOyrfpdNhG6eaiNigyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964942264999-stjgkrf8r36im3t8ssur1o9838duilfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
