@@ -1,6 +1,7 @@
-import 'package:PsyBrain/user_chat.dart';
+import 'package:PsyBrain/Pages/user_chat.dart';
+import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:flutter/material.dart';
-import 'login_buttons.dart';
+
 
 class SignInScreen extends StatelessWidget {
   @override
@@ -29,8 +30,7 @@ class SignInScreen extends StatelessWidget {
             Flexible(
               child: Container(
                 margin: EdgeInsets.only(top: 25),
-                child: Expanded(
-                    child: Row(
+                child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       botonEntrar(context),
@@ -38,7 +38,7 @@ class SignInScreen extends StatelessWidget {
                       botonCrearCuenta(),                                  
                     ],
                   ),
-                ),
+                
               ),
             ),
           ],
@@ -103,7 +103,7 @@ class SignInScreen extends StatelessWidget {
       cursorColor: Color(0xFFf1e4e8),
       obscureText: true,
       decoration: InputDecoration(
-          suffixIcon: Icon(Icons.face),
+          suffixIcon: Icon(Icons.lock),
           hintText: 'Ingresa aqui tu contraseña ',
           contentPadding: EdgeInsets.only(left: 14.0),
           focusedBorder: OutlineInputBorder(
@@ -139,6 +139,7 @@ class SignInScreen extends StatelessWidget {
         withShadow: false,
         width: 50,
         image: AssetImage('assets/imgs/google_icon.png'),
+        action: () {},
       );
   }
 

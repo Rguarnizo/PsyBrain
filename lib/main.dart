@@ -1,8 +1,10 @@
-import 'package:PsyBrain/login_buttons.dart';
-import 'package:PsyBrain/singin_screen.dart';
+
+import 'package:PsyBrain/Pages/singin_screen.dart';
+import 'package:PsyBrain/routes/routes.dart';
+import 'package:PsyBrain/utils/theme_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -12,31 +14,16 @@ void main() {
   runApp(PsyBrain());
 }
 
-//App color
-Map<int, Color> color = {
-  50: Color.fromRGBO(206, 177, 190, .1),
-  100: Color.fromRGBO(206, 177, 190, .2),
-  200: Color.fromRGBO(206, 177, 190, .3),
-  300: Color.fromRGBO(206, 177, 190, .4),
-  400: Color.fromRGBO(206, 177, 190, .5),
-  500: Color.fromRGBO(206, 177, 190, .6),
-  600: Color.fromRGBO(206, 177, 190, .7),
-  700: Color.fromRGBO(206, 177, 190, .8),
-  800: Color.fromRGBO(206, 177, 190, .9),
-  900: Color.fromRGBO(206, 177, 190, 1),
-};
-
 class PsyBrain extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'PsyBrain',
-        theme: ThemeData(
-            primarySwatch: MaterialColor(0xFFceb1be, color),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            fontFamily: 'SourceSansPro'),
+        routes: getApplicationRoutes(),
+        theme: getThemeConfig(),
         home: SignInScreen(),
-        debugShowCheckedModeBanner: false,);
+        debugShowCheckedModeBanner: false,
+        );
   }
 }
