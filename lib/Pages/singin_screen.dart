@@ -1,5 +1,6 @@
 import 'package:PsyBrain/Pages/user_chat.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
+import 'package:PsyBrain/utils/sing_in_firebase.dart';
 import 'package:flutter/material.dart';
 
 
@@ -34,7 +35,7 @@ class SignInScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       botonEntrar(context),
-                      botonGoogle(),
+                      botonGoogle(context),
                       botonCrearCuenta(),                                  
                     ],
                   ),
@@ -133,13 +134,17 @@ class SignInScreen extends StatelessWidget {
   }
   
 
-  Widget botonGoogle(){
+  Widget botonGoogle(BuildContext context){
     return MyButton(
         gradientColors: [Color(0xFFceb1be)],
         withShadow: false,
         width: 50,
         image: AssetImage('assets/imgs/google_icon.png'),
-        action: () {},
+        action: (){
+          signInWithGoogle().whenComplete((){
+            Navigator.of(context).pushNamed('UserChat');
+          });
+        },
       );
   }
 
