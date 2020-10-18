@@ -140,10 +140,11 @@ class SignInScreen extends StatelessWidget {
         withShadow: false,
         width: 50,
         image: AssetImage('assets/imgs/google_icon.png'),
-        action: (){
-          signInWithGoogle().whenComplete((){
-            Navigator.of(context).pushNamed('UserChat');
+        action: () async {
+          final userName = await signInWithGoogle().whenComplete((){
+            Navigator.of(context).pushNamed('UserChat');            
           });
+          print(userName);
         },
       );
   }
