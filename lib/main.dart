@@ -1,8 +1,10 @@
-import 'package:PsyBrain/login_buttons.dart';
-import 'package:PsyBrain/singin_screen.dart';
+import 'package:PsyBrain/UserCitizen/bloc/bloc_usercitizen.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:PsyBrain/UserCitizen/ui/singin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -30,13 +32,17 @@ class PsyBrain extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return BlocProvider(
+      bloc: UserCitizenBloc(),
+      child: MaterialApp(
         title: 'PsyBrain',
         theme: ThemeData(
             primarySwatch: MaterialColor(0xFFceb1be, color),
             visualDensity: VisualDensity.adaptivePlatformDensity,
             fontFamily: 'SourceSansPro'),
         home: SignInScreen(),
-        debugShowCheckedModeBanner: false,);
+        debugShowCheckedModeBanner: false,
+      ),
+    );
   }
 }

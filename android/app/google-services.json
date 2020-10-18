@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "964942264999-4eqirmdplrc1co3qj5kd4s680a08lb5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.PsyBrain",
+            "certificate_hash": "02b1b523026c17f1ed59fc48089ad02b8e69a771"
+          }
+        },
+        {
           "client_id": "964942264999-stjgkrf8r36im3t8ssur1o9838duilfq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,13 @@
             {
               "client_id": "964942264999-stjgkrf8r36im3t8ssur1o9838duilfq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "964942264999-tlfr4dkg6sm14fs54h2rmqleg0vl0o9k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.PsyBrain"
+              }
             }
           ]
         }
