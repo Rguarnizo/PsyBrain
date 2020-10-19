@@ -1,13 +1,21 @@
 import 'package:PsyBrain/Pages/user_chat.dart';
+import 'package:PsyBrain/pages/home_page.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/sing_in_firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class SignInScreen extends StatelessWidget {
+
+  
+
   @override
-  Widget build(BuildContext context) {
-    // var height = MediaQuery.of(context).size.height;
+  Widget build(BuildContext context) { 
+
+  
+
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 122.35, left: 30.0, right: 30.0),
@@ -36,7 +44,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       botonEntrar(context),
                       botonGoogle(context),
-                      botonCrearCuenta(),                                  
+                      botonCrearCuenta(context),                                  
                     ],
                   ),
                 
@@ -125,11 +133,10 @@ class SignInScreen extends StatelessWidget {
       width: 110,
       withShadow: true,
       action: () {
-        print('Hola');
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => UserChat()));
+        Navigator.pushAndRemoveUntil(context, 
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: FirebaseAuth.instance.currentUser),)
+        , (route) => false);
       });
   }
   
@@ -140,18 +147,20 @@ class SignInScreen extends StatelessWidget {
         withShadow: false,
         width: 50,
         image: AssetImage('assets/imgs/google_icon.png'),
-        action: () async {
-          final userName = await signInWithGoogle().whenComplete((){
-            Navigator.of(context).pushNamed('UserChat');            
-          });
-          print(userName);
+        action: (){
+          signInWithGoogle().then((value) => 
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(user: value),), (route) => false)
+          );
         },
       );
-  }
+    }
+  
 
-    Widget botonCrearCuenta() {
+    Widget botonCrearCuenta(BuildContext context) {
       return MyButton(
-        action: () {},
+        action: () {
+          Navigator.of(context).pushNamed('RegisterPage');
+        },
         buttonName: 'Crea tu cuenta',
         gradientColors: [Color(0xFFf1e4e8)],
         textColor: Color(0xFFCEB1BE),
