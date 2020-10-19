@@ -1,10 +1,9 @@
-import 'package:PsyBrain/Pages/user_chat.dart';
 import 'package:PsyBrain/pages/home_page.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/sing_in_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 
 class SignInScreen extends StatelessWidget {

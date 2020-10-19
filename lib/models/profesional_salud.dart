@@ -63,13 +63,21 @@ class ProfesionalSalud {
 
     User profSalud; 
     try {
+      //! Crea una instancia a la base de datos (FirebaseAuth.instance) y trata de crear un usaurio con el email y la constraseña.
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: _id,
       password: _password,
     );
+
+    //! Si se logró crear se inicia sesión con el usuario que se acaba de crear.
     await FirebaseAuth.instance.signInWithEmailAndPassword(email: _id, password: _password);
+
+    //! se asigna el usuario a devolver para dirigirlo a la pantalla de Home con los respectivos datos.
     profSalud = FirebaseAuth.instance.currentUser;
+
   } on FirebaseAuthException catch (e) {
+
+    //? ERRORES POSIBLES 
     if (e.code == 'weak-password') {
       print('The password provided is too weak.');
       return 'La contraseña es muy corta';
@@ -82,8 +90,9 @@ class ProfesionalSalud {
     return 'Fallo en inicio de sesión';
   }
 
+    //! Ya se creo el usuario pero aun no se ha almacenado la información en la base de datos. Se hace con el siguiente metodo.
     guardarDatosDB(profSalud);
-    profSalud.updateProfile(photoURL: 'https://www.pinclipart.com/picdir/big/213-2135777_finance-clipart-capital-resource-brain-cartoon-png-transparent.png');
+    
 
   
     return profSalud;
@@ -91,12 +100,19 @@ class ProfesionalSalud {
 
   Future<DocumentSnapshot> guardarDatosDB(User user) async {
 
+    //? Actualiza la foto de perfil por una predeterminada.
+    user.updateProfile(photoURL: 'https://www.pinclipart.com/picdir/big/213-2135777_finance-clipart-capital-resource-brain-cartoon-png-transparent.png');
+
+    //! Crea una instancia ahora de la información. Se dirige a la colección Profesional Salud(Si no existe la crea), y se dirige al documento con el uid del usuario (Si no existe lo crea).
     DocumentReference profSaludRef = FirebaseFirestore.instance.collection('Profesional Salud').doc(user.uid);
- 
+
+    //! Almacena la información del profesional de la salud, esto lo hace con un JSON, o un Map(o diccionario).
     profSaludRef.set(jsonData());
-
+    
+    //* Verificar en la consola de Firebase en la sección de Cloud Firestore, allí aparecen las colecciones y los documentos.
+    
+    //? Esto siguiente es una prueba no preocuparse por ello.
     DocumentSnapshot profSaludData = await profSaludRef.get();
-
     return profSaludData;
   }
 }

@@ -188,14 +188,14 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
             
             
             if(result is String ){
-              //? Algo sucedio al crear el usuario.
+              //? Algo sucedio al crear el usuario, se muestra en a pantalla el error
                 setState(() {
               _waitRegister = false;     
               _error = true;
               errorMessage = result;   
             });
             }else {
-              //? Se dirige al home con el usuario que se acabó de crear.
+              //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(user: result)), (route) => false);
             }         
           }
