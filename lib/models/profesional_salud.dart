@@ -12,10 +12,11 @@ class ProfesionalSalud {
   String _fechaNacimiento;
   String _telefono;
   String _cedula;
+  String _licencia;
   
   
 
-  ProfesionalSalud({id,nombres,apellidos,fechaNacimiento,telefono,cedula,password}){
+  ProfesionalSalud({id,nombres,apellidos,fechaNacimiento,telefono,cedula,password,licencia}){
     _id = id;
     _nombres = nombres;
     _apellidos = apellidos;
@@ -23,6 +24,7 @@ class ProfesionalSalud {
     _telefono = telefono;
     _cedula = cedula;
     _password = password;
+    _licencia = licencia;
   }
 
   //? Datos provenientes de un Mapa('Diccionario').
@@ -32,6 +34,7 @@ class ProfesionalSalud {
     this._fechaNacimiento = obj['fechaNacimiento'];
     this._telefono = obj['telefono'];
     this._cedula = obj['cedula'];
+    this._licencia = obj['licencia'];
   }
 
   //? Getters
@@ -51,6 +54,7 @@ class ProfesionalSalud {
       'Cedula': _cedula,
       'Fecha Nacimiento': _fechaNacimiento,
       'Telefono': _telefono,
+      'Licencia': _licencia,
     };
   }
 
@@ -68,17 +72,18 @@ class ProfesionalSalud {
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       print('The password provided is too weak.');
-      return 'Fallo en inicio de sesión';
+      return 'La contraseña es muy corta';
     } else if (e.code == 'email-already-in-use') {
       print('The account already exists for that email.');
-      return 'Fallo en inicio de sesión';
+      return 'El email ya esta registrado';
     }
   } catch (e) {
     print(e); 
     return 'Fallo en inicio de sesión';
   }
-  
+
     guardarDatosDB(profSalud);
+    profSalud.updateProfile(photoURL: 'https://www.pinclipart.com/picdir/big/213-2135777_finance-clipart-capital-resource-brain-cartoon-png-transparent.png');
 
   
     return profSalud;
@@ -94,6 +99,4 @@ class ProfesionalSalud {
 
     return profSaludData;
   }
-
-
 }

@@ -9,12 +9,13 @@ import 'package:provider/provider.dart';
 
 class SignInScreen extends StatelessWidget {
 
-  
+  String emailInput;
+  String passwordInput;
 
   @override
   Widget build(BuildContext context) { 
 
-  
+    
 
     return Scaffold(
       body: Container(
@@ -93,6 +94,7 @@ class SignInScreen extends StatelessWidget {
 
     return TextField(
       cursorColor: Color(0xFFf1e4e8),
+      onChanged: (value) => emailInput = value,
       decoration: InputDecoration(
           suffixIcon: Icon(Icons.alternate_email),
           hintText: 'Ingresa aqui tu email',
@@ -111,6 +113,7 @@ class SignInScreen extends StatelessWidget {
     return TextField(
       cursorColor: Color(0xFFf1e4e8),
       obscureText: true,
+      onChanged: (value) => passwordInput = value,
       decoration: InputDecoration(
           suffixIcon: Icon(Icons.lock),
           hintText: 'Ingresa aqui tu contraseña ',
@@ -132,10 +135,13 @@ class SignInScreen extends StatelessWidget {
       textColor: Colors.white,
       width: 110,
       withShadow: true,
-      action: () {
+      action: () async {
+
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
+        
         Navigator.pushAndRemoveUntil(context, 
         MaterialPageRoute(
-          builder: (context) => HomePage(user: FirebaseAuth.instance.currentUser),)
+          builder: (context) => HomePage(user: userCredential.user),)
         , (route) => false);
       });
   }
@@ -159,7 +165,7 @@ class SignInScreen extends StatelessWidget {
     Widget botonCrearCuenta(BuildContext context) {
       return MyButton(
         action: () {
-          Navigator.of(context).pushNamed('RegisterPage');
+          Navigator.of(context).pushNamed('RegisterPageProfSalud');
         },
         buttonName: 'Crea tu cuenta',
         gradientColors: [Color(0xFFf1e4e8)],
