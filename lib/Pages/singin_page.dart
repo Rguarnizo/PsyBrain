@@ -11,34 +11,40 @@ class SignInScreen extends StatelessWidget {
   String emailInput;
   String passwordInput;
 
+  final _formKey = new GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) { 
-
+    
     
 
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 122.35, left: 30.0, right: 30.0),
-        height: 600,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        height: 800,
+        child: ListView(
+
           children: [
             _titulo(),
             _subtitle(),
             _image(),
             Container(
-              height: 108.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _emailInput(),
-                  _passwordInput(),
-                ],
-              ),
-            ),
+              
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _emailInput(),
+                    SizedBox(height: 10,),
+                    _passwordInput(),                    
+                  ],
+                ),
+              ),              
+            ),                    
             Flexible(
               child: Container(
-                margin: EdgeInsets.only(top: 25),
+                margin: EdgeInsets.only(top: 30),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -91,7 +97,7 @@ class SignInScreen extends StatelessWidget {
 
   Widget _emailInput() {
 
-    return TextField(
+    return TextFormField(
       cursorColor: Color(0xFFf1e4e8),
       onChanged: (value) => emailInput = value,
       decoration: InputDecoration(
@@ -105,11 +111,17 @@ class SignInScreen extends StatelessWidget {
           ),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(9))),
+          validator: (value) {
+            if(value.isEmpty){
+              return 'Campo obligatorio';
+            }
+            return null;
+          },
     );
   }
 
   Widget _passwordInput() {
-    return TextField(
+    return TextFormField(
       cursorColor: Color(0xFFf1e4e8),
       obscureText: true,
       onChanged: (value) => passwordInput = value,
@@ -124,6 +136,12 @@ class SignInScreen extends StatelessWidget {
           ),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(9))),
+        validator: (value) {
+            if(value.isEmpty){
+              return 'Campo obligatorio';
+            }
+            return null;
+          },              
     );
   }
 
@@ -136,13 +154,15 @@ class SignInScreen extends StatelessWidget {
       withShadow: true,
       action: () async {
 
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
+        if(_formKey.currentState.validate()){
+
+        
         
         Navigator.pushAndRemoveUntil(context, 
         MaterialPageRoute(
-          builder: (context) => HomePage(user: userCredential.user),)
+          builder: (context) => HomePage(user: FirebaseAuth.instance.currentUser),)
         , (route) => false);
-      });
+      }});
   }
   
 

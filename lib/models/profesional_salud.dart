@@ -115,4 +115,10 @@ class ProfesionalSalud {
     DocumentSnapshot profSaludData = await profSaludRef.get();
     return profSaludData;
   }
+
+
+  Future<DocumentSnapshot> actualizarDatos(User user) async{ 
+
+  }
+
 }
