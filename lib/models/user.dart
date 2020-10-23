@@ -23,6 +23,7 @@ class Usuario {
     _password = password;
   }
 
+  //? Datos provenientes de un Mapa('Diccionario').
   Usuario.map(dynamic obj){
     this._nombres = obj['nombres'];
     this._apellidos = obj['apellidos'];
@@ -37,6 +38,7 @@ class Usuario {
   String get fechaNacimiento => _fechaNacimiento;
   String get telefono => _telefono;
 
+
   Map<String,dynamic> jsonData(){
     return {
       'id': _id,
@@ -48,20 +50,19 @@ class Usuario {
   }
 
   Future<dynamic> guardarDatos() async {
-    User usuario;
 
+    User usuario;
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _id,
         password: _password,
       );
 
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _id, password: _password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: _id, password: _password);
 
       usuario = FirebaseAuth.instance.currentUser;
     } on FirebaseAuthException catch (e) {
-      //? ERRORES POSIBLES
+
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
         return 'La contraseña es muy corta';
@@ -81,15 +82,14 @@ class Usuario {
 
     Future<DocumentSnapshot> guardarDatosDB(User user) async {
 
-      user.updateProfile(photoURL: 'https://www.pinclipart.com/picdir/big/213-2135777_finance-clipart-capital-resource-brain-cartoon-png-transparent.png');
+      //user.updateProfile(photoURL: 'https://www.pinclipart.com/picdir/big/213-2135777_finance-clipart-capital-resource-brain-cartoon-png-transparent.png');
 
-      DocumentReference usuarioref = FirebaseFirestore.instance.collection('Profesional Salud').doc(user.uid);
+      DocumentReference usuarioref = FirebaseFirestore.instance.collection('Usuario').doc(user.uid);
 
       usuarioref.set(jsonData());
 
-    }
-    Future<DocumentSnapshot> obtenerDatosDB() async{
-
+      DocumentSnapshot usuarioData = await usuarioref.get();
+      return usuarioData;
 
     }
 }

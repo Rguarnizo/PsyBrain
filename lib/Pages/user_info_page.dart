@@ -21,7 +21,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('appbarTitle'),
+        title: Text('MisDatos'),
       ),
       body: Form(
         key: _formKey,
