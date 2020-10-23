@@ -13,11 +13,10 @@ class SignInScreen extends StatelessWidget {
 
   final _formKey = new GlobalKey<FormState>();
 
+ 
   @override
   Widget build(BuildContext context) { 
     
-    
-
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 122.35, left: 30.0, right: 30.0),
@@ -52,8 +51,7 @@ class SignInScreen extends StatelessWidget {
                       botonGoogle(context),
                       botonCrearCuenta(context),                                  
                     ],
-                  ),
-                
+                  ),                
               ),
             ),
           ],
@@ -156,11 +154,11 @@ class SignInScreen extends StatelessWidget {
 
         if(_formKey.currentState.validate()){
 
-        
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
         
         Navigator.pushAndRemoveUntil(context, 
         MaterialPageRoute(
-          builder: (context) => HomePage(user: FirebaseAuth.instance.currentUser),)
+          builder: (context) => HomePage(user: userCredential.user),)
         , (route) => false);
       }});
   }

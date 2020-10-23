@@ -1,3 +1,4 @@
+import 'package:PsyBrain/Pages/info_page_profsalud.dart';
 import 'package:PsyBrain/pages/singin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +30,11 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 40,),
             GestureDetector(
               onTap: () {                
-                
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoProfSalud(user: widget.user),));
               },
                 child: CircleAvatar(
                 radius: 50,              
-                child: ClipOval(child: widget.user.photoURL == null?  Container(child: Image.asset('assets/imgs/defaultUserImage.png')): Container(child: Image.network(widget.user.photoURL),)),
+                child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
               ),
             ),
             SizedBox(height: 30.0,),
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             FlatButton(onPressed: (){
               FirebaseAuth.instance.signOut();
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen(),), (route) => false);
-            }, child: Icon(Icons.exit_to_app)),
+            }, child: Icon(Icons.exit_to_app)),            
           ],
         ),
     );

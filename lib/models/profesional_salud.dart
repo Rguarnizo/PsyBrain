@@ -109,6 +109,7 @@ class ProfesionalSalud {
     //! Almacena la información del profesional de la salud, esto lo hace con un JSON, o un Map(o diccionario).
     profSaludRef.set(jsonData());
     
+    
     //* Verificar en la consola de Firebase en la sección de Cloud Firestore, allí aparecen las colecciones y los documentos.
     
     //? Esto siguiente es una prueba no preocuparse por ello.
@@ -117,8 +118,28 @@ class ProfesionalSalud {
   }
 
 
-  Future<DocumentSnapshot> actualizarDatos(User user) async{ 
+  Future<Map> obtenerDatosDB(User user) async{ 
+    // * TODO: Manejo de excepciones de obtención de datos.
 
+    
+
+    //! Busca en la colección Profesional Salud el documento que tenga el id del usuario. Este tendra toda la información.
+    DocumentReference profSaludref = FirebaseFirestore.instance.collection('Profesional Salud').doc(user.uid);
+
+
+    //! Para obtener la información se hace lo siguiente. Esta información es un DocumentSnapshot, con este no podemos trabajar.
+    DocumentSnapshot infoProfSalud = await profSaludref.get();
+
+    //! Para obtener el mapa se hace lo siguiente, ya con el mapa se puede obtener cualquier información con la llave del atributo.
+    return infoProfSalud.data();
   }
 
+  actualizarDatosDB(User user, Map<String,dynamic> datos) async{
+    // * TODO: Manejo de excepciones actualizando los datos.
+
+
+    DocumentReference profSaludref = FirebaseFirestore.instance.collection('Profesional Salud').doc(user.uid);
+    profSaludref.set(datos);
+
+  }
 }
