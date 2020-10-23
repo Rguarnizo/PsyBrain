@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class UserRegisterPage extends StatefulWidget {
-  UserRegisterPage({Key key}) : super(key: key);
-
+class UserInfoPage extends StatefulWidget {
   @override
-  _UserRegisterPageState createState() => _UserRegisterPageState();
+  _UserInfoPageState createState() => _UserInfoPageState();
 }
 
-class _UserRegisterPageState extends State<UserRegisterPage> {
+class _UserInfoPageState extends State<UserInfoPage> {
   final _formKey = GlobalKey<FormState>();
 
   String _correo = '';
@@ -42,7 +40,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
   Widget correoField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Correo',
+        hintText: '',
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),
       ),

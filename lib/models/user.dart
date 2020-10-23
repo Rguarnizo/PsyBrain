@@ -88,6 +88,10 @@ class Usuario {
       usuarioref.set(jsonData());
 
     }
+    Future<DocumentSnapshot> obtenerDatosDB() async{
+
+
+    }
 }
 
 
