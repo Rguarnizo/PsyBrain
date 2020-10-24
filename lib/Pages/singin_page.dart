@@ -15,7 +15,7 @@ class SignInScreen extends StatelessWidget {
 
  
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     
     return Scaffold(
       body: Container(
@@ -49,7 +49,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       botonEntrar(context),
                       botonGoogle(context),
-                      botonCrearCuenta(context),                                  
+                      botonCrearCuenta(context),
                     ],
                   ),                
               ),
@@ -189,6 +189,18 @@ class SignInScreen extends StatelessWidget {
         textColor: Color(0xFFCEB1BE),
         width: 150,
         withShadow: false,
+    );
+  }
+  Widget botonCrearCuentaUsuario(BuildContext context) {
+    return MyButton(
+      action: () {
+        Navigator.of(context).pushNamed('UserRegisterPage');
+      },
+      buttonName: 'Registrate',
+      gradientColors: [Color(0xFFf1e4e8)],
+      textColor: Color(0xFFCEB1BE),
+      width:  MediaQuery.of(context).size.width*0.8,
+      withShadow: false,
     );
   }
 }
