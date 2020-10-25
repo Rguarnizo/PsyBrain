@@ -147,7 +147,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       decoration: InputDecoration(
         hintText: 'Teléfono',
         helperText: 'Teléfono',
-        icon: Icon(Icons.phone_android_outlined),
+        icon: Icon(Icons.phone_android),
       ),
       onChanged: (value)=> _telefono = value.toString(),
       keyboardType: TextInputType.phone,
