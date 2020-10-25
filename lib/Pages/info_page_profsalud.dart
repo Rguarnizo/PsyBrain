@@ -6,35 +6,10 @@ import 'package:flutter/material.dart';
 class InfoProfSalud extends StatefulWidget {
   final User user;
 
-  InfoProfSalud({@required this.user,Key key}) : super(key: key){
-    obtenerData();
+  InfoProfSalud({@required this.user,Key key}) : super(key: key);
     
-  }
 
-    Future<Map> obtenerData() async {
 
-     DocumentReference docRef = FirebaseFirestore.instance.collection('Profesional Salud').doc(user.uid);
-     DocumentSnapshot data = await docRef.get();
-
-     dataDB = data.data();
-      
-      _nombres = dataDB['Nombres'];
-      _apellidos = dataDB['Apellidos'];
-      _cedula = dataDB['Cedula'];
-      _licencia = dataDB['Licencia'];
-      _telefono = dataDB['Telefono'];
-
-      return data.data();
-      
-    }
-
-  Map<String,dynamic> dataDB;
-
-  String _nombres;
-  String _apellidos;
-  String _cedula;
-  String _licencia;
-  String _telefono;
 
   @override
   State<StatefulWidget> createState() => _InfoProfSaludState();
@@ -43,56 +18,65 @@ class InfoProfSalud extends StatefulWidget {
 }
 
 class _InfoProfSaludState extends State<InfoProfSalud> {
-
   
-  
+  Map<String,dynamic> dataDB;
 
-  TextEditingController _nombresController;
-  TextEditingController _apellidosController;
-  TextEditingController _cedulaController;
-  TextEditingController _licenciaController;
-  TextEditingController _telefonoController;
+  String _nombres;
+  String _apellidos;
+  String _cedula;
+  String _licencia;
+  String _telefono;
 
+  Future<Map<String,dynamic>> obtenerData() async {
 
-  @override
-  void initState(){
-    super.initState();
-    print(widget.dataDB);
-  _nombresController.text =  widget._nombres;
-  _apellidosController.text = widget._apellidos;
-  _cedulaController.text = widget._cedula;
-  _licenciaController.text = widget._licencia;
-  _telefonoController.text = widget._telefono;
-    
-  }
-
-
-   
+     DocumentReference docRef = FirebaseFirestore.instance.collection('Profesional Salud').doc(widget.user.uid);
+     DocumentSnapshot data = await docRef.get();
+      dataDB = data.data();
+      return data.data();      
+    }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: ListView(
-          children: [
-            SizedBox(height: 20,),
-            CircleAvatar(
-                radius: 50,              
-                child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
-              ),
+    return FutureBuilder(
+       future: obtenerData(),
+       builder:(context, snapshot) {
+
+          _nombres   = snapshot.data['Nombres'];
+          _apellidos = snapshot.data['Apellidos']; 
+          _cedula    = snapshot.data['Cedula'];
+          _licencia  = snapshot.data['Licencia'];
+          _telefono  = snapshot.data['Telefono'];
+         
+          
+
+          return Scaffold(
+            appBar: AppBar(),
+            body: ListView(
+            children: [
               SizedBox(height: 20,),
-              nombresField(),
-              apellidosField(),
-              cedulaField(),            
-              telefonoField(),
-              licenciaField(),
+              GestureDetector(
+                onTap: () {
+                  
+                },
+                child: CircleAvatar(
+                    radius: 50,              
+                    child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
+                  ),
+              ),
+                SizedBox(height: 20,),
+                nombresField(),
+                apellidosField(),
+                cedulaField(),            
+                telefonoField(),
+                licenciaField(),
 
-          ],
+            ],
         ),
-
-      ),
+          );
+       }
+       
     );
+
   }
 
  Widget nombresField() {
@@ -107,8 +91,10 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           return 'Campo obligatorio';
         }
         return null;
-      },   
-      controller: _nombresController,
+      },
+      initialValue: _nombres,
+      onChanged: (value) => _nombres = value,
+      
     );
 
   }
@@ -126,7 +112,9 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         }
         return null;
       },          
-      controller: _apellidosController,
+      initialValue: _apellidos,
+      onChanged: (value) => _apellidos = value,
+
     );
   }
 
@@ -144,7 +132,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         return null;
       },      
       keyboardType: TextInputType.number,
-      controller: _cedulaController,
+      initialValue: _cedula,
+      onChanged: (value) => _cedula = value,
     );    
   }
 
@@ -155,7 +144,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
           icon: Icon(Icons.card_membership),        
         ),      
-        controller: _licenciaController,
+        initialValue: _licencia,
+        onChanged: (value) => _licencia = value,
         
       );    
   }
@@ -167,7 +157,9 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           helperText: 'Telefono',
           icon: Icon(Icons.phone),        
         ),      
-        controller: _telefonoController,        
+        keyboardType: TextInputType.number,
+        initialValue: _telefono,
+        onChanged: (value) => _telefono = value,
       );    
   }
 }

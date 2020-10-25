@@ -50,10 +50,14 @@ class SignInScreen extends StatelessWidget {
                       botonEntrar(context),
                       botonGoogle(context),
                       botonCrearCuenta(context),
+                      
                     ],
-                  ),                
+                    
+                  ),
+                                  
               ),
             ),
+            //botonCrearCuentaUsuario(context),
           ],
         ),
       ),
