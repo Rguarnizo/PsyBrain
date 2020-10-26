@@ -1,4 +1,4 @@
-import 'package:PsyBrain/pages/home_page.dart';
+import 'package:PsyBrain/Pages/home_page.dart';
 import 'package:PsyBrain/models/user.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/theme_config.dart';

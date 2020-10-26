@@ -1,4 +1,4 @@
-import 'package:PsyBrain/pages/home_page.dart';
+import 'package:PsyBrain/Pages/home_page.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/sing_in_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';

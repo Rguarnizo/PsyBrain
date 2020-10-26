@@ -1,5 +1,5 @@
 import 'package:PsyBrain/models/profesional_salud.dart';
-import 'package:PsyBrain/pages/home_page.dart';
+import 'package:PsyBrain/Pages/home_page.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/theme_config.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
   String _fechaNacimiento = '';
   String _telefono = '';
   String _licencia = '';
-
   
 
   bool _waitRegister = false;
