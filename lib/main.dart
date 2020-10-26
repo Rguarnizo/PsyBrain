@@ -1,4 +1,5 @@
 import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,12 +8,16 @@ import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'User/bloc/bloc_user.dart';
 import 'User/ui/singin_screen.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(PsyBrain());
+  
 }
 
 //App color
