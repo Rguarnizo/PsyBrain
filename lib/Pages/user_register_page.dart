@@ -187,7 +187,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
             //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage(user: result)),
+                MaterialPageRoute(builder: (context) => HomePage()),
                 (route) => false);
           }
         }

@@ -1,13 +1,11 @@
 import 'package:PsyBrain/Pages/info_page_profsalud.dart';
-import 'package:PsyBrain/pages/singin_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:PsyBrain/models/User/bloc_user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class HomePage extends StatefulWidget {
-
-  final User user;
-  const HomePage({@required this.user,Key key}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
   
 
   @override
@@ -15,8 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  UserBloc user;
   @override
   Widget build(BuildContext context) {
+     user = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       appBar: AppBar(),
       drawer: userDrawer(),
@@ -30,27 +30,31 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 40,),
             GestureDetector(
               onTap: () {                
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoProfSalud(user: widget.user),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => InfoProfSalud(),));
               },
                 child: CircleAvatar(
                 radius: 50,              
-                child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
+                child: ClipOval(child: Container(child: Image.network(user.currentUser.photoURL),)),
               ),
             ),
             SizedBox(height: 30.0,),
             Center(
-              child: Text(widget.user.displayName?? 'No name',
+              child: Text(user.currentUser.displayName?? 'No name',
               style: TextStyle(
                 color: Colors.deepOrange[200],
                 fontSize: 20.0),
               ),
             ),
             FlatButton(onPressed: (){
-              FirebaseAuth.instance.signOut();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen(),), (route) => false);
+              user.signOut();                        
             }, child: Icon(Icons.exit_to_app)),            
           ],
         ),
     );
+  }
+  @override
+  void dispose() {
+    user.dispose();
+    super.dispose();
   }
 }

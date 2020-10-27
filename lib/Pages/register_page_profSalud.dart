@@ -195,7 +195,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
             });
             }else {
               //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(user: result)), (route) => false);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
             }         
           }
         },

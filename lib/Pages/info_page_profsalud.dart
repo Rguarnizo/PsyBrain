@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:PsyBrain/models/User/bloc_user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class InfoProfSalud extends StatefulWidget {
-  final User user;
-
-  InfoProfSalud({@required this.user,Key key}) : super(key: key);
-    
-
-
+  InfoProfSalud({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _InfoProfSaludState();
@@ -19,35 +14,16 @@ class InfoProfSalud extends StatefulWidget {
 
 class _InfoProfSaludState extends State<InfoProfSalud> {
   
-  Map<String,dynamic> dataDB;
-
-  String _nombres;
-  String _apellidos;
-  String _cedula;
-  String _licencia;
-  String _telefono;
-
-  Future<Map<String,dynamic>> obtenerData() async {
-
-     DocumentReference docRef = FirebaseFirestore.instance.collection('Profesional Salud').doc(widget.user.uid);
-     DocumentSnapshot data = await docRef.get();
-      dataDB = data.data();
-      return data.data();      
-    }
+  UserBloc user;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-       future: obtenerData(),
-       builder:(context, snapshot) {
 
-          _nombres   = snapshot.data['Nombres'];
-          _apellidos = snapshot.data['Apellidos']; 
-          _cedula    = snapshot.data['Cedula'];
-          _licencia  = snapshot.data['Licencia'];
-          _telefono  = snapshot.data['Telefono'];
-         
-          
+    user = BlocProvider.of<UserBloc>(context);
+
+    return FutureBuilder(
+       future: user.getInfo(),
+       builder:(context, snapshot) {
 
           return Scaffold(
             appBar: AppBar(),
@@ -60,7 +36,7 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                 },
                 child: CircleAvatar(
                     radius: 50,              
-                    child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
+                    child: ClipOval(child: Container(child: Image.network(user.currentUser.photoURL),)),
                   ),
               ),
                 SizedBox(height: 20,),
@@ -92,8 +68,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         }
         return null;
       },
-      initialValue: _nombres,
-      onChanged: (value) => _nombres = value,
+      initialValue: user.userData['Nombres'],
+      onChanged: (value) => user.userData['Nombres'] = value,
       
     );
 
@@ -112,8 +88,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         }
         return null;
       },          
-      initialValue: _apellidos,
-      onChanged: (value) => _apellidos = value,
+      initialValue: user.userData['Apellidos'],
+      onChanged: (value) => user.userData['Apellidos'] = value,
 
     );
   }
@@ -132,8 +108,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         return null;
       },      
       keyboardType: TextInputType.number,
-      initialValue: _cedula,
-      onChanged: (value) => _cedula = value,
+      initialValue: user.userData['Cedula'],
+      onChanged: (value) => user.userData['Cedula'] = value,
     );    
   }
 
@@ -144,8 +120,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
           icon: Icon(Icons.card_membership),        
         ),      
-        initialValue: _licencia,
-        onChanged: (value) => _licencia = value,
+      initialValue: user.userData['Licencia'],
+      onChanged: (value) => user.userData['Licencia'] = value,
         
       );    
   }
@@ -158,8 +134,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           icon: Icon(Icons.phone),        
         ),      
         keyboardType: TextInputType.number,
-        initialValue: _telefono,
-        onChanged: (value) => _telefono = value,
+              initialValue: user.userData['Telefono'],
+      onChanged: (value) => user.userData['Telefono'] = value,
       );    
   }
 }
