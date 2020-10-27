@@ -1,8 +1,8 @@
-import 'package:PsyBrain/models/profesional_salud.dart';
-import 'package:PsyBrain/Pages/home_page.dart';
+import 'package:PsyBrain/models/User/bloc_user.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/theme_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
@@ -15,27 +15,19 @@ class RegisterPageProfSalud extends StatefulWidget {
 
 class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
 
+
+  UserBloc user;
   final _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password ='';
   
-  String _correo = '';
-
-  String _password = '';
-  
-  
-  String _nombres = '';
-  String _apellidos = '';
-  String _cedula = '';
-  String _fechaNacimiento = '';
-  String _telefono = '';
-  String _licencia = '';
-  
-
   bool _waitRegister = false;
   bool _error = false;
   String errorMessage;
 
   @override
   Widget build(BuildContext context) {
+    user = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       body: Form(
           key: _formKey,
@@ -44,7 +36,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
             SizedBox(height: 50,),
             correoField(),
             passwordField(),
-             Container(child: Divider(), margin: EdgeInsets.symmetric(vertical: 10),),
+            Container(child: Divider(), margin: EdgeInsets.symmetric(vertical: 10),),
             nombresField(),
             apellidosField(),
             cedulaField(),
@@ -72,9 +64,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),        
       ),      
-      onChanged: (value) {
-        _correo = value;
-      },
+      onChanged: (value) => _email = value,      
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -99,7 +89,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },   
-      onChanged: (value) => _nombres = value,
+      onChanged: (value) => user.userData['Nombres'] = value,
     );
 
   }
@@ -117,7 +107,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },      
-      onChanged: (value) => _apellidos = value,
+      onChanged: (value){ user.userData['Apellidos'] = value; print(value);},
     );
   }
 
@@ -128,7 +118,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Cedula',
         icon: Icon(Icons.credit_card),        
       ),      
-      onChanged: (value) => _cedula = value,
+      onChanged: (value){ user.userData['Cedula'] = value; print(value);},
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -147,10 +137,8 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Fecha de nacimiento',
         icon: Icon(Icons.calendar_today),                
       ),
-      onChanged: (value) {
-        _fechaNacimiento = value;
-      },
-      validator: (value){
+      onChanged: (value) =>{ user.userData['FechaNacimiento'] = value},
+      validator: (value){                
         if(value.isEmpty){
           return 'Campo obligatorio';
         }
@@ -161,43 +149,11 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
 
   Widget botonAdd(BuildContext context) {
     return MyButton(
-        action: () async {          
-          //? Valida si el formulario esta bien diligenciado.
+        action: () async {
           if(_formKey.currentState.validate()){
-          //? Cambia la variable para que se muestre que esta cargando el registro.          
-          setState(() {
-            _waitRegister = true;  
-          });
-
-
-            //! Crea una instancia del profesional de la salud, almacena un FireBaseUser en result si todo salió bien. Si no guarda un string.
-            final result =  await ProfesionalSalud(
-            nombres: _nombres,
-            apellidos: _apellidos,
-            cedula: _cedula,
-            fechaNacimiento: _fechaNacimiento,
-            id: _correo,
-            password: _password,
-            telefono: _telefono,
-            licencia: _licencia,
-            )
-            //! Y a esa instancia le guarda los datos en la DB de Firebase.            
-            .guardarDatos();
-            //? ctrl y click para ir a la funcion 
-            
-            
-            if(result is String ){
-              //? Algo sucedio al crear el usuario, se muestra en a pantalla el error
-                setState(() {
-              _waitRegister = false;     
-              _error = true;
-              errorMessage = result;   
-            });
-            }else {
-              //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
-            }         
+            await user.createAccount(_email, _password);
           }
+          
         },
         buttonName: 'Crea tu cuenta',
         gradientColors: [Color(0xFFf1e4e8)],
@@ -215,9 +171,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Constraseña',
         icon: Icon(Icons.lock_outline),        
       ),      
-      onChanged: (value) {
-        _password = value;
-      },
+      onChanged: (value) => _password = value,
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -269,12 +223,14 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
         icon: Icon(Icons.card_membership),        
       ),      
-      onChanged: (value) {
-        _licencia = value;
-      },      
-      
+      onChanged: (value){ user.userData['Licencia'] = value; },            
     );
   }
 
+  @override
+  void dispose() {
+    user.dispose();
+    super.dispose();
+  }
   
 }

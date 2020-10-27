@@ -1,7 +1,5 @@
-import 'package:PsyBrain/Pages/home_page.dart';
 import 'package:PsyBrain/models/User/bloc_user.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -141,14 +139,10 @@ class _SignInScreenState extends State<SignInScreen> {
       action: () async {
 
         if(_formKey.currentState.validate()){
-
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
-        
-        Navigator.pushAndRemoveUntil(context, 
-        MaterialPageRoute(
-          builder: (context) => HomePage(),)
-        , (route) => false);
-      }});
+          await user.signInWithEmailAndPassword(emailInput,passwordInput);
+        }
+      }
+    );
   }
 
   Widget botonGoogle(BuildContext context){

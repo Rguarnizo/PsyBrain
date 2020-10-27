@@ -28,7 +28,7 @@ class AuthAPI {
   }
 
   Future<User> signInWithEmailAndPassword(
-      String email, String password, BuildContext context) async {
+      String email, String password) async {
     try {
       UserCredential auth = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
