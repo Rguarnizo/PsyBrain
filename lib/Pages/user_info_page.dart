@@ -1,82 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
 class UserInfoPage extends StatefulWidget {
+  final User user;
+
+  UserInfoPage({@required this.user,Key key}) : super(key: key);
+
+
+
+
   @override
   _UserInfoPageState createState() => _UserInfoPageState();
+
+
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
-  final _formKey = GlobalKey<FormState>();
 
-  String _correo = '';
-  String _password = '';
+  Map<String,dynamic> dataDB;
 
-  String _id;
   String _nombres;
   String _apellidos;
   String _fechaNacimiento;
   String _telefono;
 
+  Future<Map<String,dynamic>> obtenerData() async {
+
+    DocumentReference usuarioRef = FirebaseFirestore.instance.collection('Usuario').doc(widget.user.uid);
+    DocumentSnapshot data = await usuarioRef.get();
+    dataDB = data.data();
+    return data.data();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('MisDatos'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            correoField(),
-            passwordField(),
-            fechaNacimientoField(),
-            telefonoField(),
-          ],
-        ),
-      ),
+    return FutureBuilder(
+        future: obtenerData(),
+        builder:(context, snapshot) {
+
+          _nombres   = snapshot.data['Nombres'];
+          _apellidos = snapshot.data['Apellidos'];
+          _telefono  = snapshot.data['Telefono'];
+          _fechaNacimiento  = snapshot.data['fechaNacimiento'];
+
+
+
+          return Scaffold(
+            appBar: AppBar(),
+            body: ListView(
+              children: [
+                SizedBox(height: 20,),
+                GestureDetector(
+                  onTap: () {
+
+                  },
+                  child: CircleAvatar(
+                    radius: 50,
+                    child: ClipOval(child: Container(child: Image.network(widget.user.photoURL),)),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                nombresField(),
+                apellidosField(),
+                telefonoField(),
+                fechaNacimientoField(),
+              ],
+            ),
+          );
+        }
+
     );
+
   }
 
-  Widget correoField() {
+  Widget nombresField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: '',
-        helperText: 'Correo Electronico',
-        icon: Icon(Icons.mail),
+        hintText: 'Nombres',
+        helperText: 'Nombres',
+        icon: Icon(Icons.accessibility),
       ),
-      onChanged: (value) {
-        _correo = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
+      validator: (value){
+        if(value.isEmpty){
           return 'Campo obligatorio';
         }
         return null;
       },
-      keyboardType: TextInputType.emailAddress,
+      initialValue: _nombres,
+      onChanged: (value) => _nombres = value,
+
     );
+
   }
 
-  Widget passwordField() {
+  Widget apellidosField() {
     return TextFormField(
-      obscureText: true,
       decoration: InputDecoration(
-        hintText: 'Contraseña',
-        helperText: 'Constraseña',
-        icon: Icon(Icons.lock_outline),
+        hintText: 'Apellidos',
+        helperText: 'Apellidos',
+        icon: Icon(Icons.account_circle),
       ),
-      onChanged: (value) {
-        _password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
+      validator: (value){
+        if(value.isEmpty){
           return 'Campo obligatorio';
         }
         return null;
       },
+      initialValue: _apellidos,
+      onChanged: (value) => _apellidos = value,
+
     );
   }
-
   Widget fechaNacimientoField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -84,28 +120,29 @@ class _UserInfoPageState extends State<UserInfoPage> {
         helperText: 'Fecha de nacimiento',
         icon: Icon(Icons.calendar_today),
       ),
-      onChanged: (value) {
-        _fechaNacimiento = value;
-      },
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
       },
+      initialValue: _fechaNacimiento,
+      onChanged: (value)=> _fechaNacimiento=value,
     );
   }
 
   Widget telefonoField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Teléfono',
-        helperText: 'Teléfono',
-        icon: Icon(Icons.calendar_today),
+        hintText: 'Telefono',
+        helperText: 'Telefono',
+        icon: Icon(Icons.phone),
       ),
-      onChanged: (value) {
-        _telefono = value;
-      },
+      keyboardType: TextInputType.number,
+      initialValue: _telefono,
+      onChanged: (value) => _telefono = value,
     );
   }
+
+
 }
