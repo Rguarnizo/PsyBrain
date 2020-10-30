@@ -32,7 +32,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  UserBloc userBloc;
+  UsuarioBloc userBloc;
   final formKey = new GlobalKey<FormState>();
 
   String _email;
@@ -50,7 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    userBloc = BlocProvider.of<UserBloc>(context);
+    userBloc = BlocProvider.of<UsuarioBloc>(context);
 
     return _handleSession(context);
   }
@@ -201,8 +201,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                 builder: (context) => RegisterPageProfSalud()));
                       },
                     ),
+
                   ],
                 ),
+
+
               ),
             ),
           ],

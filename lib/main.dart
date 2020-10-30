@@ -40,7 +40,7 @@ class PsyBrain extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => UserBloc(),),
+        BlocProvider(create: (context) => UsuarioBloc(),),
         BlocProvider(create: (context) => ProfSaludBloc(),)
       ],
       child: MateApp(),
@@ -57,7 +57,7 @@ class MateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    UsuarioBloc userBloc = BlocProvider.of<UsuarioBloc>(context);
     return MaterialApp(
       title: 'PsyBrain',
       routes: getApplicationRoutes(),

@@ -1,8 +1,8 @@
-
+import 'package:PsyBrain/main.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
-
-import '../../../main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserRegisterPage extends StatefulWidget {
   UserRegisterPage({Key key}) : super(key: key);
@@ -14,20 +14,18 @@ class UserRegisterPage extends StatefulWidget {
 class _UserRegisterPageState extends State<UserRegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-  String _correo = '';
-  String _password = '';
 
-  String _nombres = '';
-  String _apellidos = '';
-  String _fechaNacimiento = '';
-  String _telefono = '';
+  UsuarioBloc usuarioBloc;
 
-  bool _waitRegister = false;
-  bool _error = false;
-  String errorMessage;
+  bool esperandoRegistro = false;
+  String mensajeResultante = '';
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    usuarioBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
       appBar: AppBar(title: Text('Ingresa tus datos')),
       body: Form(
@@ -38,7 +36,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
               height: 50,
             ),
             correoField(),
-            passwordField(),
+            contrasenaField(),
             Container(
               child: Divider(),
               margin: EdgeInsets.symmetric(vertical: 10),
@@ -56,12 +54,10 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                 SizedBox(
                   height: 30,
                 ),
-                _waitRegister ? cargandoRegistro() : Container(),
+                esperandoRegistro ? cargandoRegistro() : Container(),
+                mensajeResultante.isEmpty? Container() :mostrarResultado(),
               ],
             ),
-            _error
-                ? errorMSG()
-                : Container(), //? Si hubo error lo imprime en pantalla.
           ],
         ),
       ),
@@ -75,9 +71,8 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),
       ),
-      onChanged: (value) {
-        _correo = value;
-      },
+      onChanged:(value) => usuarioBloc.usuario.correo=value,
+
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -101,7 +96,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         }
         return null;
       },
-      onChanged: (value) => _nombres = value,
+      onChanged:(value) => usuarioBloc.usuario.nombres=value,
     );
   }
 
@@ -118,7 +113,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         }
         return null;
       },
-      onChanged: (value) => _apellidos = value,
+      onChanged:(value) => usuarioBloc.usuario.apellidos=value,
     );
   }
 
@@ -131,9 +126,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Fecha de nacimiento',
         icon: Icon(Icons.calendar_today),
       ),
-      onChanged: (value) {
-        _fechaNacimiento = value;
-      },
+      onChanged: (value) => usuarioBloc.usuario.fechaNacimiento,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -142,6 +135,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       },
     );
   }
+
   Widget telefonoField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -149,7 +143,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Teléfono',
         icon: Icon(Icons.phone_android),
       ),
-      onChanged: (value)=> _telefono = value.toString(),
+      onChanged: (value) => usuarioBloc.usuario.telefono,
       keyboardType: TextInputType.phone,
     );
 
@@ -158,10 +152,17 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
   Widget botonAdd(BuildContext context) {
     return MyButton(
       action: () async {
-        //? Valida si el formulario esta bien diligenciado.
-        if (_formKey.currentState.validate()) {
+        setState(() {
+          esperandoRegistro = true;
+        });
 
+        if (_formKey.currentState.validate()) {
+          mensajeResultante =  await usuarioBloc.crearUsuario();
         }
+
+        setState(() {
+          esperandoRegistro = false;
+        });
       },
       buttonName: 'Crea tu cuenta',
       gradientColors: [Color(0xFFf1e4e8)],
@@ -171,7 +172,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     );
   }
 
-  Widget passwordField() {
+  Widget contrasenaField() {
     return TextFormField(
       obscureText: true,
       decoration: InputDecoration(
@@ -179,9 +180,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Constraseña',
         icon: Icon(Icons.lock_outline),
       ),
-      onChanged: (value) {
-        _password = value;
-      },
+      onChanged: (value) => usuarioBloc.usuario.contrasena=value,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -195,33 +194,27 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     return CircularProgressIndicator();
   }
 
-  Widget errorMSG() {
+  Widget mostrarResultado() {
     return Center(
       child: Column(
         children: [
           Text(
-            '¡$errorMessage!',
+            '¡$mensajeResultante!',
             style: TextStyle(
-                color: color[900],
                 fontFamily: 'SourceSansPro',
+                color: color[800],
                 fontSize: 20,
                 fontWeight: FontWeight.w400
-                //fontWeight: FontStyle.italic,
-                ),
-          ),
-          Text(
-            'Verifica que todo este correcto',
-            style: TextStyle(
-                color: color[900],
-                fontFamily: 'SourceSansPro',
-                fontSize: 15,
-                fontWeight: FontWeight.w400
-                //fontWeight: FontStyle.italic,
-                ),
+              //fontWeight: FontStyle.italic,
+            ),
           ),
         ],
       ),
     );
   }
+
+
+
+
 
 }
