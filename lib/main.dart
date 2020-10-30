@@ -1,6 +1,5 @@
-import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/User/bloc/bloc_user.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

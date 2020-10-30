@@ -1,5 +1,6 @@
-/*
-import 'package:PsyBrain/models/User/bloc_user.dart';
+
+
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,15 +16,15 @@ class InfoProfSalud extends StatefulWidget {
 
 class _InfoProfSaludState extends State<InfoProfSalud> {
   
-  UserBloc user;
+  ProfSaludBloc profSaludBloc;
 
   @override
   Widget build(BuildContext context) {
 
-    user = BlocProvider.of<UserBloc>(context);
+    profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
 
     return FutureBuilder(
-       future: user.getInfo(),
+       future: profSaludBloc.obtenerInformacion(),
        builder:(context, snapshot) {
 
           return Scaffold(
@@ -37,7 +38,7 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                 },
                 child: CircleAvatar(
                     radius: 50,              
-                    child: ClipOval(child: Container(child: Image.network(user.currentUser.photoURL),)),
+                    child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
                   ),
               ),
                 SizedBox(height: 20,),
@@ -69,8 +70,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         }
         return null;
       },
-      initialValue: user.userData['Nombres'],
-      onChanged: (value) => user.userData['Nombres'] = value,
+      initialValue: profSaludBloc.profSalud.nombres,
+      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
       
     );
 
@@ -89,8 +90,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         }
         return null;
       },          
-      initialValue: user.userData['Apellidos'],
-      onChanged: (value) => user.userData['Apellidos'] = value,
+      initialValue: profSaludBloc.profSalud.apellidos,
+      onChanged: (value) => profSaludBloc.profSalud.apellidos = value,
 
     );
   }
@@ -109,8 +110,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
         return null;
       },      
       keyboardType: TextInputType.number,
-      initialValue: user.userData['Cedula'],
-      onChanged: (value) => user.userData['Cedula'] = value,
+      initialValue: profSaludBloc.profSalud.cedula,
+      onChanged: (value) => profSaludBloc.profSalud.cedula = value,
     );    
   }
 
@@ -121,8 +122,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
           icon: Icon(Icons.card_membership),        
         ),      
-      initialValue: user.userData['Licencia'],
-      onChanged: (value) => user.userData['Licencia'] = value,
+      initialValue: profSaludBloc.profSalud.licencia,
+      onChanged: (value) => profSaludBloc.profSalud.licencia = value,
         
       );    
   }
@@ -135,9 +136,8 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           icon: Icon(Icons.phone),        
         ),      
         keyboardType: TextInputType.number,
-              initialValue: user.userData['Telefono'],
-      onChanged: (value) => user.userData['Telefono'] = value,
+              initialValue: profSaludBloc.profSalud.telefono,
+      onChanged: (value) => profSaludBloc.profSalud.telefono = value,
       );    
   }
 }
-*/
