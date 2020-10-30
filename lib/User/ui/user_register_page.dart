@@ -1,5 +1,4 @@
 import 'package:PsyBrain/Pages/home_page.dart';
-import 'package:PsyBrain/models/user.dart';
 import 'package:PsyBrain/utils/login_buttons.dart';
 import 'package:PsyBrain/utils/theme_config.dart';
 import 'package:flutter/material.dart';
@@ -158,39 +157,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
   Widget botonAdd(BuildContext context) {
     return MyButton(
       action: () async {
-        //? Valida si el formulario esta bien diligenciado.
-        if (_formKey.currentState.validate()) {
-          //? Cambia la variable para que se muestre que esta cargando el registro.
-          setState(() {
-            _waitRegister = true;
-          });
-          final result = await Usuario(
-            nombres: _nombres,
-            apellidos: _apellidos,
-            fechaNacimiento: _fechaNacimiento,
-            id: _correo,
-            password: _password,
-            telefono: _telefono,
-          )
-              //! Y a esa instancia le guarda los datos en la DB de Firebase.
-              .guardarDatos();
-          //? ctrl y click para ir a la funcion
-
-          if (result is String) {
-            //? Algo sucedio al crear el usuario, se muestra en a pantalla el error
-            setState(() {
-              _waitRegister = false;
-              _error = true;
-              errorMessage = result;
-            });
-          } else {
-            //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-                (route) => false);
-          }
-        }
+        
       },
       buttonName: 'Crea tu cuenta',
       gradientColors: [Color(0xFFf1e4e8)],

@@ -1,7 +1,6 @@
 
 import 'package:PsyBrain/Pages/home_page.dart';
-import 'package:PsyBrain/models/User/bloc_user.dart';
-import 'package:PsyBrain/models/providers.dart';
+import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/routes/routes.dart';
 
 import 'package:PsyBrain/utils/theme_config.dart';
@@ -33,7 +32,10 @@ class PsyBrain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {    
         return MultiBlocProvider(
-          providers: getProviders(),
+          providers: [
+            BlocProvider(create: (context) => ProfSaludBloc(),),
+            BlocProvider(create: (context) => UserBloc(),)
+          ],
           child: MaterialApp(
           title: 'PsyBrain',
           routes: getApplicationRoutes(),
@@ -44,6 +46,9 @@ class PsyBrain extends StatelessWidget {
         );
   }
       
+}
+
+class UserBloc {
 }
 
 class UserLogged extends StatelessWidget {
