@@ -1,9 +1,8 @@
-import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/main.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
 
 class RegisterPageProfSalud extends StatefulWidget {
   RegisterPageProfSalud({Key key}) : super(key: key);
@@ -13,68 +12,72 @@ class RegisterPageProfSalud extends StatefulWidget {
 }
 
 class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
-
   final _formKey = GlobalKey<FormState>();
 
   ProfSaludBloc profSaludBloc;
-  
 
-
-  bool _waitRegister = false;
-  bool _error = false;
-  String errorMessage;
+  bool esperandoRegistro = false;
+  String mensajeResultante = '';
 
   @override
   Widget build(BuildContext context) {
-   
     profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
 
     return Scaffold(
       body: Form(
-          key: _formKey,
-          child: ListView(        
+        key: _formKey,
+        child: ListView(
           children: [
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             correoField(),
             passwordField(),
-             Container(child: Divider(), margin: EdgeInsets.symmetric(vertical: 10),),
+            Container(
+              child: Divider(),
+              margin: EdgeInsets.symmetric(vertical: 10),
+            ),
             nombresField(),
             apellidosField(),
             cedulaField(),
             fechaNacimientoField(),
             licenciaField(),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             Column(
               children: [
                 botonAdd(context),
-                SizedBox(height: 30,),
-                _waitRegister ? cargandoRegistro():Container(),              
+                SizedBox(
+                  height: 30,
+                ),
+                esperandoRegistro ? cargandoRegistro() : Container(),
+                mensajeResultante.isEmpty? Container() :mostrarResultado(),   
               ],
-            ),         
-            _error ? errorMSG():Container(),      //? Si hubo error lo imprime en pantalla.
-          ],
+            ),
+          ],          
         ),
+        
       ),
     );
   }
 
-   Widget correoField() {
-     return TextFormField(
+  Widget correoField() {
+    return TextFormField(
       decoration: InputDecoration(
         hintText: 'Correo',
         helperText: 'Correo Electronico',
-        icon: Icon(Icons.mail),        
-      ),      
+        icon: Icon(Icons.mail),
+      ),
       onChanged: (value) => profSaludBloc.profSalud.correo = value,
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },   
+      },
       keyboardType: TextInputType.emailAddress,
     );
-
   }
 
   Widget nombresField() {
@@ -82,32 +85,31 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
       decoration: InputDecoration(
         hintText: 'Nombres',
         helperText: 'Nombres',
-        icon: Icon(Icons.accessibility),        
+        icon: Icon(Icons.accessibility),
       ),
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },   
+      },
       onChanged: (value) => profSaludBloc.profSalud.nombres = value,
     );
-
   }
 
   Widget apellidosField() {
-      return TextFormField(
+    return TextFormField(
       decoration: InputDecoration(
         hintText: 'Apellidos',
         helperText: 'Apellidos',
-        icon: Icon(Icons.account_circle),        
+        icon: Icon(Icons.account_circle),
       ),
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },      
+      },
       onChanged: (value) => profSaludBloc.profSalud.apellidos = value,
     );
   }
@@ -117,11 +119,11 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
       decoration: InputDecoration(
         hintText: 'Cedula',
         helperText: 'Cedula',
-        icon: Icon(Icons.credit_card),        
-      ),      
+        icon: Icon(Icons.credit_card),
+      ),
       onChanged: (value) => profSaludBloc.profSalud.cedula = value,
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
@@ -130,36 +132,43 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
     );
   }
 
-  Widget fechaNacimientoField(){
-
+  Widget fechaNacimientoField() {
     return TextFormField(
       decoration: InputDecoration(
         hintText: 'Fecha Nacimiento',
         helperText: 'Fecha de nacimiento',
-        icon: Icon(Icons.calendar_today),                
+        icon: Icon(Icons.calendar_today),
       ),
       onChanged: (value) => profSaludBloc.profSalud.fechaNacimiento,
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },   
+      },
     );
   }
 
   Widget botonAdd(BuildContext context) {
     return MyButton(
-        action: () async {          
-          if(_formKey.currentState.validate()){
-            profSaludBloc.crearProfSalud();      
-          }           
-        },
-        buttonName: 'Crea tu cuenta',
-        gradientColors: [Color(0xFFf1e4e8)],
-        textColor: Color(0xFFCEB1BE),
-        width: 150,
-        withShadow: false,
+      action: () async {
+        setState(() {
+          esperandoRegistro = true;
+        });
+        
+        if (_formKey.currentState.validate()) {          
+          mensajeResultante =  await profSaludBloc.crearProfSalud();
+        }
+
+          setState(() {
+            esperandoRegistro = false;
+          });
+      },
+      buttonName: 'Crea tu cuenta',
+      gradientColors: [Color(0xFFf1e4e8)],
+      textColor: Color(0xFFCEB1BE),
+      width: 150,
+      withShadow: false,
     );
   }
 
@@ -169,62 +178,50 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
       decoration: InputDecoration(
         hintText: 'Contraseña',
         helperText: 'Constraseña',
-        icon: Icon(Icons.lock_outline),        
-      ),      
+        icon: Icon(Icons.lock_outline),
+      ),
       onChanged: (value) => profSaludBloc.profSalud.contrasena = value,
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },   
+      },
     );
   }
 
   Widget cargandoRegistro() {
-    return CircularProgressIndicator(
-      
-    );
+    return CircularProgressIndicator();
   }
 
-  Widget errorMSG() {
+  Widget mostrarResultado() {
     return Center(
-            child: Column(
-              children: [
-                Text(
-                '¡$errorMessage!',
-                 style: TextStyle(              
+      child: Column(
+        children: [
+          Text(
+            '¡$mensajeResultante!',
+            style: TextStyle(
                 fontFamily: 'SourceSansPro',
+                color: color[800],
                 fontSize: 20,
                 fontWeight: FontWeight.w400
                 //fontWeight: FontStyle.italic,
                 ),
-               ),
-              Text(
-                'Verifica que todo este correcto',
-                 style: TextStyle(
-                fontFamily: 'SourceSansPro',
-                fontSize: 15,
-                fontWeight: FontWeight.w400
-                //fontWeight: FontStyle.italic,
-                ),
-              ),
-              ],
-            ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 
   licenciaField() {
     return TextFormField(
       decoration: InputDecoration(
         hintText: 'Licencia',
-        helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
-        icon: Icon(Icons.card_membership),        
-      ),      
+        helperText:
+            'Licencia profesional. Si aún no la tienes deja este campo vacio.',
+        icon: Icon(Icons.card_membership),
+      ),
       onChanged: (value) => profSaludBloc.profSalud.nombres = value,
-      
     );
   }
-
-  
 }
