@@ -1,6 +1,5 @@
 import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
-import 'package:PsyBrain/utils/login_buttons.dart';
-import 'package:PsyBrain/utils/theme_config.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -194,8 +193,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
               children: [
                 Text(
                 '¡$errorMessage!',
-                 style: TextStyle(
-                color: color[900],
+                 style: TextStyle(              
                 fontFamily: 'SourceSansPro',
                 fontSize: 20,
                 fontWeight: FontWeight.w400
@@ -205,7 +203,6 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
               Text(
                 'Verifica que todo este correcto',
                  style: TextStyle(
-                color: color[900],
                 fontFamily: 'SourceSansPro',
                 fontSize: 15,
                 fontWeight: FontWeight.w400

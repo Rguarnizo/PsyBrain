@@ -1,10 +1,10 @@
-import 'package:PsyBrain/Pages/home_page.dart';
-import 'package:PsyBrain/main.dart';
-
-import 'package:PsyBrain/utils/login_buttons.dart';
+import 'package:PsyBrain/User/bloc/bloc_user.dart';
+import 'package:PsyBrain/User/ui/screens/home_page.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 
 
