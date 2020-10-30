@@ -7,6 +7,7 @@ class UserBloc extends Bloc {
   final _auth_repo = AuthRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
+  Stream<auth.User> get authStatus  => userStream;
 
   UserBloc({initialState}) : super({initialState});
 

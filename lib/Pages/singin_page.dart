@@ -1,14 +1,11 @@
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
-
 class SignInScreen extends StatefulWidget {
+
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -21,32 +18,28 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final _formKey = new GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
-
     user = BlocProvider.of<UserBloc>(context);
 
     return Scaffold(
-      body:Center(
+      body: Center(
         child: ListView(
-            shrinkWrap: true,
-            children: [
-              _titulo(),
-              _subtitle(),
-              _image(),
-              _inputsFields(),
-              _buttons(),            
-              //botonCrearCuentaUsuario(context),
-            ],
-          ),
+          shrinkWrap: true,
+          children: [
+            _titulo(),
+            _subtitle(),
+            _image(),
+            _inputsFields(),
+            _buttons(),
+            //botonCrearCuentaUsuario(context),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   Widget _titulo() {
-
     return Center(
       child: Text(
         '¡Bienvenido de nuevo!',
@@ -77,13 +70,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget _image() {
     return Container(
-      margin: EdgeInsets.only(
-          left: 30.0, right: 30.0, top: 60.5, bottom: 30.5),
-      child: Image.asset('assets/imgs/login_img.png'));
+        margin:
+            EdgeInsets.only(left: 30.0, right: 30.0, top: 60.5, bottom: 30.5),
+        child: Image.asset('assets/imgs/login_img.png'));
   }
 
   Widget _emailInput() {
-
     return TextFormField(
       cursorColor: Color(0xFFf1e4e8),
       onChanged: (value) => emailInput = value,
@@ -92,18 +84,16 @@ class _SignInScreenState extends State<SignInScreen> {
           hintText: 'Ingresa aqui tu email',
           contentPadding: EdgeInsets.only(left: 14.0),
           focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Color(0xFFceb1be), width: 2.0),
+            borderSide: BorderSide(color: Color(0xFFceb1be), width: 2.0),
             borderRadius: BorderRadius.circular(9.0),
           ),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(9))),
-          validator: (value) {
-            if(value.isEmpty){
-              return 'Campo obligatorio';
-            }
-            return null;
-          },
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(9))),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Campo obligatorio';
+        }
+        return null;
+      },
     );
   }
 
@@ -117,63 +107,55 @@ class _SignInScreenState extends State<SignInScreen> {
           hintText: 'Ingresa aqui tu contraseña ',
           contentPadding: EdgeInsets.only(left: 14.0),
           focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Color(0xFFceb1be), width: 2.0),
+            borderSide: BorderSide(color: Color(0xFFceb1be), width: 2.0),
             borderRadius: BorderRadius.circular(9.0),
           ),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(9))),
-        validator: (value) {
-            if(value.isEmpty){
-              return 'Campo obligatorio';
-            }
-            return null;
-          },              
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(9))),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Campo obligatorio';
+        }
+        return null;
+      },
     );
   }
 
-    Widget botonEntrar(BuildContext context) {
+  Widget botonEntrar(BuildContext context) {
     return MyButton(
-      buttonName: 'Entrar',
-      gradientColors: [Color(0xFFceb1be)],
-      textColor: Colors.white,
-      width: 110,
-      withShadow: true,
-      action: () async {
-
-        if(_formKey.currentState.validate()){
-
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
-        
-        Navigator.pushAndRemoveUntil(context, 
-        MaterialPageRoute(
-          builder: (context) => HomePage(),)
-        , (route) => false);
-      }});
+        buttonName: 'Entrar',
+        gradientColors: [Color(0xFFceb1be)],
+        textColor: Colors.white,
+        width: 110,
+        withShadow: true,
+        action: () async {
+          if (_formKey.currentState.validate()) {
+            user.signInWithEmailAndPassword(emailInput, passwordInput, context);
+          }
+        });
   }
 
-  Widget botonGoogle(BuildContext context){
+  Widget botonGoogle(BuildContext context) {
     return MyButton(
-        gradientColors: [Color(0xFFceb1be)],
-        withShadow: false,
-        width: 50,
-        image: AssetImage('assets/imgs/google_icon.png'),
-        action: (){
-          user.signInGoogle();
-        },
-      );
-    }
+      gradientColors: [Color(0xFFceb1be)],
+      withShadow: false,
+      width: 50,
+      image: AssetImage('assets/imgs/google_icon.png'),
+      action: () {
+        user.signInGoogle();
+      },
+    );
+  }
 
-    Widget botonCrearCuenta(BuildContext context) {
-      return MyButton(
-        action: () {
-          Navigator.of(context).pushNamed('RegisterPageProfSalud');
-        },
-        buttonName: 'Crea tu cuenta',
-        gradientColors: [Color(0xFFf1e4e8)],
-        textColor: Color(0xFFCEB1BE),
-        width: 150,
-        withShadow: false,
+  Widget botonCrearCuenta(BuildContext context) {
+    return MyButton(
+      action: () {
+        Navigator.of(context).pushNamed('RegisterPage');
+      },
+      buttonName: 'Crea tu cuenta',
+      gradientColors: [Color(0xFFf1e4e8)],
+      textColor: Color(0xFFCEB1BE),
+      width: 150,
+      withShadow: false,
     );
   }
 
@@ -185,13 +167,13 @@ class _SignInScreenState extends State<SignInScreen> {
       buttonName: 'Registrate',
       gradientColors: [Color(0xFFf1e4e8)],
       textColor: Color(0xFFCEB1BE),
-      width:  MediaQuery.of(context).size.width*0.8,
+      width: MediaQuery.of(context).size.width * 0.8,
       withShadow: false,
     );
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     user.dispose();
     super.dispose();
   }
@@ -204,9 +186,11 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _emailInput(),       
-            SizedBox(height: 20.0,),
-            _passwordInput(),                    
+            _emailInput(),
+            SizedBox(
+              height: 20.0,
+            ),
+            _passwordInput(),
           ],
         ),
       ),
@@ -217,17 +201,14 @@ class _SignInScreenState extends State<SignInScreen> {
     return Container(
       margin: EdgeInsets.only(top: 30),
       child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            botonEntrar(context),
-            botonGoogle(context),
-            botonCrearCuenta(context),                 
-          ],                    
-        ),                                  
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          botonEntrar(context),
+          botonGoogle(context),
+          botonCrearCuenta(context),
+        ],
+      ),
     );
   }
 }
-
-  
-
 

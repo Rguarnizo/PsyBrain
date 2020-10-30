@@ -1,4 +1,4 @@
-import 'package:PsyBrain/User/ui/screens/singin_screen.dart';
+import 'package:PsyBrain/Pages/singin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -35,14 +35,6 @@ class AuthAPI {
 
         //TODO: Combinación de Logica con Interfaz, Separar. 
         
-        case "user-not-found":
-          SignInScreen.showDialogAlert(context, 'Usuario no encontrado',
-              'No existe un usuario asociado a ese correo 😢. Intenta registrarte');
-          break;
-        case "wrong-password":
-          SignInScreen.showDialogAlert(context, 'Contraseña incorrecta',
-              'La contraseña es incorrecta 😢. Intenta de nuevo');
-          break;
       }
       return null;
     }

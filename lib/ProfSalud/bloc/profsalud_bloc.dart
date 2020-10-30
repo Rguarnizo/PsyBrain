@@ -1,6 +1,6 @@
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
+import 'package:PsyBrain/ProfSalud/repository/auth_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
-import 'package:PsyBrain/User/repository/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
