@@ -1,14 +1,5 @@
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
-========================================================================
-
-import 'package:PsyBrain/Pages/home_page.dart';
-import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
-import 'package:PsyBrain/routes/routes.dart';
-
-import 'package:PsyBrain/utils/theme_config.dart';
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CorrecciónBLoC
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -44,7 +35,6 @@ Map<int, Color> color = {
 class PsyBrain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
     return App();
   }
 
@@ -62,13 +52,6 @@ class PsyBrain extends StatelessWidget {
   Widget App() {
     return BlocProvider(
       bloc: UserBloc(),
-========================================================================
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => ProfSaludBloc(),),
-            BlocProvider(create: (context) => UserBloc(),)
-          ],
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CorrecciónBLoC
       child: MaterialApp(
         title: 'PsyBrain',
         theme: ThemeData(
@@ -79,32 +62,6 @@ class PsyBrain extends StatelessWidget {
         debugShowCheckedModeBanner: false,
       ),
     );
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
-========================================================================
-  }
-      
-}
-
-class UserBloc {
-}
-
-class UserLogged extends StatelessWidget {
-  const UserLogged({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    UserBloc user = BlocProvider.of<UserBloc>(context);
-    
-    return StreamBuilder(
-      stream: user.authStatus,
-      builder: (context, snapshot) {
-      if (!snapshot.hasData || snapshot.hasError) {
-            user.dispose();
-            return SignInScreen();
-      } else {
-            user.dispose();
-            return HomePage();
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CorrecciónBLoC
   }
 
   Widget ConnectionLoad() {
