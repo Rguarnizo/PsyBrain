@@ -1,11 +1,11 @@
 import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
-import 'package:PsyBrain/User/bloc/bloc_user.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'User/ui/screens/singin_screen.dart';
+import 'Usuario/ui/screens/singin_screen.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
