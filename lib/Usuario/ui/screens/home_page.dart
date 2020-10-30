@@ -10,10 +10,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  UserBloc user;
+  UsuarioBloc user;
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<UserBloc>(context);
+    user = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
       appBar: AppBar(),
       drawer: userDrawer(),

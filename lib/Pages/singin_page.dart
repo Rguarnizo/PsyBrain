@@ -11,7 +11,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  UserBloc user;
+  UsuarioBloc user;
 
   String emailInput;
   String passwordInput;
@@ -20,7 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<UserBloc>(context);
+    user = BlocProvider.of<UsuarioBloc>(context);
 
     return Scaffold(
       body: Center(
@@ -32,7 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
             _image(),
             _inputsFields(),
             _buttons(),
-            //botonCrearCuentaUsuario(context),
+            botonCrearCuentaUsuario(context),
           ],
         ),
       ),

@@ -1,15 +1,21 @@
-import 'package:PsyBrain/Usuario/repository/auth_repo.dart';
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserBloc extends Bloc {
+
+import 'package:PsyBrain/Usuario/model/usuario.dart';
+import 'package:PsyBrain/Usuario/repository/auth_repo.dart';
+import 'package:PsyBrain/Usuario/repository/firestore_repo.dart';
+
+
+class UsuarioBloc extends Bloc {
   final _auth_repo = AuthRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus  => userStream;
 
-  UserBloc({initialState}) : super({initialState});
+  UsuarioBloc({initialState}) : super({initialState});
 
   //Caso de uso: Inicio de sesion de Google
   Future<auth.UserCredential> signInGoogle() => _auth_repo.signInWithGoogle();
@@ -21,6 +27,22 @@ class UserBloc extends Bloc {
       _auth_repo.signInWithEmailAndPassword(email, password, context);
 
   auth.User getCurrentUser() => _auth_repo.getCurrentUser();
+
+  //////////////////////////////////////////////////////////////////////////////////
+
+   Usuario usuario = Usuario();
+   FireStoreRepo fireStoreRepo = FireStoreRepo();
+
+  Future<String> crearUsuario() async{
+    return await fireStoreRepo.crearUsuario(usuario);
+  }
+
+  Future<Usuario> obtenerInformacion() async {
+    final data = await fireStoreRepo.obtenerInformacionUsuario(usuario);
+    usuario = Usuario.fromJson(data);
+    return usuario;
+  }
+
 
   @override
   void dispose() {
