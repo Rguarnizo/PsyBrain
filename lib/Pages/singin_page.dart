@@ -1,81 +1,77 @@
-import 'package:PsyBrain/pages/home_page.dart';
-import 'package:PsyBrain/utils/login_buttons.dart';
-import 'package:PsyBrain/utils/sing_in_firebase.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
-class SignInScreen extends StatelessWidget {
+
+class SignInScreen extends StatefulWidget {
+  @override
+  _SignInScreenState createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  UserBloc user;
 
   String emailInput;
   String passwordInput;
 
+  final _formKey = new GlobalKey<FormState>();
+
+
+
   @override
   Widget build(BuildContext context) {
 
+    user = BlocProvider.of<UserBloc>(context);
+
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(top: 122.35, left: 30.0, right: 30.0),
-        height: 600,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _titulo(),
-            _subtitle(),
-            _image(),
-            Container(
-              height: 108.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _emailInput(),
-                  _passwordInput(),
-                ],
-              ),
-            ),
-            Flexible(
-              child: Container(
-                margin: EdgeInsets.only(top: 25),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      botonEntrar(context),
-                      botonGoogle(context),
-                      botonCrearCuenta(context),
-                    ],
-                  ),
-              ),
-            ),
-          ],
+      body:Center(
+        child: ListView(
+            shrinkWrap: true,
+            children: [
+              _titulo(),
+              _subtitle(),
+              _image(),
+              _inputsFields(),
+              _buttons(),            
+              //botonCrearCuentaUsuario(context),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _titulo() {
 
-    return Text(
-      '¡Bienvenido de nuevo!',
-      style: TextStyle(
-          color: Colors.black,
-          fontFamily: 'SourceSansPro',
-          fontSize: 28.2,
-          fontWeight: FontWeight.w400
-          //fontWeight: FontStyle.italic,
-          ),
+    return Center(
+      child: Text(
+        '¡Bienvenido de nuevo!',
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'SourceSansPro',
+            fontSize: 28.2,
+            fontWeight: FontWeight.w400
+            //fontWeight: FontStyle.italic,
+            ),
+      ),
     );
   }
 
   Widget _subtitle() {
-    return Text(
-      'Ingresa para continuar',
-      style: TextStyle(
-          color: Colors.grey,
-          //fontWeight: FontWeight.w700,
-          fontFamily: 'SourceSansPro',
-          fontSize: 18.2,
-          fontWeight: FontWeight.w300),
+    return Center(
+      child: Text(
+        'Ingresa para continuar',
+        style: TextStyle(
+            color: Colors.grey,
+            //fontWeight: FontWeight.w700,
+            fontFamily: 'SourceSansPro',
+            fontSize: 18.2,
+            fontWeight: FontWeight.w300),
+      ),
     );
   }
 
@@ -88,7 +84,7 @@ class SignInScreen extends StatelessWidget {
 
   Widget _emailInput() {
 
-    return TextField(
+    return TextFormField(
       cursorColor: Color(0xFFf1e4e8),
       onChanged: (value) => emailInput = value,
       decoration: InputDecoration(
@@ -102,11 +98,17 @@ class SignInScreen extends StatelessWidget {
           ),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(9))),
+          validator: (value) {
+            if(value.isEmpty){
+              return 'Campo obligatorio';
+            }
+            return null;
+          },
     );
   }
 
   Widget _passwordInput() {
-    return TextField(
+    return TextFormField(
       cursorColor: Color(0xFFf1e4e8),
       obscureText: true,
       onChanged: (value) => passwordInput = value,
@@ -121,6 +123,12 @@ class SignInScreen extends StatelessWidget {
           ),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(9))),
+        validator: (value) {
+            if(value.isEmpty){
+              return 'Campo obligatorio';
+            }
+            return null;
+          },              
     );
   }
 
@@ -133,15 +141,16 @@ class SignInScreen extends StatelessWidget {
       withShadow: true,
       action: () async {
 
+        if(_formKey.currentState.validate()){
+
         UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailInput, password: passwordInput);
         
         Navigator.pushAndRemoveUntil(context, 
         MaterialPageRoute(
-          builder: (context) => HomePage(user: userCredential.user),)
+          builder: (context) => HomePage(),)
         , (route) => false);
-      });
+      }});
   }
-  
 
   Widget botonGoogle(BuildContext context){
     return MyButton(
@@ -150,13 +159,10 @@ class SignInScreen extends StatelessWidget {
         width: 50,
         image: AssetImage('assets/imgs/google_icon.png'),
         action: (){
-          signInWithGoogle().then((value) => 
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage(user: value),), (route) => false)
-          );
+          user.signInGoogle();
         },
       );
     }
-  
 
     Widget botonCrearCuenta(BuildContext context) {
       return MyButton(
@@ -170,6 +176,7 @@ class SignInScreen extends StatelessWidget {
         withShadow: false,
     );
   }
+
   Widget botonCrearCuentaUsuario(BuildContext context) {
     return MyButton(
       action: () {
@@ -180,6 +187,43 @@ class SignInScreen extends StatelessWidget {
       textColor: Color(0xFFCEB1BE),
       width:  MediaQuery.of(context).size.width*0.8,
       withShadow: false,
+    );
+  }
+
+  @override
+  void dispose() { 
+    user.dispose();
+    super.dispose();
+  }
+
+  _inputsFields() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _emailInput(),       
+            SizedBox(height: 20.0,),
+            _passwordInput(),                    
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buttons() {
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            botonEntrar(context),
+            botonGoogle(context),
+            botonCrearCuenta(context),                 
+          ],                    
+        ),                                  
     );
   }
 }

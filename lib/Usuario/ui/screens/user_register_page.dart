@@ -1,8 +1,8 @@
-import 'package:PsyBrain/pages/home_page.dart';
-import 'package:PsyBrain/models/user.dart';
-import 'package:PsyBrain/utils/login_buttons.dart';
-import 'package:PsyBrain/utils/theme_config.dart';
+
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
+
+import '../../../main.dart';
 
 class UserRegisterPage extends StatefulWidget {
   UserRegisterPage({Key key}) : super(key: key);
@@ -147,7 +147,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       decoration: InputDecoration(
         hintText: 'Teléfono',
         helperText: 'Teléfono',
-        icon: Icon(Icons.phone_android_outlined),
+        icon: Icon(Icons.phone_android),
       ),
       onChanged: (value)=> _telefono = value.toString(),
       keyboardType: TextInputType.phone,
@@ -160,36 +160,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       action: () async {
         //? Valida si el formulario esta bien diligenciado.
         if (_formKey.currentState.validate()) {
-          //? Cambia la variable para que se muestre que esta cargando el registro.
-          setState(() {
-            _waitRegister = true;
-          });
-          final result = await Usuario(
-            nombres: _nombres,
-            apellidos: _apellidos,
-            fechaNacimiento: _fechaNacimiento,
-            id: _correo,
-            password: _password,
-            telefono: _telefono,
-          )
-              //! Y a esa instancia le guarda los datos en la DB de Firebase.
-              .guardarDatos();
-          //? ctrl y click para ir a la funcion
 
-          if (result is String) {
-            //? Algo sucedio al crear el usuario, se muestra en a pantalla el error
-            setState(() {
-              _waitRegister = false;
-              _error = true;
-              errorMessage = result;
-            });
-          } else {
-            //?Si no hay errores se dirige al home con el usuario que se acabó de crear.
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage(user: result)),
-                (route) => false);
-          }
         }
       },
       buttonName: 'Crea tu cuenta',

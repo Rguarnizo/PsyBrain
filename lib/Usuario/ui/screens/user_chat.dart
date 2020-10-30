@@ -13,7 +13,8 @@ class UserChat extends StatelessWidget {
                 height: 150,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(                      
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32.60),
                       color: Colors.white),
                   child: Row(
                     children: [
@@ -45,9 +46,9 @@ class UserChat extends StatelessWidget {
                           top: 20,
                           left: 5,
                         ),
-                        width: 49,
+                        width: 55,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(18.0),
                             color: Color(0xFFceb1be)),
                         child: Center(
                             child: Icon(
