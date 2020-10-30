@@ -1,12 +1,14 @@
 import 'package:PsyBrain/User/repository/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserBloc implements Bloc {
+class UserBloc extends Bloc {
   final _auth_repo = AuthRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
+
+  UserBloc({initialState}) : super({initialState});
 
   //Caso de uso: Inicio de sesion de Google
   Future<auth.UserCredential> signInGoogle() => _auth_repo.signInWithGoogle();
@@ -22,5 +24,11 @@ class UserBloc implements Bloc {
   @override
   void dispose() {
     // TODO: implement dispose
+  }
+
+  @override
+  Stream mapEventToState(event) {
+    // TODO: implement mapEventToState
+    throw UnimplementedError();
   }
 }

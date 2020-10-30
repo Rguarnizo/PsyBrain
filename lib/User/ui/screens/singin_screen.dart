@@ -1,11 +1,12 @@
+import 'package:PsyBrain/User%20Health/UI/register_page_profSalud.dart';
 import 'package:PsyBrain/User/bloc/bloc_user.dart';
 import 'package:PsyBrain/User/ui/screens/home_page.dart';
-import 'package:PsyBrain/User/ui/screens/user_chat.dart';
 import 'package:PsyBrain/User/ui/screens/user_register_page.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -197,7 +198,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UserRegisterPage()));
+                                builder: (context) => RegisterPageProfSalud()));
                       },
                     ),
                   ],

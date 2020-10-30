@@ -1,7 +1,5 @@
-/*
-import 'package:PsyBrain/models/User/bloc_user.dart';
-import 'package:PsyBrain/utils/login_buttons.dart';
-import 'package:PsyBrain/utils/theme_config.dart';
+import 'package:PsyBrain/User%20Health/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,19 +14,21 @@ class RegisterPageProfSalud extends StatefulWidget {
 
 class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
 
-
-  UserBloc user;
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password ='';
+
+  ProfSaludBloc profSaludBloc;
   
+
+
   bool _waitRegister = false;
   bool _error = false;
   String errorMessage;
 
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<UserBloc>(context);
+   
+    profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
+
     return Scaffold(
       body: Form(
           key: _formKey,
@@ -37,7 +37,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
             SizedBox(height: 50,),
             correoField(),
             passwordField(),
-            Container(child: Divider(), margin: EdgeInsets.symmetric(vertical: 10),),
+             Container(child: Divider(), margin: EdgeInsets.symmetric(vertical: 10),),
             nombresField(),
             apellidosField(),
             cedulaField(),
@@ -65,7 +65,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),        
       ),      
-      onChanged: (value) => _email = value,      
+      onChanged: (value) => profSaludBloc.profSalud.correo = value,
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -90,7 +90,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },   
-      onChanged: (value) => user.userData['Nombres'] = value,
+      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
     );
 
   }
@@ -108,7 +108,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },      
-      onChanged: (value){ user.userData['Apellidos'] = value; print(value);},
+      onChanged: (value) => profSaludBloc.profSalud.apellidos = value,
     );
   }
 
@@ -119,7 +119,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Cedula',
         icon: Icon(Icons.credit_card),        
       ),      
-      onChanged: (value){ user.userData['Cedula'] = value; print(value);},
+      onChanged: (value) => profSaludBloc.profSalud.cedula = value,
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -138,8 +138,8 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Fecha de nacimiento',
         icon: Icon(Icons.calendar_today),                
       ),
-      onChanged: (value) =>{ user.userData['FechaNacimiento'] = value},
-      validator: (value){                
+      onChanged: (value) => profSaludBloc.profSalud.fechaNacimiento,
+      validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
         }
@@ -150,11 +150,10 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
 
   Widget botonAdd(BuildContext context) {
     return MyButton(
-        action: () async {
+        action: () async {          
           if(_formKey.currentState.validate()){
-            await user.createAccount(_email, _password);
-          }
-          
+            profSaludBloc.crearProfSalud();      
+          }           
         },
         buttonName: 'Crea tu cuenta',
         gradientColors: [Color(0xFFf1e4e8)],
@@ -172,7 +171,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Constraseña',
         icon: Icon(Icons.lock_outline),        
       ),      
-      onChanged: (value) => _password = value,
+      onChanged: (value) => profSaludBloc.profSalud.contrasena = value,
       validator: (value){
         if(value.isEmpty){
           return 'Campo obligatorio';
@@ -194,8 +193,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
               children: [
                 Text(
                 '¡$errorMessage!',
-                 style: TextStyle(
-                color: color[900],
+                 style: TextStyle(              
                 fontFamily: 'SourceSansPro',
                 fontSize: 20,
                 fontWeight: FontWeight.w400
@@ -205,7 +203,6 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
               Text(
                 'Verifica que todo este correcto',
                  style: TextStyle(
-                color: color[900],
                 fontFamily: 'SourceSansPro',
                 fontSize: 15,
                 fontWeight: FontWeight.w400
@@ -224,16 +221,10 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
         icon: Icon(Icons.card_membership),        
       ),      
-      onChanged: (value){ user.userData['Licencia'] = value; },            
+      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
+      
     );
   }
 
-  @override
-  void dispose() {
-    user.dispose();
-    super.dispose();
-  }
   
 }
-
-*/
