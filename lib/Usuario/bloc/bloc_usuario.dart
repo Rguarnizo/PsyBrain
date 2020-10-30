@@ -1,4 +1,4 @@
-import 'package:PsyBrain/User/repository/auth_repo.dart';
+import 'package:PsyBrain/Usuario/repository/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
