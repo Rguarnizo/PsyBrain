@@ -167,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
       buttonName: 'Registrate',
       gradientColors: [Color(0xFFf1e4e8)],
       textColor: Color(0xFFCEB1BE),
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.6,
       withShadow: false,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:PsyBrain/Usuario/model/usuario.dart';
+import 'package:PsyBrain/Usuario/repository/firestore_api.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:translator/translator.dart';
@@ -23,7 +24,7 @@ class FireStoreRepo{
 
       return 'Registro Exitoso';
     }catch(e){      
-      print(e);
+      print(e.code);
       var traslation = await translator.translate(e.code,from: 'en',to: 'es');
       print(traslation);
       return traslation.text;
@@ -32,6 +33,18 @@ class FireStoreRepo{
 
   Future<Map<String,dynamic>> obtenerInformacionUsuario(Usuario usuario) async {
     return (await fireStoreApi.obtenerInformacion(usuario.id)).data();
+  }
+
+  Future <String> actualizarInformacionUsuario(Usuario usuario) async{
+
+    try{
+      await fireStoreApi.actualizarInformacionUsuario(usuario);
+      return 'Datos Actualizados';
+    }catch(e){
+      print(e);
+      return e;
+    }
+
   }
 
 
