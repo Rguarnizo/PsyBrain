@@ -54,4 +54,12 @@ class UsuarioBloc extends Bloc {
     // TODO: implement mapEventToState
     throw UnimplementedError();
   }
+
+  void setUsuarioInfo(Map<String,dynamic> data) {
+    if(data['Contraseña'] == null){
+      usuario = Usuario.fromJson(data);
+    }else{
+      usuario = Usuario.fromJsonPassword(data);
+    }
+  }
 }

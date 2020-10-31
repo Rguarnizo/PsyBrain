@@ -27,6 +27,14 @@ class ProfSaludBloc extends Bloc{
 
   auth.User get currentUser => authRepo.getCurrentUser();
 
+  setProfSaludInfo(Map<String,dynamic> data){
+    if(data['Contraseña'] == null){
+    profSalud = ProfSalud.fromJson(data);
+    }else{
+      profSalud = ProfSalud.fromJsonPassword(data);
+    }
+  }
+
   signOut(){
     authRepo.signOut();
   }

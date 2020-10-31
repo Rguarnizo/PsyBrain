@@ -9,7 +9,7 @@ class ProfSalud {
   String correo;
   String cedula;
   String licencia;
-  DateTime fechaNacimiento;
+  String fechaNacimiento;
   String contrasena;
 
 
@@ -34,6 +34,22 @@ class ProfSalud {
         cedula: json['Cedula'],
         telefono: json['Telefono'],
     );
+  }
+
+  factory ProfSalud.fromJsonPassword(json){
+
+      ProfSalud profSalud = ProfSalud(
+        nombres: json['Nombres'],
+        apellidos: json['Apellidos'],
+        correo: json['Correo'],
+        fechaNacimiento: json['FechaNacimiento'],
+        licencia: json['Licencia'],
+        cedula: json['Cedula'],
+        telefono: json['Telefono'],         
+    );
+
+    profSalud.contrasena =  json['Contraseña'];
+    return profSalud;
   }
 
   Map<String,dynamic> json(){

@@ -22,8 +22,8 @@ class FireStoreRepo{
 
 
       return 'Registro Exitoso';
-    }catch(e){
-      print(e.code);
+    }catch(e){      
+      print(e);
       var traslation = await translator.translate(e.code,from: 'en',to: 'es');
       print(traslation);
       return traslation.text;
