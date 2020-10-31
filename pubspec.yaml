@@ -29,7 +29,6 @@ dependencies:
   firebase_storage: ^4.0.1
   google_sign_in: ^4.5.5
   cloud_firestore: ^0.14.1+3
-  generic_bloc_provider: ^1.0.9
   flutter_bloc:
   translator: 
 

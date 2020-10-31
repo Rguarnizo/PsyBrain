@@ -9,7 +9,7 @@ class Usuario {
   String correo;
   String cedula;
   String licencia;
-  DateTime fechaNacimiento;
+  String fechaNacimiento;
   String contrasena;
 
 
@@ -30,6 +30,21 @@ class Usuario {
       fechaNacimiento: json['FechaNacimiento'],
       telefono: json['Telefono'],
     );
+  }
+
+  factory Usuario.fromJsonPassword(json){
+
+    Usuario usuario = Usuario(
+        nombres: json['Nombres'],
+        apellidos: json['Apellidos'],
+        correo: json['Correo'],
+        fechaNacimiento: json['FechaNacimiento'],        
+        telefono: json['Telefono'],         
+    );
+    
+    usuario.contrasena = json['Contraseña'];
+
+    return usuario;
   }
 
   Map<String,dynamic> json(){
