@@ -1,8 +1,11 @@
+import 'package:PsyBrain/ProfSalud/UI/screens/home_page_profSalud.dart';
 import 'package:PsyBrain/ProfSalud/UI/screens/register_page_profSalud.dart';
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
-import 'package:PsyBrain/Usuario/ui/screens/user_register_page_google.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:PsyBrain/UI/screens/user_register_page_google.dart';
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
+import 'package:PsyBrain/Usuario/ui/screens/user_register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +36,13 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   UsuarioBloc userBloc;
+  ProfSaludBloc userHealthBloc;
   final formKey = new GlobalKey<FormState>();
 
   String _email;
   String _password;
+
+  //TODO: Integrar Widget para la fecha.
 
   void validateAndSave() {
     final form = formKey.currentState;
@@ -51,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     userBloc = BlocProvider.of<UsuarioBloc>(context);
+    userHealthBloc = BlocProvider.of<ProfSaludBloc>(context);
     return _handleCurrentSession();
   }
 
@@ -60,13 +67,57 @@ class _SignInScreenState extends State<SignInScreen> {
         if (!snapshot.hasData || snapshot.hasError) {
           return signInUI();
         } else {
-          return HomePageUser(
-            userBloc: userBloc,
+          var userLoggedId = userBloc.getCurrentUser().uid;
+          //print(userLoggedId);
+          //TODO: Lógica inicio de sesión forma usual.
+          return FutureBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data) {
+                  return HomePageUser(
+                    userBloc: userBloc,
+                  );
+                } else {
+                  return FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data) {
+                          return HomePageProfSalud(
+                            userBloc: userBloc,
+                            userHealthBloc: userHealthBloc,
+                          );
+                        } else
+                          return signInUI();
+                      } else
+                        return signInUI();
+                    },
+                    future: determineUserHealth(userLoggedId),
+                  );
+                }
+              } else {
+                return signInUI();
+              }
+            },
+            future: determineUser(userLoggedId),
           );
         }
       },
-      stream: userBloc.authStateChanges(),
+      stream: userBloc.authStatus,
     );
+  }
+
+  Future<bool> determineUser(String userLoggedId) async {
+    return await userBloc
+        .obtenerInformacion(userLoggedId)
+        .then((documentSnapshot) {
+      return documentSnapshot.exists;
+    });
+  }
+
+  Future<bool> determineUserHealth(String userLoggedId) async {
+    return await userHealthBloc
+        .obtenerInformacion(userLoggedId)
+        .then((documentSnapshot) => documentSnapshot.exists);
   }
 
   Widget signInUI() {
@@ -193,15 +244,23 @@ class _SignInScreenState extends State<SignInScreen> {
                                 .then((documentSnapshot) => {
                                       if (!documentSnapshot.exists)
                                         {
-                                          Navigator.of(context).pop(),
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UserRegisterPageGoogle(
-                                                        userInfo: user,
-                                                        userBloc: userBloc,
-                                                      )))
+                                          userHealthBloc
+                                              .obtenerInformacion(user.uid)
+                                              .then((documentSnapshot) {
+                                            if (!documentSnapshot.exists) {
+                                              Navigator.of(context).pop();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          UserRegisterPageGoogle(
+                                                            userInfo: user,
+                                                            userBloc: userBloc,
+                                                            userHealthBloc:
+                                                                userHealthBloc,
+                                                          )));
+                                            }
+                                          })
                                         }
                                     });
                           });
@@ -216,7 +275,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => RegisterPageProfSalud()));
+                                builder: (context) => UserRegisterPage()));
                       },
                     ),
                   ],

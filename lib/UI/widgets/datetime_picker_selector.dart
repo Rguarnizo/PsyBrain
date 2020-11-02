@@ -1,4 +1,4 @@
-import 'package:PsyBrain/Usuario/ui/widgets/register_form.dart';
+import 'package:PsyBrain/UI/widgets/register_form.dart';
 import 'package:PsyBrain/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldAuxiliar extends StatelessWidget {
-  dynamic field;
+  final Function setField;
   final String hintText;
   final IconData icon;
   final TextInputType inputType;
   TextFieldAuxiliar(
       {Key key,
-      @required this.field,
       @required this.hintText,
-      @required this.icon, this.inputType});
+      @required this.icon,
+      @required this.inputType,
+      @required this.setField});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class TextFieldAuxiliar extends StatelessWidget {
         if (value.isEmpty) return 'Este campo no puede estar vacío';
         return null;
       },
-      onSaved: (value) => field = value,
+      onChanged: (value) => setField(value),
       cursorColor: Color(0xFFf1e4e8),
       //obscureText: true,
       keyboardType: inputType,

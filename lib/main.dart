@@ -1,6 +1,6 @@
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/Usuario/ui/screens/singin_screen.dart' as signin;
+import 'package:PsyBrain/UI/screens/singin_screen.dart' as signin;
 import 'package:PsyBrain/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

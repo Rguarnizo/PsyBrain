@@ -1,6 +1,6 @@
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/main.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,15 +14,13 @@ class UserRegisterPage extends StatefulWidget {
 class _UserRegisterPageState extends State<UserRegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-
   UsuarioBloc usuarioBloc;
 
   bool esperandoRegistro = false;
   String mensajeResultante = '';
 
-
-
-
+  //TODO: No esta bien utilizar una instancia de Usuario en la clase Bloc para despues asignar en la interfaz. Revisar
+  //TODO: No se esta siguiendo una estructura para los datos, fecha de nacimiento y telefono no se registran.
   @override
   Widget build(BuildContext context) {
     usuarioBloc = BlocProvider.of<UsuarioBloc>(context);
@@ -55,7 +53,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                   height: 30,
                 ),
                 esperandoRegistro ? cargandoRegistro() : Container(),
-                mensajeResultante.isEmpty? Container() :mostrarResultado(),
+                mensajeResultante.isEmpty ? Container() : mostrarResultado(),
               ],
             ),
           ],
@@ -71,8 +69,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),
       ),
-      onChanged:(value) => usuarioBloc.usuario.correo=value,
-
+      onChanged: (value) => usuarioBloc.usuario.correo = value,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -96,7 +93,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         }
         return null;
       },
-      onChanged:(value) => usuarioBloc.usuario.nombres=value,
+      onChanged: (value) => usuarioBloc.usuario.nombres = value,
     );
   }
 
@@ -113,11 +110,9 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         }
         return null;
       },
-      onChanged:(value) => usuarioBloc.usuario.apellidos=value,
+      onChanged: (value) => usuarioBloc.usuario.apellidos = value,
     );
   }
-
-
 
   Widget fechaNacimientoField() {
     return TextFormField(
@@ -146,7 +141,6 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
       onChanged: (value) => usuarioBloc.usuario.telefono,
       keyboardType: TextInputType.phone,
     );
-
   }
 
   Widget botonAdd(BuildContext context) {
@@ -157,7 +151,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         });
 
         if (_formKey.currentState.validate()) {
-          mensajeResultante =  await usuarioBloc.crearUsuario();
+          mensajeResultante = await usuarioBloc.crearUsuario();
         }
 
         setState(() {
@@ -180,7 +174,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
         helperText: 'Constraseña',
         icon: Icon(Icons.lock_outline),
       ),
-      onChanged: (value) => usuarioBloc.usuario.contrasena=value,
+      onChanged: (value) => usuarioBloc.usuario.contrasena = value,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -205,16 +199,11 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                 color: color[800],
                 fontSize: 20,
                 fontWeight: FontWeight.w400
-              //fontWeight: FontStyle.italic,
-            ),
+                //fontWeight: FontStyle.italic,
+                ),
           ),
         ],
       ),
     );
   }
-
-
-
-
-
 }

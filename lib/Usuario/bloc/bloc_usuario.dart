@@ -14,7 +14,7 @@ class UsuarioBloc extends Bloc {
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;
 
-  Stream<auth.User> authStateChanges()=> _auth_repo.authStateChanges();
+  Stream<auth.User> authStateChanges() => _auth_repo.authStateChanges();
 
   UsuarioBloc({initialState}) : super({initialState});
 
@@ -31,6 +31,11 @@ class UsuarioBloc extends Bloc {
   //Verificar si el usuario logueado con Google esta registrado en Firebase
   Future<DocumentSnapshot> obtenerInformacion(String uid) =>
       _firestore_repo.obtenerInformacion(uid);
+
+  //Obtener datos del usuario
+
+  Future<Map<String, dynamic>> getUserInfo(String uid) =>
+      _firestore_repo.getUserInfo(uid);
   //////////////////////////////////////////////////////////////////////////////////
 
   //Guardar datos del registro con Google

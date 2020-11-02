@@ -1,10 +1,12 @@
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/model/usuario.dart';
-import 'package:PsyBrain/Usuario/ui/screens/datetime_picker_selector.dart';
+import 'package:PsyBrain/UI/widgets/datetime_picker_selector.dart';
 import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
-import 'package:PsyBrain/Usuario/ui/screens/singin_screen.dart';
-import 'package:PsyBrain/Usuario/ui/widgets/textfield_auxiliar.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:PsyBrain/UI/screens/singin_screen.dart';
+import 'package:PsyBrain/UI/widgets/textfield_auxiliar.dart';
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
@@ -15,16 +17,18 @@ class RegisterForm extends StatefulWidget {
   final String email;
   final String uid;
   final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
 
   const RegisterForm(
       {Key key,
       @required this.displayName,
       @required this.email,
-      this.uid,
-      @required this.userBloc});
+      @required this.uid,
+      @required this.userBloc,
+      @required this.userHealthBloc});
   @override
   _RegisterFormState createState() =>
-      _RegisterFormState(displayName, email, uid, userBloc);
+      _RegisterFormState(displayName, email, uid, userBloc, userHealthBloc);
 }
 
 class _RegisterFormState extends State<RegisterForm> {
@@ -32,16 +36,31 @@ class _RegisterFormState extends State<RegisterForm> {
   final String displayName;
   final String email;
   final String uid;
+  String license;
   String phone;
   String identification;
   bool isUserHealth = false;
   DateTime bornDate = DateTime.now();
   final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
 
-  _RegisterFormState(this.displayName, this.email, this.uid, this.userBloc);
+  _RegisterFormState(this.displayName, this.email, this.uid, this.userBloc,
+      this.userHealthBloc);
 
   void setBornDate(DateTime bornDate) {
     this.bornDate = bornDate;
+  }
+
+  void setLicense(String license) {
+    this.license = license;
+  }
+
+  void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  void setIdentification(String identification) {
+    this.identification = identification;
   }
 
   @override
@@ -55,7 +74,7 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.only(top: 15.0, right: 20.0),
               child: TextFieldAuxiliar(
                   hintText: 'Ingresa tu número de telefono',
-                  field: phone,
+                  setField: setPhone,
                   icon: CupertinoIcons.phone,
                   inputType: TextInputType.phone),
             ),
@@ -63,7 +82,7 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.only(top: 8.0, right: 20.0),
               child: TextFieldAuxiliar(
                   hintText: 'Ingresa tu número de identificación',
-                  field: identification,
+                  setField: setIdentification,
                   icon: CupertinoIcons.rectangle_dock,
                   inputType: TextInputType.number),
             ),
@@ -117,20 +136,26 @@ class _RegisterFormState extends State<RegisterForm> {
                 setState(() {
                   isUserHealth = !isUserHealth;
                 });
+                print(isUserHealth);
               },
             ),
+            isUserHealth
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 8.0, right: 20.0),
+                    child: TextFieldAuxiliar(
+                      setField: setLicense,
+                      hintText: 'Ingresa tu numero de licencia profesional',
+                      icon: CupertinoIcons.rectangle_on_rectangle_angled,
+                      inputType: TextInputType.number,
+                    ))
+                : Container(),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: MyButton(
                 action: () {
                   //TODO: Revisar campos, algunos faltantes. Campo nombres por Google Auth.
-                  Usuario user = new Usuario(
-                    nombres: displayName,
-                    apellidos: '',
-                    correo: email,
-                    fechaNacimiento: bornDate,
-                    telefono: phone,
-                  );
+                  setState(() {});
+                  print(license);
                   if (_formKey.currentState.validate()) {
                     print('hasja00');
                     showDialog(
@@ -144,10 +169,32 @@ class _RegisterFormState extends State<RegisterForm> {
                         );
                       },
                     );
-                    userBloc.guardarInformacion(user, uid);
 
                     Future.delayed(Duration(seconds: 3), () {
                       Navigator.of(context).pop();
+
+                      if (isUserHealth) {
+                        ProfSalud user = new ProfSalud(
+                          nombres: displayName,
+                          apellidos: '',
+                          correo: email,
+                          fechaNacimiento: bornDate,
+                          telefono: phone,
+                          licencia: license,
+                          cedula: identification,
+                        );
+                        userHealthBloc.guardarInformacion(user, uid);
+                      } else {
+                        Usuario user = new Usuario(
+                          nombres: displayName,
+                          apellidos: '',
+                          correo: email,
+                          fechaNacimiento: bornDate,
+                          telefono: phone,
+                        );
+                        userBloc.guardarInformacion(user, uid);
+                      }
+
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -173,40 +220,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       );
                     });
-
-                    /*
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return FutureBuilder(
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return CupertinoPopupSurface(
-
-                                  child: CupertinoActivityIndicator(
-
-                                  ));
-                            } else
-                              return CupertinoAlertDialog(
-                                title: Text('All good'),
-                                content: Text(
-                                    'Los datos han sido registrados correctamente'),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    child: Text('OK'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                          },
-
-                          future:
-                              Future.delayed(const Duration(milliseconds: 100)),
-                        );
-                      },
-                    );*/
                   }
                 },
                 buttonName: 'Registrarse',

@@ -1,5 +1,6 @@
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/Usuario/ui/widgets/register_form.dart';
+import 'package:PsyBrain/UI/widgets/register_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,13 @@ import 'package:flutter/material.dart';
 class UserRegisterPageGoogle extends StatelessWidget {
   final User userInfo;
   final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
 
   UserRegisterPageGoogle({
     Key key,
-    @required this.userInfo, @required this.userBloc,
+    @required this.userInfo,
+    @required this.userBloc,
+    @required this.userHealthBloc,
   });
 
   @override
@@ -77,6 +81,7 @@ class UserRegisterPageGoogle extends StatelessWidget {
                 email: userInfo.email,
                 uid: userInfo.uid,
                 userBloc: userBloc,
+                userHealthBloc: userHealthBloc,
               )
             ]),
       ),

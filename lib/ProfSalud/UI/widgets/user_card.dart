@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +8,14 @@ import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
   final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
   final BuildContext context;
 
-  UserCard({Key key, @required this.context, @required this.userBloc});
+  UserCard(
+      {Key key,
+      @required this.context,
+      @required this.userBloc,
+      @required this.userHealthBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +67,21 @@ class UserCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Teléfono',
+                    'Licencia profesional',
                     style: TextStyle(fontSize: 16.0),
                   ),
                   //TODO: Cuando se mejore lo de los usuarios (informacion), se retorna el número telefonico
                   FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return Text('300',
-                            //snapshot.data['Telefono'],
+                        return Text(snapshot.data['Licencia'],
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w600));
                       } else {
                         return CupertinoActivityIndicator();
                       }
                     },
-                    future: userBloc.getUserInfo(userLogged.uid),
+                    future: userHealthBloc.obtenerInformacion(userLogged.uid),
                   )
                 ],
               ))
@@ -86,7 +91,6 @@ class UserCard extends StatelessWidget {
   }
 
   Widget UserInformation(User userLogged) {
-    var userLoggedId = userBloc.getCurrentUser().uid;
     return InkWell(
       onTap: () {
         Navigator.of(this.context).push(CupertinoPageRoute(builder: (context) {
@@ -117,27 +121,17 @@ class UserCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder(
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return Text(
-                            snapshot.data['Nombres'] +
-                                ' ' +
-                                snapshot.data['Apellidos'],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'SourceSansPro',
-                                fontSize: 20),
-                          );
-                        } else {
-                          return CupertinoActivityIndicator();
-                        }
-                      },
-                      future: userBloc.getUserInfo(userLoggedId),
+                    Text(
+                      //TODO: Modificar nombre cuando no es auth por Google.
+                      userLogged.displayName ?? 'Hola',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'SourceSansPro',
+                          fontSize: 20),
                     ),
                     Text(
-                      'Usuario ciudadano',
+                      'Usuario de salud',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,

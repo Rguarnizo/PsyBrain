@@ -22,4 +22,9 @@ class FireStoreApi {
     return _apiFireStore.collection(USUARIO).doc(uid).get();
   }
 
+  
+  Future<Map<String, dynamic>> getUserInfo(String uid) async {
+    var info = await this.obtenerInformacion(uid);
+    return info.data();
+  }
 }

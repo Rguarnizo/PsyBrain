@@ -1,7 +1,4 @@
-
 class Usuario {
-
-
   String id;
   String nombres;
   String apellidos;
@@ -12,7 +9,6 @@ class Usuario {
   DateTime fechaNacimiento;
   String contrasena;
 
-
   Usuario({
     this.id,
     this.nombres,
@@ -22,7 +18,7 @@ class Usuario {
     this.fechaNacimiento,
   });
 
-  factory Usuario.fromJson(json){
+  factory Usuario.fromJson(json) {
     return Usuario(
       nombres: json['Nombres'],
       apellidos: json['Apellidos'],
@@ -32,13 +28,13 @@ class Usuario {
     );
   }
 
-  Map<String,dynamic> json(){
+  Map<String, dynamic> json() {
     return {
-      'Nombres'        : nombres,
-      'Apellidos'      : apellidos,
-      'Correo'         : correo,
+      'Nombres': nombres,
+      'Apellidos': apellidos,
+      'Correo': correo,
       'FechaNacimiento': fechaNacimiento,
+      'Telefono': telefono
     };
   }
-
 }

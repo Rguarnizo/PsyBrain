@@ -1,79 +1,106 @@
+import 'package:PsyBrain/ProfSalud/UI/widgets/user_card.dart';
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget HomePageProfSalud() {
-  return CupertinoTabScaffold(
-    tabBar: CupertinoTabBar(
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Inicio')),
-        BottomNavigationBarItem(icon: Icon(Icons.account_circle)),
-      ],
-    ),
-    tabBuilder: (BuildContext context, int index) {
-      return CupertinoTabView(
-        builder: (BuildContext context) {
-          switch (index) {
-            case 0:
-              return CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  middle: Text('Bienvenido! :3 ${index}'),
-                ),
-                child: Center(
-                  child: CupertinoButton(child: Text('Hola'), onPressed: null),
-                ),
-              );
-              break;
-            case 1:
-              return CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  middle: Text('Page 1 of tab $index'),
-                ),
-                child: Center(
-                  child: CupertinoButton(
-                    child: const Text('Next page'),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) {
-                            return CupertinoPageScaffold(
-                              navigationBar: CupertinoNavigationBar(
-                                middle: Text('Page 2 of tab $index'),
-                              ),
-                              child: Center(
-                                child: CupertinoButton(
-                                  child: const Text('Back'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-          }
+class HomePageProfSalud extends StatelessWidget {
+  final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
 
-          /*return CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text('Page 1 of tab $index'),
+  HomePageProfSalud(
+      {Key key, @required this.userBloc, @required this.userHealthBloc});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.house_alt),
             ),
-            child: Center(
-              child: CupertinoButton(
-                child: const Text('Next page'),
-                onPressed: () {
-                  print('Hola');
-                  //Navigator.of(context).push();
-                },
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.plus_app),
             ),
+          ],
+        ),
+        tabBuilder: (BuildContext context, int index) {
+          return CupertinoTabView(
+            builder: (BuildContext context) {
+              switch (index) {
+                case 0:
+                  return CupertinoPageScaffold(
+                    //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
+                    child: Center(
+                      child:
+                          CupertinoButton(child: Text('Hola'), onPressed: null),
+                    ),
+                  );
+                  break;
+                case 1:
+                  return CupertinoPageScaffold(
+                    navigationBar: CupertinoNavigationBar(
+                      middle: Text('Más'),
+                    ),
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 120),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          //crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MenuWidget(
+                              title: 'Cuenta',
+                              description: 'Edita la información de tu cuenta',
+                              icon: CupertinoIcons.square_list,
+                            ),
+                            UserCard(
+                              context: context,
+                              userBloc: userBloc,
+                              userHealthBloc: userHealthBloc,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: MenuWidget(
+                                  title: 'Ayuda',
+                                  description:
+                                      'Consulta información sobre la app',
+                                  icon: CupertinoIcons.question_circle),
+                            ),
+                            ServicesCard(),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: MenuWidget(
+                                  title: 'Cerrar sesión',
+                                  description:
+                                      'Haz click en el ícono para cerrar sesión',
+                                  icon: CupertinoIcons.square_arrow_right,
+                                  action: () {
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(builder: (context) {
+                                    //     return SignInScreen();
+                                    //   },)
+                                    // );
+                                    userBloc.signOut();
+                                    // await Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (context) {
+                                    //     return SignInScreen();
+                                    //   },
+                                    // )).then((value) => Navigator.of(context).pop());
+                                    //
+                                  }),
+                            ),
+                          ],
+                        )),
+                  );
+              }
+              return null;
+            },
           );
-          */
         },
-      );
-    },
-  );
+      ),
+    );
+  }
 }

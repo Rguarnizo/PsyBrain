@@ -18,7 +18,7 @@ class FireStoreRepo {
       User user =
           await _fireStoreApi.crearUsuario(usuario.correo, usuario.contrasena);
 
-      _fireStoreApi.guardarInformacion(usuario, user.uid);
+      await _fireStoreApi.guardarInformacion(usuario, user.uid);
 
       return 'Registro Exitoso';
     } catch (e) {
@@ -41,4 +41,7 @@ class FireStoreRepo {
 
   Future<void> guardarInformacion(Usuario usuario, String uid) =>
       _fireStoreApi.guardarInformacion(usuario, uid);
+
+  Future<Map<String, dynamic>> getUserInfo(String uid) =>
+      _fireStoreApi.getUserInfo(uid);
 }
