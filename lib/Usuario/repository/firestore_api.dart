@@ -14,7 +14,6 @@ class FireStoreApi{
 
 
     UserCredential userRef = await apiFireAuth.createUserWithEmailAndPassword(email: email, password: contrasena);
-
     return userRef.user;
   }
 
@@ -24,8 +23,20 @@ class FireStoreApi{
   }
 
   Future<DocumentSnapshot> obtenerInformacion(String uid){
-    return apiFireStore.collection('Usuario').doc(uid).get();
+
+    return apiFireStore.collection('Usuario').doc(apiFireAuth.currentUser.uid).get();
   }
+
+  Future<void> actualizarInformacionUsuario(Usuario usuario) {
+    User user =apiFireAuth.currentUser;
+    CollectionReference users = FirebaseFirestore.instance.collection('Usuario');
+    return users
+        .doc(user.uid)
+        .update(usuario.json())
+        .then((value) => print("Usuario actualizado"))
+        .catchError((error) => print("Error al actualizar: $error"));
+  }
+
 
 
 

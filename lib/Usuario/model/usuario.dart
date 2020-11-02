@@ -52,6 +52,7 @@ class Usuario {
       'Nombres'        : nombres,
       'Apellidos'      : apellidos,
       'Correo'         : correo,
+      'Telefono'       : telefono,
       'FechaNacimiento': fechaNacimiento,
     };
   }
