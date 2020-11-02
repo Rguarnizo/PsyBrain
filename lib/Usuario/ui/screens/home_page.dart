@@ -1,70 +1,102 @@
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/Usuario/ui/screens/singin_screen.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/user_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePageUser extends StatelessWidget {
+  final UsuarioBloc userBloc;
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  UsuarioBloc user;
+  const HomePageUser({Key key, @required this.userBloc});
   @override
   Widget build(BuildContext context) {
-    user = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
-      appBar: AppBar(),
-      drawer: userDrawer(),
-    );
-  }
-
-  Widget userDrawer() {
-    var userInfo = user.getCurrentUser();
-    return Drawer(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 40,
-          ),
-          GestureDetector(
-            onTap: () {
-              // Unificar pagina de informacion de usuarios
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ));
+      body: CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.house_alt),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.plus_app),
+            ),
+          ],
+        ),
+        tabBuilder: (BuildContext context, int index) {
+          return CupertinoTabView(
+            builder: (BuildContext context) {
+              switch (index) {
+                case 0:
+                  return CupertinoPageScaffold(
+                    //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
+                    child: Center(
+                      child:
+                          CupertinoButton(child: Text('Hola'), onPressed: null),
+                    ),
+                  );
+                  break;
+                case 1:
+                  return CupertinoPageScaffold(
+                    navigationBar: CupertinoNavigationBar(
+                      middle: Text('Más'),
+                    ),
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 120),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          //crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MenuWidget(
+                              title: 'Cuenta',
+                              description:
+                                  'Edita la información de tu cuenta',
+                              icon: CupertinoIcons.square_list,
+                            ),
+                            UserCard(context: context, userBloc: userBloc),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: MenuWidget(
+                                  title: 'Ayuda',
+                                  description:
+                                      'Consulta información sobre la app',
+                                  icon: CupertinoIcons.question_circle),
+                            ),
+                            ServicesCard(),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: MenuWidget(
+                                  title: 'Cerrar sesión',
+                                  description:
+                                      'Haz click en el ícono para cerrar sesión',
+                                  icon: CupertinoIcons.square_arrow_right,
+                                  action: () {
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(builder: (context) {
+                                    //     return SignInScreen();
+                                    //   },)
+                                    // );
+                                    userBloc.signOut();
+                                    // await Navigator.of(context)
+                                    //     .push(MaterialPageRoute(
+                                    //   builder: (context) {
+                                    //     return SignInScreen();
+                                    //   },
+                                    // )).then((value) => Navigator.of(context).pop());
+                                    //
+                                  }),
+                            ),
+                          ],
+                        )),
+                  );
+              }
+              return null;
             },
-            child: CircleAvatar(
-              radius: 50,
-              child: ClipOval(
-                  child: Container(
-                     //Poner una imagen por defecto para los usuarios que no entran por Google. 
-                      child: userInfo.photoURL != null
-                          ? Image.network(userInfo.photoURL)
-                          : null)),
-            ),
-          ),
-          SizedBox(
-            height: 30.0,
-          ),
-          Center(
-            child: Text(
-              userInfo.displayName ?? userInfo.email,
-              style: TextStyle(color: Colors.deepOrange[200], fontSize: 20.0),
-            ),
-          ),
-          FlatButton(
-              onPressed: () {
-                user.signOut();
-              },
-              child: Icon(Icons.exit_to_app)),
-        ],
+          );
+        },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    user.dispose();
-    super.dispose();
   }
 }

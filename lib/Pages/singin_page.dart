@@ -162,7 +162,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget botonCrearCuentaUsuario(BuildContext context) {
     return MyButton(
       action: () {
-        Navigator.of(context).pushNamed('UserRegisterPage');
+        Navigator.of(context).pushNamed('HomePageProfSalud');
       },
       buttonName: 'Registrate',
       gradientColors: [Color(0xFFf1e4e8)],

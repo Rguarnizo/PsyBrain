@@ -1,12 +1,12 @@
-
-import 'package:PsyBrain/ProfSalud/UI/register_page_profSalud.dart';
+import 'package:PsyBrain/ProfSalud/UI/screens/register_page_profSalud.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
+import 'package:PsyBrain/Usuario/ui/screens/user_register_page_google.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -51,24 +51,25 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     userBloc = BlocProvider.of<UsuarioBloc>(context);
-
-    return _handleSession(context);
+    return _handleCurrentSession();
   }
 
-  Widget _handleSession(BuildContext context) {
+  Widget _handleCurrentSession() {
     return StreamBuilder(
-        stream: userBloc.userStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.hasError) {
-            return signInUI(context);
-          } else {
-            return HomePage();
-          }
-        });
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.hasError) {
+          return signInUI();
+        } else {
+          return HomePageUser(
+            userBloc: userBloc,
+          );
+        }
+      },
+      stream: userBloc.authStateChanges(),
+    );
   }
 
-  Widget signInUI(BuildContext context) {
-    // var height = MediaQuery.of(context).size.height;
+  Widget signInUI() {
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(top: 122.35, left: 30.0, right: 30.0),
@@ -179,15 +180,32 @@ class _SignInScreenState extends State<SignInScreen> {
                           }
                         }),
                     MyButton(
-                      gradientColors: [Color(0xFFceb1be)],
-                      withShadow: false,
-                      width: 50,
-                      image: AssetImage('assets/imgs/google_icon.png'),
-                      action: () {
-                        userBloc.signOut();
-                        userBloc.signInGoogle();
-                      },
-                    ),
+                        gradientColors: [Color(0xFFceb1be)],
+                        withShadow: false,
+                        width: 50,
+                        image: AssetImage('assets/imgs/google_icon.png'),
+                        action: () {
+                          //userBloc.signOut();
+                          userBloc.signInGoogle().then((value) {
+                            var user = userBloc.getCurrentUser();
+                            userBloc
+                                .obtenerInformacion(user.uid)
+                                .then((documentSnapshot) => {
+                                      if (!documentSnapshot.exists)
+                                        {
+                                          Navigator.of(context).pop(),
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserRegisterPageGoogle(
+                                                        userInfo: user,
+                                                        userBloc: userBloc,
+                                                      )))
+                                        }
+                                    });
+                          });
+                        }),
                     MyButton(
                       buttonName: 'Crea tu cuenta',
                       gradientColors: [Color(0xFFf1e4e8)],
@@ -201,11 +219,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 builder: (context) => RegisterPageProfSalud()));
                       },
                     ),
-
                   ],
                 ),
-
-
               ),
             ),
           ],

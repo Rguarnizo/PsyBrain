@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:PsyBrain/Usuario/ui/screens/singin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
@@ -21,7 +23,7 @@ class AuthAPI {
 
   void signOut() async {
     await _auth.signOut().then((onValue) => print("Sesión finalizada"));
-    googleSignIn.signOut();
+    // googleSignIn.signOut();
   }
 
   Future<auth.UserCredential> signInWithEmailAndPassword(
@@ -45,7 +47,11 @@ class AuthAPI {
     }
   }
 
-  auth.User getCurrentUser(){
+  auth.User getCurrentUser() {
     return _auth.currentUser;
+  }
+
+  Stream<auth.User> authStateChanges() {
+    return _auth.authStateChanges();
   }
 }
