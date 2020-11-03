@@ -3,14 +3,14 @@ import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePageProfSalud extends StatefulWidget {
+  const HomePageProfSalud({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageProfSaludState createState() => _HomePageProfSaludState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageProfSaludState extends State<HomePageProfSalud> {
   ProfSaludBloc profSaludBloc;
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Center(
             child: Text(
-              userInfo.displayName ?? userInfo.email,
+              userInfo.email,
               style: TextStyle(color: Colors.deepOrange[200], fontSize: 20.0),
             ),
           ),
@@ -58,6 +58,11 @@ class _HomePageState extends State<HomePage> {
                 profSaludBloc.signOut();
               },
               child: Icon(Icons.exit_to_app)),
+          FlatButton(
+              onPressed: () {
+                profSaludBloc.eliminarProfSalud();
+              },
+              child: Icon(Icons.remove_circle_outline)),
         ],
       ),
     );

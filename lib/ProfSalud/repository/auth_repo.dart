@@ -14,4 +14,5 @@ class AuthRepo {
       _authAPI.signInWithEmailAndPassword(email, password, context);
 
   auth.User getCurrentUser() => _authAPI.getCurrentUser();
+
 }

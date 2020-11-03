@@ -31,8 +31,16 @@ class FireStoreRepo{
     }
   }
 
-  Future<Map<String,dynamic>> obtenerInformacionProfSalud(ProfSalud profSalud) async {
-    return (await fireStoreApi.obtenerInformacion(profSalud.id)).data();
+  Future<Map<String,dynamic>> obtenerInformacionProfSalud(User profSalud) async {
+    return (await fireStoreApi.obtenerInformacion(profSalud.uid)).data();
+  }
+
+  Future<void> actualizarDatosProfSalud(ProfSalud profSalud,User activeUser){
+    return fireStoreApi.actualizarInformacion(profSalud, activeUser.uid);
+  }
+
+  eliminarProfSalud(){
+    fireStoreApi.eliminarProfSalud();
   }
 
 

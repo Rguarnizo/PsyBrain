@@ -19,10 +19,12 @@ class ProfSaludBloc extends Bloc{
   }
 
   Future<ProfSalud> obtenerInformacion() async {
-    final data = await fireStoreRepo.obtenerInformacionProfSalud(profSalud);
-    profSalud = ProfSalud.fromJson(data);
+    return await fireStoreRepo.obtenerInformacionProfSalud(currentUser).then((value) => profSalud = ProfSalud.fromJson(value));        
+  }
 
-    return profSalud;
+  Future<void> actualizarInformacion() async {
+    await fireStoreRepo.actualizarDatosProfSalud(profSalud, currentUser);
+
   }
 
   auth.User get currentUser => authRepo.getCurrentUser();
@@ -33,6 +35,12 @@ class ProfSaludBloc extends Bloc{
     }else{
       profSalud = ProfSalud.fromJsonPassword(data);
     }
+  }
+
+  eliminarProfSalud(){
+
+    //TODO : Incompleto, falta reautenticación de usuario.
+    currentUser.delete();
   }
 
   signOut(){

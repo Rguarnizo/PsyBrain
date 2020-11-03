@@ -31,6 +31,13 @@ class FireStoreApi{
     return apiFireStore.collection('ProfesionalSalud').doc(uid).get();
   }
 
+  Future<void> actualizarInformacion(ProfSalud profSalud,String uid){
+    return apiFireStore.collection('ProfesionalSalud').doc(uid).set(profSalud.json());
+  }
+
+  void eliminarProfSalud() {
+  }
+
 
 
 

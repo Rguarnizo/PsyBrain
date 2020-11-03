@@ -40,6 +40,13 @@ class AuthAPI {
     }
   }
 
+  reautenticacionProfSalud(String correo,String contrasena){
+
+    auth.AuthCredential credential = auth.EmailAuthProvider.credential(email: correo, password: contrasena);                         
+    
+    _auth.currentUser.reauthenticateWithCredential(credential);
+  }
+
   auth.User getCurrentUser(){
     return _auth.currentUser;
   }

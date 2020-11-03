@@ -58,12 +58,11 @@ class UsuarioBloc extends Bloc {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
   }
 
   @override
   Stream mapEventToState(event) {
-    // TODO: implement mapEventToState
     throw UnimplementedError();
   }
 

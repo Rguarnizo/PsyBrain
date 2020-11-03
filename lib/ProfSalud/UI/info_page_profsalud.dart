@@ -1,6 +1,7 @@
 
 
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +18,7 @@ class InfoProfSalud extends StatefulWidget {
 class _InfoProfSaludState extends State<InfoProfSalud> {
   
   ProfSaludBloc profSaludBloc;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,34 +28,44 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
     return FutureBuilder(
        future: profSaludBloc.obtenerInformacion(),
        builder:(context, snapshot) {
-
+         if(snapshot.hasData){          
           return Scaffold(
             appBar: AppBar(),
-            body: ListView(
-            children: [
-              SizedBox(height: 20,),
-              GestureDetector(
-                onTap: () {
-                  
-                },
-                child: CircleAvatar(
-                    radius: 50,              
-                    //child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
-                  ),
-              ),
+            body: Form(
+              key: _formKey,
+              child: ListView(
+              children: [
                 SizedBox(height: 20,),
-                nombresField(),
-                apellidosField(),
-                cedulaField(),            
-                telefonoField(),
-                licenciaField(),
-
-            ],
+                GestureDetector(
+                  onTap: () {
+                    
+                  },
+                  child: CircleAvatar(
+                      radius: 50,              
+                      //child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
+                    ),
+                ),
+                  SizedBox(height: 20,),
+                  nombresField(),
+                  apellidosField(),
+                  cedulaField(),            
+                  telefonoField(),
+                  licenciaField(),
+                  botonActualizar(),
+              ],
+          ),
         ),
-          );
-       }
-       
-    );
+      );
+      }else{
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(            
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+    }       
+  );
 
   }
 
@@ -122,6 +134,12 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
           icon: Icon(Icons.card_membership),        
         ),      
+        validator: (value) {
+          if(value.isEmpty){
+            return 'Campo obligatorio';
+          }
+          return null;
+        },
       initialValue: profSaludBloc.profSalud.licencia,
       onChanged: (value) => profSaludBloc.profSalud.licencia = value,
         
@@ -136,8 +154,25 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
           icon: Icon(Icons.phone),        
         ),      
         keyboardType: TextInputType.number,
-              initialValue: profSaludBloc.profSalud.telefono,
+      initialValue: profSaludBloc.profSalud.telefono,
       onChanged: (value) => profSaludBloc.profSalud.telefono = value,
       );    
+  }
+
+  Widget botonActualizar() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 50,vertical: 20),
+      child: MyButton(
+          buttonName: 'Guardar Cambios',
+          gradientColors: [Color(0xFFceb1be)],
+          textColor: Colors.white,
+          width: 110,
+          withShadow: true,
+          action: () async {
+             if(_formKey.currentState.validate()){
+               await profSaludBloc.actualizarInformacion();
+             }
+          }),
+    );
   }
 }
