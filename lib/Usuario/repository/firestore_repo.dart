@@ -47,5 +47,9 @@ class FireStoreRepo{
 
   }
 
+  Future<String> eliminarInformacionUsuario() async {
+   return await fireStoreApi.eliminarInformacionUsuario();
+  }
+
 
 }

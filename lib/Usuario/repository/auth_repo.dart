@@ -14,4 +14,6 @@ class AuthRepo {
       _authAPI.signInWithEmailAndPassword(email, password, context);
 
   auth.User getCurrentUser() => _authAPI.getCurrentUser();
+
+  Future<auth.UserCredential> autenticarUsuario( String email, String contrasena)=> _authAPI.autenticarUsuario(email, contrasena);
 }

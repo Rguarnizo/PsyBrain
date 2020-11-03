@@ -1,4 +1,5 @@
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/Usuario/ui/screens/user_delete_info_page.dart';
 import 'package:PsyBrain/Usuario/ui/screens/user_info_page.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.exit_to_app)
           ),
           botonDatosUsuario(context),
+          botonEliminarUsuario(context),
         ],
       ),
     );
@@ -78,6 +80,22 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => UserInfoPage()));
+      },
+    );
+  }
+
+  Widget botonEliminarUsuario(BuildContext context) {
+    return MyButton(
+      buttonName: 'Eliminar Usuario',
+      gradientColors: [Color(0xFFf1e4e8)],
+      textColor: Color(0xFFCEB1BE),
+      width: MediaQuery.of(context).size.width * 0.6,
+      withShadow: false,
+      action: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UserDeleteInfoPage()));
       },
     );
   }

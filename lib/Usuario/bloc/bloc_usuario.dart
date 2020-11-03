@@ -32,24 +32,24 @@ class UsuarioBloc extends Bloc {
 
    Usuario usuario = Usuario();
    FireStoreRepo fireStoreRepo = FireStoreRepo();
+
   //Caso de uso: Registrar usuario
-  Future<String> crearUsuario() async{
-    return await fireStoreRepo.crearUsuario(usuario);
-  }
+  Future<String> crearUsuario() async => await fireStoreRepo.crearUsuario(usuario);
+
   //Caso de uso: consultar información de usuario
   Future<Usuario> obtenerInformacion() async {
     final data = await fireStoreRepo.obtenerInformacionUsuario(usuario);
     usuario = Usuario.fromJson(data);
     return usuario;
   }
+
   //Caso de uso: Modificar información de usuario
-  Future<String> actualizarInformacionUsuario() async{
+  Future<String> actualizarInformacionUsuario() async => await fireStoreRepo.actualizarInformacionUsuario(usuario);
 
-    String mensaje = await fireStoreRepo.actualizarInformacionUsuario(usuario);
-    return mensaje;
+  //Caso de uso: Eliminar Usuario
+  Future<String> eliminarInformacionUsuario() async => fireStoreRepo.eliminarInformacionUsuario();
 
-  }
-
+  Future<auth.UserCredential> autenticarUsuario(String email, String contrasena) async => await _auth_repo.autenticarUsuario(email, contrasena);
 
 
 
