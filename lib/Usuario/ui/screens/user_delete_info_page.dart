@@ -1,3 +1,4 @@
+
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,15 @@ class _UserDeleteInfoPageState extends State<UserDeleteInfoPage> {
         child: ListView(
           shrinkWrap: true,
           children: [
+            _subtitle(),
+            SizedBox(
+              height:10,
+            ),
             _inputsFields(),
+            SizedBox(
+              height:30,
+            ),
             _botonEliminarUsuario(context)
-
           ],
         ),
       ),
@@ -33,8 +40,10 @@ class _UserDeleteInfoPageState extends State<UserDeleteInfoPage> {
 
   Widget _emailField() {
     return TextFormField(
+
       cursorColor: Color(0xFFf1e4e8),
       onChanged: (value) => email = value,
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           suffixIcon: Icon(Icons.alternate_email),
           hintText: 'Ingresa aqui tu email',
@@ -97,10 +106,10 @@ class _UserDeleteInfoPageState extends State<UserDeleteInfoPage> {
 
   Widget _botonEliminarUsuario(BuildContext context) {
     return MyButton(
-        buttonName: 'Eliminar',
+        buttonName: 'Eliminar Cuenta',
         gradientColors: [Color(0xFFceb1be)],
         textColor: Colors.white,
-        width: 110,
+        width: 50,
         withShadow: true,
         action: () async {
           if (_formKey.currentState.validate()) {
@@ -108,5 +117,18 @@ class _UserDeleteInfoPageState extends State<UserDeleteInfoPage> {
             await usuarioBloc.eliminarInformacionUsuario();
           }
         });
+  }
+
+  Widget _subtitle() {
+    return Center(
+      child: Text(
+        'Es necesario que ingreses tu usuario y contraseña',
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'SourceSansPro',
+            fontSize: 20,
+            fontWeight: FontWeight.w300),
+      ),
+    );
   }
 }

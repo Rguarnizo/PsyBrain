@@ -62,6 +62,9 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.exit_to_app)
           ),
           botonDatosUsuario(context),
+          SizedBox(
+            height: 30,
+          ),
           botonEliminarUsuario(context),
         ],
       ),
