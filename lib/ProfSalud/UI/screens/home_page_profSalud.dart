@@ -1,16 +1,17 @@
+import 'package:PsyBrain/ProfSalud/UI/widgets/user_card.dart';
+import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/UI/screens/singin_screen.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
-import 'package:PsyBrain/Usuario/ui/widgets/user_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-class HomePageUser extends StatelessWidget {
+class HomePageProfSalud extends StatelessWidget {
   final UsuarioBloc userBloc;
+  final ProfSaludBloc userHealthBloc;
 
-  const HomePageUser({Key key, @required this.userBloc});
+  HomePageProfSalud(
+      {Key key, @required this.userBloc, @required this.userHealthBloc});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +52,14 @@ class HomePageUser extends StatelessWidget {
                           children: [
                             MenuWidget(
                               title: 'Cuenta',
-                              description:
-                                  'Edita la información de tu cuenta',
+                              description: 'Edita la información de tu cuenta',
                               icon: CupertinoIcons.square_list,
                             ),
-                            UserCard(context: context, userBloc: userBloc),
+                            UserCard(
+                              context: context,
+                              userBloc: userBloc,
+                              userHealthBloc: userHealthBloc,
+                            ),
                             Padding(
                               padding: EdgeInsets.only(top: 20.0),
                               child: MenuWidget(
@@ -99,8 +103,4 @@ class HomePageUser extends StatelessWidget {
       ),
     );
   }
-
-
-  
-
 }

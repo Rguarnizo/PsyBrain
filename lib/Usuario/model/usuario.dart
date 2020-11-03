@@ -1,7 +1,4 @@
-
 class Usuario {
-
-
   String id;
   String nombres;
   String apellidos;
@@ -9,9 +6,8 @@ class Usuario {
   String correo;
   String cedula;
   String licencia;
-  String fechaNacimiento;
+  DateTime fechaNacimiento;
   String contrasena;
-
 
   Usuario({
     this.id,
@@ -22,7 +18,7 @@ class Usuario {
     this.fechaNacimiento,
   });
 
-  factory Usuario.fromJson(json){
+  factory Usuario.fromJson(json) {
     return Usuario(
       nombres: json['Nombres'],
       apellidos: json['Apellidos'],
@@ -32,29 +28,13 @@ class Usuario {
     );
   }
 
-  factory Usuario.fromJsonPassword(json){
-
-    Usuario usuario = Usuario(
-        nombres: json['Nombres'],
-        apellidos: json['Apellidos'],
-        correo: json['Correo'],
-        fechaNacimiento: json['FechaNacimiento'],        
-        telefono: json['Telefono'],         
-    );
-    
-    usuario.contrasena = json['Contraseña'];
-
-    return usuario;
-  }
-
-  Map<String,dynamic> json(){
+  Map<String, dynamic> json() {
     return {
-      'Nombres'        : nombres,
-      'Apellidos'      : apellidos,
-      'Correo'         : correo,
-      'Telefono'       : telefono,
+      'Nombres': nombres,
+      'Apellidos': apellidos,
+      'Correo': correo,
       'FechaNacimiento': fechaNacimiento,
+      'Telefono': telefono
     };
   }
-
 }

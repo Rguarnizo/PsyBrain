@@ -14,4 +14,6 @@ class AuthRepo {
       _authAPI.signInWithEmailAndPassword(email, password, context);
 
   auth.User getCurrentUser() => _authAPI.getCurrentUser();
+
+  Stream<auth.User> authStateChanges() => _authAPI.authStateChanges();
 }

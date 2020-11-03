@@ -1,14 +1,12 @@
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
+import 'package:PsyBrain/UI/screens/singin_screen.dart' as signin;
 import 'package:PsyBrain/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'Pages/singin_page.dart';
-
+import 'Usuario/ui/screens/home_page.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -40,14 +38,16 @@ class PsyBrain extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => UsuarioBloc(),),
-        BlocProvider(create: (context) => ProfSaludBloc(),)
+        BlocProvider(
+          create: (context) => UsuarioBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ProfSaludBloc(),
+        )
       ],
       child: MateApp(),
     );
   }
-
- 
 }
 
 class MateApp extends StatelessWidget {
@@ -57,7 +57,7 @@ class MateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UsuarioBloc userBloc = BlocProvider.of<UsuarioBloc>(context);
+    //UsuarioBloc userBloc = BlocProvider.of<UsuarioBloc>(context);
     return MaterialApp(
       title: 'PsyBrain',
       routes: getApplicationRoutes(),
@@ -65,20 +65,8 @@ class MateApp extends StatelessWidget {
           primarySwatch: MaterialColor(0xFFceb1be, color),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'SourceSansPro'),
-      home: StreamBuilder(
-        stream: userBloc.authStatus,
-        builder:  (context, snapshot) {
-            if (!snapshot.hasData || snapshot.hasError) {
-            return SignInScreen();
-          } else {
-            return HomePage();
-          }
-        }, 
-      ),
+      home: signin.SignInScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-
-  

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:PsyBrain/UI/screens/singin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,7 +23,7 @@ class AuthAPI {
 
   void signOut() async {
     await _auth.signOut().then((onValue) => print("Sesión finalizada"));
-    googleSignIn.signOut();
+    // googleSignIn.signOut();
   }
 
   Future<auth.UserCredential> signInWithEmailAndPassword(
@@ -31,9 +34,6 @@ class AuthAPI {
       return userCredential;
     } on auth.FirebaseAuthException catch (e) {
       switch (e.code) {
-
-        // TODO: Separar Logica de interfaz.
-        /*
         case "user-not-found":
           SignInScreen.showDialogAlert(context, 'Usuario no encontrado',
               'No existe un usuario asociado a ese correo 😢. Intenta registrarte');
@@ -42,13 +42,16 @@ class AuthAPI {
           SignInScreen.showDialogAlert(context, 'Contraseña incorrecta',
               'La contraseña es incorrecta 😢. Intenta de nuevo');
           break;
-          */
       }
       return null;
     }
   }
 
-  auth.User getCurrentUser(){
+  auth.User getCurrentUser() {
     return _auth.currentUser;
+  }
+
+  Stream<auth.User> authStateChanges() {
+    return _auth.authStateChanges();
   }
 }

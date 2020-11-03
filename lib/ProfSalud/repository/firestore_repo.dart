@@ -1,39 +1,36 @@
-
-
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_api.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:translator/translator.dart';
 
-class FireStoreRepo{
-  
-  FireStoreApi fireStoreApi = FireStoreApi();
+class FireStoreRepo {
+  FireStoreApi _fireStoreApi = FireStoreApi();
 
   FireStoreRepo();
 
   GoogleTranslator translator = GoogleTranslator();
 
   Future<String> crearProfSalud(ProfSalud profSalud) async {
-    
-    try{
-    User user = await fireStoreApi.crearProfSalud(profSalud.correo,profSalud.contrasena);
+    try {
+      User user = await _fireStoreApi.crearProfSalud(
+          profSalud.correo, profSalud.contrasena);
 
-    fireStoreApi.guardarInformacion(profSalud,user.uid);
+      _fireStoreApi.guardarInformacion(profSalud, user.uid);
 
-
-    return 'Registro Exitoso';
-    }catch(e){
+      return 'Registro Exitoso';
+    } catch (e) {
       print(e.code);
-      var traslation = await translator.translate(e.code,from: 'en',to: 'es');
+      var traslation = await translator.translate(e.code, from: 'en', to: 'es');
       print(traslation);
       return traslation.text;
     }
   }
 
-  Future<Map<String,dynamic>> obtenerInformacionProfSalud(ProfSalud profSalud) async {
-    return (await fireStoreApi.obtenerInformacion(profSalud.id)).data();
-  }
+  Future<DocumentSnapshot> obtenerInformacion(String uid) =>
+      _fireStoreApi.obtenerInformacion(uid);
 
-
+  Future<void> guardarInformacion(ProfSalud profSalud, String uid) =>
+      _fireStoreApi.guardarInformacion(profSalud, uid);
 }

@@ -1,29 +1,31 @@
-import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/main.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterPageProfSalud extends StatefulWidget {
-  RegisterPageProfSalud({Key key}) : super(key: key);
+class UserRegisterPage extends StatefulWidget {
+  UserRegisterPage({Key key}) : super(key: key);
 
   @override
-  _RegisterPageStateProfSalud createState() => _RegisterPageStateProfSalud();
+  _UserRegisterPageState createState() => _UserRegisterPageState();
 }
 
-class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
+class _UserRegisterPageState extends State<UserRegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-  ProfSaludBloc profSaludBloc;
+  UsuarioBloc usuarioBloc;
 
   bool esperandoRegistro = false;
   String mensajeResultante = '';
 
+  //TODO: No esta bien utilizar una instancia de Usuario en la clase Bloc para despues asignar en la interfaz. Revisar
+  //TODO: No se esta siguiendo una estructura para los datos, fecha de nacimiento y telefono no se registran.
   @override
   Widget build(BuildContext context) {
-    profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
-
+    usuarioBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
+      appBar: AppBar(title: Text('Ingresa tus datos')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -32,16 +34,15 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
               height: 50,
             ),
             correoField(),
-            passwordField(),
+            contrasenaField(),
             Container(
               child: Divider(),
               margin: EdgeInsets.symmetric(vertical: 10),
             ),
             nombresField(),
             apellidosField(),
-            cedulaField(),
             fechaNacimientoField(),
-            licenciaField(),
+            telefonoField(),
             SizedBox(
               height: 50,
             ),
@@ -52,12 +53,11 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
                   height: 30,
                 ),
                 esperandoRegistro ? cargandoRegistro() : Container(),
-                mensajeResultante.isEmpty? Container() :mostrarResultado(),   
+                mensajeResultante.isEmpty ? Container() : mostrarResultado(),
               ],
             ),
-          ],          
+          ],
         ),
-        
       ),
     );
   }
@@ -69,7 +69,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Correo Electronico',
         icon: Icon(Icons.mail),
       ),
-      onChanged: (value) => profSaludBloc.profSalud.correo = value,
+      onChanged: (value) => usuarioBloc.usuario.correo = value,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -93,7 +93,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },
-      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
+      onChanged: (value) => usuarioBloc.usuario.nombres = value,
     );
   }
 
@@ -110,25 +110,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         }
         return null;
       },
-      onChanged: (value) => profSaludBloc.profSalud.apellidos = value,
-    );
-  }
-
-  Widget cedulaField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Cedula',
-        helperText: 'Cedula',
-        icon: Icon(Icons.credit_card),
-      ),
-      onChanged: (value) => profSaludBloc.profSalud.cedula = value,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Campo obligatorio';
-        }
-        return null;
-      },
-      keyboardType: TextInputType.number,
+      onChanged: (value) => usuarioBloc.usuario.apellidos = value,
     );
   }
 
@@ -139,7 +121,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Fecha de nacimiento',
         icon: Icon(Icons.calendar_today),
       ),
-      onChanged: (value) => profSaludBloc.profSalud.fechaNacimiento,
+      onChanged: (value) => usuarioBloc.usuario.fechaNacimiento,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -149,20 +131,32 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
     );
   }
 
+  Widget telefonoField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Teléfono',
+        helperText: 'Teléfono',
+        icon: Icon(Icons.phone_android),
+      ),
+      onChanged: (value) => usuarioBloc.usuario.telefono,
+      keyboardType: TextInputType.phone,
+    );
+  }
+
   Widget botonAdd(BuildContext context) {
     return MyButton(
       action: () async {
         setState(() {
           esperandoRegistro = true;
         });
-        
-        if (_formKey.currentState.validate()) {          
-          mensajeResultante =  await profSaludBloc.crearProfSalud();
+
+        if (_formKey.currentState.validate()) {
+          mensajeResultante = await usuarioBloc.crearUsuario();
         }
 
-          setState(() {
-            esperandoRegistro = false;
-          });
+        setState(() {
+          esperandoRegistro = false;
+        });
       },
       buttonName: 'Crea tu cuenta',
       gradientColors: [Color(0xFFf1e4e8)],
@@ -172,7 +166,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
     );
   }
 
-  Widget passwordField() {
+  Widget contrasenaField() {
     return TextFormField(
       obscureText: true,
       decoration: InputDecoration(
@@ -180,7 +174,7 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
         helperText: 'Constraseña',
         icon: Icon(Icons.lock_outline),
       ),
-      onChanged: (value) => profSaludBloc.profSalud.contrasena = value,
+      onChanged: (value) => usuarioBloc.usuario.contrasena = value,
       validator: (value) {
         if (value.isEmpty) {
           return 'Campo obligatorio';
@@ -210,18 +204,6 @@ class _RegisterPageStateProfSalud extends State<RegisterPageProfSalud> {
           ),
         ],
       ),
-    );
-  }
-
-  licenciaField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Licencia',
-        helperText:
-            'Licencia profesional. Si aún no la tienes deja este campo vacio.',
-        icon: Icon(Icons.card_membership),
-      ),
-      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
     );
   }
 }
