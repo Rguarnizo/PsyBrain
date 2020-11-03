@@ -49,7 +49,7 @@ class UsuarioBloc extends Bloc {
   //Caso de uso: Eliminar Usuario
   Future<String> eliminarInformacionUsuario() async => fireStoreRepo.eliminarInformacionUsuario();
 
-  Future<auth.UserCredential> autenticarUsuario(String email, String contrasena) async => await _auth_repo.autenticarUsuario(email, contrasena);
+  Future<bool> autenticarUsuario(String email, String contrasena) async => await _auth_repo.autenticarUsuario(email, contrasena);
 
 
 

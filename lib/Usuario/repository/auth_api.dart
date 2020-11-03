@@ -49,15 +49,18 @@ class AuthAPI {
   }
 
 
-  Future<auth.UserCredential> autenticarUsuario(String email, String contrasena) async {
+  Future<bool> autenticarUsuario(String email, String contrasena) async {
     try {
       auth.EmailAuthCredential credential = auth.EmailAuthProvider.credential(
           email: email, password: contrasena);
       print('$credential');
        await _auth.currentUser.reauthenticateWithCredential(credential);
+
       print ('Usuario Autenticado');
+       return true;
     } catch(e){
       print('Usuario no autenticado'+e.toString());
+      return false;
     }
   }
 

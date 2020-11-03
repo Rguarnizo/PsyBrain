@@ -47,6 +47,13 @@ class FireStoreApi{
           print('The user must reauthenticate before this operation can be executed.');
           }
         }
+        try{
+          CollectionReference users = apiFireStore.collection('Usuario');
+          users.doc(user.uid).delete();
+        }
+        catch(e){
+          print('El usuario no pudo ser eliminado'+ e.toString());
+        }
   }
 
 }

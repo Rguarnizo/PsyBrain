@@ -15,5 +15,5 @@ class AuthRepo {
 
   auth.User getCurrentUser() => _authAPI.getCurrentUser();
 
-  Future<auth.UserCredential> autenticarUsuario( String email, String contrasena)=> _authAPI.autenticarUsuario(email, contrasena);
+  Future<bool> autenticarUsuario( String email, String contrasena)=> _authAPI.autenticarUsuario(email, contrasena);
 }

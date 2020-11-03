@@ -113,11 +113,18 @@ class _UserDeleteInfoPageState extends State<UserDeleteInfoPage> {
         withShadow: true,
         action: () async {
           if (_formKey.currentState.validate()) {
-            await usuarioBloc.autenticarUsuario(email, contrasena);
-            await usuarioBloc.eliminarInformacionUsuario();
+            bool autenticado = await usuarioBloc.autenticarUsuario(email, contrasena);
+            if (autenticado == true) {
+              await usuarioBloc.eliminarInformacionUsuario();
+            }
+            else {
+              print('Algo falló');
+            }
           }
         });
   }
+
+
 
   Widget _subtitle() {
     return Center(
