@@ -7,19 +7,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  final UsuarioBloc userBloc;
   final ProfSaludBloc userHealthBloc;
   final BuildContext context;
 
   UserCard(
       {Key key,
       @required this.context,
-      @required this.userBloc,
       @required this.userHealthBloc});
 
   @override
   Widget build(BuildContext context) {
-    var userLogged = userBloc.getCurrentUser();
+    var userLogged = userHealthBloc.currentUser;
     // var phone;
     // userBloc.obtenerInformacion(userLogged.uid).then((documentSnapshot){
     //   phone = documentSnapshot.data()['phone'];

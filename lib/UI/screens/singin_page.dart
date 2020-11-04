@@ -1,5 +1,5 @@
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

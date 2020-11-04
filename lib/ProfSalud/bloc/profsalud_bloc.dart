@@ -16,17 +16,6 @@ class ProfSaludBloc extends Bloc {
     return await _fireStoreRepo.crearProfSalud(profSalud);
   }
 
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
-
-  Future<ProfSalud> obtenerInformacion() async {
-    final data = await fireStoreRepo.obtenerInformacionProfSalud(profSalud);
-    profSalud = ProfSalud.fromJson(data);
-
-    return profSalud;
-  }
-
-  auth.User get currentUser => authRepo.getCurrentUser();
-
   setProfSaludInfo(Map<String,dynamic> data){
     if(data['Contraseña'] == null){
     profSalud = ProfSalud.fromJson(data);
@@ -35,11 +24,8 @@ class ProfSaludBloc extends Bloc {
     }
   }
 
-  signOut(){
-    authRepo.signOut();
-========================================================================
-  Future<DocumentSnapshot> obtenerInformacion(String uid) =>
-      _fireStoreRepo.obtenerInformacion(uid);
+
+  Future<DocumentSnapshot> obtenerInformacion(String uid) => _fireStoreRepo.obtenerInformacion(uid);
   auth.User get currentUser => _authRepo.getCurrentUser();
 
   Future<void> guardarInformacion(ProfSalud profSalud, String uid) =>
@@ -47,11 +33,15 @@ class ProfSaludBloc extends Bloc {
 
   signOut() {
     _authRepo.signOut();
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> interfaz_home_task12
   }
 
   @override
   Stream mapEventToState(event) {
     throw UnimplementedError();
   }
+
+  Future<bool> profSaludRegistrado(String uid) async {
+     return (await  obtenerInformacion(uid)).exists;
+  }
 }
+

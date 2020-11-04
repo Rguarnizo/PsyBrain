@@ -1,12 +1,10 @@
 import 'package:PsyBrain/ProfSalud/UI/screens/home_page_profSalud.dart';
-import 'package:PsyBrain/ProfSalud/UI/screens/register_page_profSalud.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/UI/screens/register_page.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/home_page.dart';
 import 'package:PsyBrain/UI/screens/user_register_page_google.dart';
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
-import 'package:PsyBrain/Usuario/ui/screens/user_register_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,48 +60,39 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget _handleCurrentSession() {
+    //TODO: Inicio de sesión de forma usual.
+    
     return StreamBuilder(
       builder: (context, snapshot) {
+        print(snapshot);
         if (!snapshot.hasData || snapshot.hasError) {
           return signInUI();
-        } else {
-          var userLoggedId = userBloc.getCurrentUser().uid;
-          //print(userLoggedId);
-          //TODO: Lógica inicio de sesión forma usual.
+        } else {            
           return FutureBuilder(
+            future: typeUser(snapshot),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data) {
-                  return HomePageUser(
-                    userBloc: userBloc,
-                  );
-                } else {
-                  return FutureBuilder(
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data) {
-                          return HomePageProfSalud(
-                            userBloc: userBloc,
-                            userHealthBloc: userHealthBloc,
-                          );
-                        } else
-                          return signInUI();
-                      } else
-                        return signInUI();
-                    },
-                    future: determineUserHealth(userLoggedId),
-                  );
-                }
-              } else {
-                return signInUI();
-              }
-            },
-            future: determineUser(userLoggedId),
-          );
+              print(snapshot.data);
+               if(snapshot.data == 'Usuario'){
+                   return HomePageUser(userBloc: userBloc,);
+               }else if(snapshot.data == 'ProfSalud'){
+                 return HomePageProfSalud(userHealthBloc: userHealthBloc);
+               }
+               return signInUI();
+          },);
         }
       },
       stream: userBloc.authStatus,
     );
+  }
+
+
+  Future<String> typeUser(AsyncSnapshot snapshot) async{
+      if(await userBloc.usuarioRegistrado(snapshot.data.uid)){
+        return 'Usuario';
+      }else if(await userHealthBloc.profSaludRegistrado(snapshot.data.uid)){
+        return 'ProfSalud';
+      }
+      return null;
   }
 
   Future<bool> determineUser(String userLoggedId) async {
@@ -258,7 +247,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                                             userBloc: userBloc,
                                                             userHealthBloc:
                                                                 userHealthBloc,
-                                                          )));
+                                                          )
+                                                          ));
                                             }
                                           })
                                         }
@@ -275,7 +265,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UserRegisterPage()));
+                                builder: (context) => RegisterPage()));
                       },
                     ),
                   ],

@@ -9,7 +9,6 @@ import 'package:PsyBrain/UI/widgets/textfield_auxiliar.dart';
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:intl/intl.dart';
 
 class RegisterForm extends StatefulWidget {

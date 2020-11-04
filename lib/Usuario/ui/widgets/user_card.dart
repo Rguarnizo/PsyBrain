@@ -119,6 +119,7 @@ class UserCard extends StatelessWidget {
                   children: [
                     FutureBuilder(
                       builder: (context, snapshot) {
+                        print(snapshot);
                         if (snapshot.connectionState == ConnectionState.done) {
                           return Text(
                             snapshot.data['Nombres'] +

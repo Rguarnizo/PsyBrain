@@ -13,8 +13,11 @@ class UsuarioBloc extends Bloc {
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;
+  
 
   Stream<auth.User> authStateChanges() => _auth_repo.authStateChanges();
+
+  auth.User getCurrentUser() => _auth_repo.getCurrentUser();
 
   UsuarioBloc({initialState}) : super({initialState});
 
@@ -23,10 +26,8 @@ class UsuarioBloc extends Bloc {
   //Caso de uso: Cerrar sesion de Google
   void signOut() => _auth_repo.signOut();
   //Caso de uso: Inicio de sesión con email y password
-  Future<auth.UserCredential> signInWithEmailAndPassword(
-          String email, String password, BuildContext context) =>
-      _auth_repo.signInWithEmailAndPassword(email, password, context);
-  auth.User getCurrentUser() => _auth_repo.getCurrentUser();
+  Future<auth.UserCredential> signInWithEmailAndPassword(String email, String password, BuildContext context) => _auth_repo.signInWithEmailAndPassword(email, password, context);
+
 
   //Verificar si el usuario logueado con Google esta registrado en Firebase
   Future<DocumentSnapshot> obtenerInformacion(String uid) =>
@@ -36,7 +37,7 @@ class UsuarioBloc extends Bloc {
 
   Future<Map<String, dynamic>> getUserInfo(String uid) =>
       _firestore_repo.getUserInfo(uid);
-  //////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////
 
   //Guardar datos del registro con Google
   Future<void> guardarInformacion(Usuario usuario, String uid) =>
@@ -44,44 +45,23 @@ class UsuarioBloc extends Bloc {
 
   Usuario usuario = Usuario();
 
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
-   FireStoreRepo fireStoreRepo = FireStoreRepo();
-  //Caso de uso: Registrar usuario
-  Future<String> crearUsuario() async{
-    return await fireStoreRepo.crearUsuario(usuario);
-========================================================================
   Future<String> crearUsuario() async {
     return await _firestore_repo.crearUsuario(usuario);
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> interfaz_home_task12
   }
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
-  //Caso de uso: consultar información de usuario
-  Future<Usuario> obtenerInformacion() async {
-========================================================================
 
-  /*
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> interfaz_home_task12
-  Future<Usuario> obtenerInformacion() async {
-    final data = await _firestore_repo.obtenerInformacionUsuario(usuario);
-    usuario = Usuario.fromJson(data);
-    return usuario;
-  }
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
+
   //Caso de uso: Modificar información de usuario
   Future<String> actualizarInformacionUsuario() async{
 
-    String mensaje = await fireStoreRepo.actualizarInformacionUsuario(usuario);
+    String mensaje = await _firestore_repo.actualizarInformacionUsuario(usuario);
     return mensaje;
-
   }
 
 
 
 
   auth.User get currentUser => _auth_repo.getCurrentUser();
-========================================================================
-  */
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> interfaz_home_task12
+
 
   @override
   void dispose() {
@@ -98,7 +78,12 @@ class UsuarioBloc extends Bloc {
     if(data['Contraseña'] == null){
       usuario = Usuario.fromJson(data);
     }else{
+      //TODO: Corrección en la forma de trabajar
       usuario = Usuario.fromJsonPassword(data);
     }
+  }
+
+  Future<bool> usuarioRegistrado(String uid) async {
+     return (await  obtenerInformacion(uid)).exists;
   }
 }

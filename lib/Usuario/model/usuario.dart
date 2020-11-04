@@ -37,4 +37,19 @@ class Usuario {
       'Telefono': telefono
     };
   }
+
+  factory Usuario.fromJsonPassword(Map<String,dynamic> data) {
+    
+    Usuario usuario = Usuario(
+      nombres: data['Nombres'],
+      apellidos: data['Apellidos'],
+      correo: data['Correo'],
+      fechaNacimiento: DateTime.now(),
+      telefono: data['Telefono'],
+    );
+    
+    usuario.contrasena = data['Contraseña'];
+
+    return usuario;
+  }
 }

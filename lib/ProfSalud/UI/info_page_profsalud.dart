@@ -24,7 +24,7 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
     profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
 
     return FutureBuilder(
-       future: profSaludBloc.obtenerInformacion(),
+       future: profSaludBloc.obtenerInformacion(profSaludBloc.profSalud.id),
        builder:(context, snapshot) {
 
           return Scaffold(

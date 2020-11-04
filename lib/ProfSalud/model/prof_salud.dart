@@ -9,7 +9,7 @@ class ProfSalud {
   String correo;
   String cedula;
   String licencia;
-  String fechaNacimiento;
+  DateTime fechaNacimiento;
   String contrasena;
 
 

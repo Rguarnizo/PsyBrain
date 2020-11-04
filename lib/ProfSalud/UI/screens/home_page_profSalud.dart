@@ -7,11 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePageProfSalud extends StatelessWidget {
-  final UsuarioBloc userBloc;
   final ProfSaludBloc userHealthBloc;
 
   HomePageProfSalud(
-      {Key key, @required this.userBloc, @required this.userHealthBloc});
+      {Key key, @required this.userHealthBloc});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +55,7 @@ class HomePageProfSalud extends StatelessWidget {
                               icon: CupertinoIcons.square_list,
                             ),
                             UserCard(
-                              context: context,
-                              userBloc: userBloc,
+                              context: context,                              
                               userHealthBloc: userHealthBloc,
                             ),
                             Padding(
@@ -82,7 +80,7 @@ class HomePageProfSalud extends StatelessWidget {
                                     //     return SignInScreen();
                                     //   },)
                                     // );
-                                    userBloc.signOut();
+                                    userHealthBloc.signOut();
                                     // await Navigator.of(context)
                                     //     .push(MaterialPageRoute(
                                     //   builder: (context) {
