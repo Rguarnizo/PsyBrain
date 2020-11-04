@@ -3,6 +3,7 @@ import 'package:PsyBrain/main.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:PsyBrain/Usuario/ui/screens/poll_screen.dart';
 
 class UserRegisterPage extends StatefulWidget {
   UserRegisterPage({Key key}) : super(key: key);
@@ -152,6 +153,10 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
 
         if (_formKey.currentState.validate()) {
           mensajeResultante = await usuarioBloc.crearUsuario();
+          Navigator.push(context, new MaterialPageRoute(
+            builder: (context) => PollScreen()
+          ));
+          
         }
 
         setState(() {
