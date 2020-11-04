@@ -38,4 +38,24 @@ class FireStoreApi {
         .catchError((error) => print("Error al actualizar: $error"));
   }
 
+  Future<String> eliminarInformacionUsuario() async {
+        User user = _apiFireAuth.currentUser;
+        try {
+           await user.delete();
+           print('Usuario eliminado');
+        } catch  (e) {
+          if (e.code == 'requires-recent-login') {
+          print('The user must reauthenticate before this operation can be executed.');
+          }
+        }
+        try{
+          CollectionReference users = _apiFireStore.collection('Usuario');
+          users.doc(user.uid).delete();
+        }
+        catch(e){
+          print('El usuario no pudo ser eliminado'+ e.toString());
+        }
+  }
+
+
 }

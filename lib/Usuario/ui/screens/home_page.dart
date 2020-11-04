@@ -33,7 +33,7 @@ class HomePageUser extends StatelessWidget {
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                     child: Center(
                       child:
-                          CupertinoButton(child: Text('Hola'), onPressed: null),
+                          CupertinoButton(child: Text('Proximamente...'), onPressed: null),
                     ),
                   );
                   break;

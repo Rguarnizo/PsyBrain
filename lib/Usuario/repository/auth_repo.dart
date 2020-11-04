@@ -16,4 +16,6 @@ class AuthRepo {
   auth.User getCurrentUser() => _authAPI.getCurrentUser();
 
   Stream<auth.User> authStateChanges() => _authAPI.authStateChanges();
+
+  Future<bool> autenticarUsuario( String email, String contrasena) => _authAPI.autenticarUsuario(email, contrasena);
 }

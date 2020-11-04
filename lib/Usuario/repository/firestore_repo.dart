@@ -57,5 +57,10 @@ class FireStoreRepo {
     Future<void> guardarInformacion(Usuario usuario, String uid) => _fireStoreApi.guardarInformacion(usuario, uid);
 
     Future<Map<String, dynamic>> getUserInfo(String uid) => _fireStoreApi.getUserInfo(uid);
+
+
+    Future<String> eliminarInformacionUsuario() async {
+       return await _fireStoreApi.eliminarInformacionUsuario();
+   }
   
 }
