@@ -9,7 +9,7 @@ class UserChat extends StatelessWidget {
         body: Stack(
           children: [
             Positioned(
-                bottom: -65,
+                bottom:-10,
                 height: 150,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
