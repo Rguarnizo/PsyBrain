@@ -86,4 +86,8 @@ class UsuarioBloc extends Bloc {
   Future<bool> usuarioRegistrado(String uid) async {
      return (await  obtenerInformacion(uid)).exists;
   }
+
+  Future<void> guardarEncuesta(Map<String, dynamic> jsonPoll) {
+    return _firestore_repo.guardarEncuesta(jsonPoll,currentUser.uid);
+  }
 }

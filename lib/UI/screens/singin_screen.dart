@@ -64,9 +64,16 @@ class _SignInScreenState extends State<SignInScreen> {
     
     return StreamBuilder(
       builder: (context, snapshot) {
+        
         print(snapshot);
+
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Scaffold(
+            body: CircularProgressIndicator(),
+          );
+        }
         if (!snapshot.hasData || snapshot.hasError) {
-          return CircularProgressIndicator();
+          return signInUI();
         } else {            
           return FutureBuilder(
             future: typeUser(snapshot),

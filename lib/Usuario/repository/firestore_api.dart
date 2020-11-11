@@ -58,5 +58,9 @@ class FireStoreApi {
         }
   }
 
+  guardarEncuesta(Map<String, dynamic> jsonPoll,String uid) {
+    _apiFireStore.collection(USUARIO).doc(uid).collection('Encuesta').add(jsonPoll);
+  }
+
 
 }

@@ -1,5 +1,8 @@
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class PollScreen extends StatefulWidget {
@@ -11,6 +14,7 @@ PollScreen({Key key, this.title}) : super(key: key);
 }
 
 class PollScreenState extends State<PollScreen> {
+  UsuarioBloc userBloc;
   final formKey= GlobalKey<FormState>();
   
   int selectedEdad;
@@ -160,6 +164,7 @@ class PollScreenState extends State<PollScreen> {
 
   @override
   Widget build(BuildContext context) {
+    userBloc = BlocProvider.of<UsuarioBloc>(context);
 
     return Scaffold(
 
@@ -231,7 +236,7 @@ class PollScreenState extends State<PollScreen> {
                     ),
                     validator: (String value){
                       if(value.isEmpty){
-                        return 'La contraseña es requerida';
+                        return 'Campo requerido';
                       }
                     },
                   ),
@@ -695,19 +700,49 @@ class PollScreenState extends State<PollScreen> {
                 ],
               )
               ),
+              Container(height: 20,),
             MyButton(
                   action: (){
                     _verificarEncuesta(context);
                     if(!formKey.currentState.validate()){
                       Navigator.pushReplacementNamed(context,'HomePageUser');
+                      userBloc.guardarEncuesta(jsonPoll());
                     }
                   },
                   buttonName: 'Terminar Encuesta',                  
+                  gradientColors: [color[500],color[800]],
+                  textColor: Colors.white,
+                  withShadow: false,
+                  width: 50,
+                  
                   ),
+                  Container(height: 20,),
           ],
         ),
         ),
       ),
     );
+  }
+
+  Map<String,dynamic> jsonPoll(){
+    return {
+        'selectedEdad'                      : selectedEdad,
+        'selectedFisico'                    : selectedFisico,
+        'selectedEmocional'                 : selectedEmocional,
+        'selectedCalificacionSaludMental'   : selectedCalificacionSaludMental,
+        'selectedTristeDosSemanas'          : selectedTristeDosSemanas,
+        'selectedEfectoSalud'               : selectedEfectoSalud,
+        'selectedDiagnostico'               : selectedDiagnostico,
+        'selectedUltimoExamen'              : selectedUltimoExamen,
+        'selectedHistorial'                 : selectedHistorial,
+        'selectedPasadoReciente'            : selectedPasadoReciente,
+        'selectedMedicacion'                : selectedMedicacion,
+        'selectedHoras'                     : selectedHoras,
+        'selectedCalidad'                   : selectedCalidad,
+        'selectedMarital'                   : selectedMarital,
+        'selectedFumador'                   : selectedFumador,
+        'selectedAlcoholico'                : selectedAlcoholico,
+        'selectedPositivismo'               : selectedPositivismo,
+    }; 
   }
 }
