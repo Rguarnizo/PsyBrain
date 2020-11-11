@@ -1,3 +1,4 @@
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:flutter/material.dart';
 
 
@@ -694,19 +695,14 @@ class PollScreenState extends State<PollScreen> {
                 ],
               )
               ),
-            RaisedButton(
-                  onPressed: (){
+            MyButton(
+                  action: (){
                     _verificarEncuesta(context);
                     if(!formKey.currentState.validate()){
-                      return;
+                      Navigator.pushReplacementNamed(context,'HomePageUser');
                     }
                   },
-                  elevation: 25.0,
-                  color: Colors.red[100],
-                  child: Text('Terminar', style: TextStyle(fontSize: 20),),
-                  textColor: Colors.white,
-                  
-
+                  buttonName: 'Terminar Encuesta',                  
                   ),
           ],
         ),

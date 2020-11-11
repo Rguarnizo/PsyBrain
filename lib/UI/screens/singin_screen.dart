@@ -66,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
       builder: (context, snapshot) {
         print(snapshot);
         if (!snapshot.hasData || snapshot.hasError) {
-          return signInUI();
+          return CircularProgressIndicator();
         } else {            
           return FutureBuilder(
             future: typeUser(snapshot),

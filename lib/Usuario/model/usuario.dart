@@ -5,7 +5,6 @@ class Usuario {
   String telefono;
   String correo;
   String cedula;
-  String licencia;
   DateTime fechaNacimiento;
   String contrasena;
 
@@ -20,6 +19,7 @@ class Usuario {
 
   factory Usuario.fromJson(json) {
     return Usuario(
+      id    : json['Uid'],
       nombres: json['Nombres'],
       apellidos: json['Apellidos'],
       correo: json['Correo'],
@@ -30,6 +30,7 @@ class Usuario {
 
   Map<String, dynamic> json() {
     return {
+      'Uid'    : id,
       'Nombres': nombres,
       'Apellidos': apellidos,
       'Correo': correo,
@@ -44,7 +45,7 @@ class Usuario {
       nombres: data['Nombres'],
       apellidos: data['Apellidos'],
       correo: data['Correo'],
-      fechaNacimiento: DateTime.now(),
+      fechaNacimiento: data['FechaNacimiento'],
       telefono: data['Telefono'],
     );
     

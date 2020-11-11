@@ -15,6 +15,7 @@ class FireStoreApi {
   }
 
   Future<void> guardarInformacion(Usuario usuario, String uid) {
+    usuario.id = uid;
     return _apiFireStore.collection(USUARIO).doc(uid).set(usuario.json());
   }
 

@@ -26,6 +26,7 @@ class ProfSalud {
 
   factory ProfSalud.fromJson(json){
     return ProfSalud(
+        id     : json['Uid'],
         nombres: json['Nombres'],
         apellidos: json['Apellidos'],
         correo: json['Correo'],
@@ -54,6 +55,7 @@ class ProfSalud {
 
   Map<String,dynamic> json(){
     return {
+          'Uid'            : id,
           'Nombres'        : nombres,
           'Apellidos'      : apellidos,
           'Correo'         : correo,

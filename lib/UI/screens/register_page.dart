@@ -1,10 +1,13 @@
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/UI/widgets/datetime_picker_selector.dart';
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/poll_screen.dart';
 import 'package:PsyBrain/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -24,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController contrasena = TextEditingController();
   TextEditingController nombres = TextEditingController();
   TextEditingController apellidos = TextEditingController();
-  TextEditingController fechaNacimiento = TextEditingController();
+  DateTime fechaNacimiento = DateTime.now();
   TextEditingController telefono = TextEditingController();
   TextEditingController licencia = TextEditingController();
 
@@ -39,37 +42,49 @@ class _RegisterPageState extends State<RegisterPage> {
     profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Ingresa tus datos',style: TextStyle(color: Colors.white),),iconTheme: IconThemeData(color: Colors.white),),
-      body: Form(
-        key: _formKey,
-        child: ListView(                  
-          children: [
-            correoField(),
-            contrasenaField(),
-            Container(
-              child: Divider(),
-              margin: EdgeInsets.symmetric(vertical: 10),
-            ),
-            nombresField(),
-            apellidosField(),
-            fechaNacimientoField(),
-            telefonoField(),
-            switchProfSalud(),
-            esProfSalud ? licenciaField():Container(),
-            SizedBox(
-              height: 50,
-            ),
-            Column(
+          body: CupertinoPageScaffold(    
+        navigationBar: CupertinoNavigationBar(middle: Text('Registrate'),),
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListView(          
+
               children: [
-                botonAdd(context),
-                SizedBox(
-                  height: 30,
+                correoField(),
+                Container(height: 20,),
+                contrasenaField(),
+                Container(
+                  child: Divider(),
+                  margin: EdgeInsets.symmetric(vertical: 10),
                 ),
-                esperandoRegistro? cargandoRegistro() : Container(),
-                mensajeResultante.isEmpty ? Container() : mostrarResultado(),
+                nombresField(),
+                Container(height: 20,),
+                apellidosField(),
+                Container(height: 20,),
+                fechaNacimientoField(),
+                Container(height: 20,),
+                telefonoField(),
+                Container(height: 20,),
+                switchProfSalud(),
+                Container(height: 10,),
+                esProfSalud ? licenciaField():Container(),
+                SizedBox(
+                  height: 50,
+                ),
+                Column(
+                  children: [
+                    botonAdd(context),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    esperandoRegistro? cargandoRegistro() : Container(),
+                    mensajeResultante.isEmpty ? Container() : mostrarResultado(),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -78,9 +93,16 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget correoField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Correo',
-        helperText: 'Correo Electronico',
-        icon: Icon(Icons.mail),
+        hintText: 'Correo',    
+        suffixIcon: Icon(Icons.mail),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -98,9 +120,16 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       obscureText: true,
       decoration: InputDecoration(
-        hintText: 'Contraseña',
-        helperText: 'Constraseña',
-        icon: Icon(Icons.lock_outline),
+        hintText: 'Contraseña',    
+        suffixIcon: Icon(Icons.lock_outline),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -115,9 +144,16 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget nombresField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Nombres',
-        helperText: 'Nombres',
-        icon: Icon(Icons.accessibility),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9)),
+        hintText: 'Nombres',    
+        suffixIcon: Icon(Icons.accessibility),
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -133,8 +169,15 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       decoration: InputDecoration(
         hintText: 'Apellidos',
-        helperText: 'Apellidos',
-        icon: Icon(Icons.account_circle),
+        suffixIcon: Icon(Icons.account_circle),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -147,28 +190,53 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget fechaNacimientoField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Fecha Nacimiento',
-        helperText: 'Fecha de nacimiento',
-        icon: Icon(Icons.calendar_today),
-      ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Campo obligatorio';
-        }
-        return null;
-      },
-      controller: fechaNacimiento,
-    );
+    return InkWell(
+                onTap: () async {
+                  await Navigator.of(context).push(PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return FadeTransition(
+                          opacity: animation,
+                          child: DateTimePickerSelector(
+                            setBornDate: setBornDate,
+                          ));
+                    },
+                  ));
+                  setState(() {});
+                },
+                child: TextFormField(
+                  // onSaved: (value) => bornDate = ,
+                  cursorColor: Color(0xFFf1e4e8),
+                  enabled: false,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      suffixIcon: Icon(CupertinoIcons.calendar),
+                      hintText: DateFormat('yyyy/MM/dd').format(fechaNacimiento),
+                      contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))),
+                ),
+              );
   }
 
   Widget telefonoField() {
     return TextFormField(
       decoration: InputDecoration(
         hintText: 'Teléfono',
-        helperText: 'Teléfono',
-        icon: Icon(Icons.phone_android),
+        suffixIcon: Icon(Icons.phone_android),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       keyboardType: TextInputType.phone,
       controller: telefono,
@@ -176,45 +244,38 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget switchProfSalud() {
-    return Container(      
-      
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: color[600],
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                '¿Eres profesional de la salud?',
-                style: TextStyle(                    
-                    color: Colors.white,                    
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600
-                    //fontWeight: FontStyle.italic,
-                    ),
-            ),
-            Switch(
+    return ListTile(
+      title: Text('¿Eres usuario de salud?'),
+      trailing: CupertinoSwitch(
               value: esProfSalud, 
               onChanged: (value) {
                 setState(() {
                   esProfSalud = value;
                 });
               },
+              activeColor: Color(0xFFCEB1BE),
             ),
-          ],
-        ),
+          onTap: () {
+                setState(() {
+                  esProfSalud = !esProfSalud;
+                });
+            }
     );
   }
 
   licenciaField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Licencia',
-        helperText:
-            'Licencia profesional ',
-        icon: Icon(Icons.card_membership),
+        hintText: 'Licencia Profesional',
+        suffixIcon: Icon(Icons.card_membership),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       validator: (value) {
         if(value.isEmpty && esProfSalud){
@@ -236,7 +297,9 @@ class _RegisterPageState extends State<RegisterPage> {
             }else{
               usuarioBloc.setUsuarioInfo(toJsonUsuario());
               mensajeResultante = await usuarioBloc.crearUsuario();
-              Navigator.of(context).pushNamed('UsuarioPoll');
+              if(mensajeResultante == 'Registro Exitoso'){
+                Navigator.of(context).pushNamedAndRemoveUntil('UsuarioPoll', (Route<dynamic> route) =>false);
+              }
             }
           }
       },
@@ -278,7 +341,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'Nombres'        : nombres.text,
           'Apellidos'      : apellidos.text,
           'Correo'         : correo.text,
-          'FechaNacimiento': fechaNacimiento.text,
+          'FechaNacimiento': fechaNacimiento,
           'Licencia'       : licencia.text,          
           'Telefono'       : telefono.text,
           'Contraseña'     : contrasena.text,
@@ -290,7 +353,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'Nombres'        : nombres.text,
           'Apellidos'      : apellidos.text,
           'Correo'         : correo.text,
-          'FechaNacimiento': fechaNacimiento.text,          
+          'FechaNacimiento': fechaNacimiento,          
           'Telefono'       : telefono.text,
           'Contraseña'     : contrasena.text,
         };        
@@ -304,4 +367,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
 
+
+  void setBornDate(DateTime bornDate) {
+    this.fechaNacimiento = bornDate;
+  }
 }
