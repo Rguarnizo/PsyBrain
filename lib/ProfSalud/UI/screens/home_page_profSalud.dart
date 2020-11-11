@@ -3,6 +3,7 @@ import 'package:PsyBrain/ProfSalud/UI/widgets/user_card.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,9 @@ class HomePageProfSalud extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.plus_app),
             ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.chat_bubble),
+            )
           ],
         ),
         tabBuilder: (BuildContext context, int index) {
@@ -32,10 +36,7 @@ class HomePageProfSalud extends StatelessWidget {
                 case 0:
                   return CupertinoPageScaffold(
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
-                    child: Center(
-                      child:
-                          CupertinoButton(child: Text('Hola'), onPressed: null),
-                    ),
+                    child: Center(child: Text('Proximamente'),)
                   );
                   break;
                 case 1:
@@ -93,6 +94,21 @@ class HomePageProfSalud extends StatelessWidget {
                           ],
                         )),
                   );
+                  case 2:
+                    return CupertinoPageScaffold(
+                      child: StreamBuilder(
+                        stream:  userHealthBloc.chats(),
+                        builder:(context,snapshot) {                                                    
+                          if(!snapshot.hasData){
+                            return CircularProgressIndicator();
+                          }else{
+                            print(snapshot.data.docs);                                                                   
+                            return Container();
+                          }
+                          
+                        },                        
+                        )
+                      );
               }
               return null;
             },

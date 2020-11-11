@@ -62,5 +62,9 @@ class FireStoreRepo {
     Future<String> eliminarInformacionUsuario() async {
        return await _fireStoreApi.eliminarInformacionUsuario();
    }
+
+  Future<void> guardarEncuesta(Map<String, dynamic> jsonPoll,String uid)async {
+    return await _fireStoreApi.guardarEncuesta(jsonPoll,uid);
+  }
   
 }

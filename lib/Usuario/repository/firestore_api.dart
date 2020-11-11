@@ -15,6 +15,7 @@ class FireStoreApi {
   }
 
   Future<void> guardarInformacion(Usuario usuario, String uid) {
+    usuario.id = uid;
     return _apiFireStore.collection(USUARIO).doc(uid).set(usuario.json());
   }
 
@@ -55,6 +56,10 @@ class FireStoreApi {
         catch(e){
           print('El usuario no pudo ser eliminado'+ e.toString());
         }
+  }
+
+  guardarEncuesta(Map<String, dynamic> jsonPoll,String uid) {
+    _apiFireStore.collection(USUARIO).doc(uid).collection('Encuesta').add(jsonPoll);
   }
 
 

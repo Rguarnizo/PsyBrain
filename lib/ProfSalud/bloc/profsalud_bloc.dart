@@ -2,6 +2,7 @@ import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/ProfSalud/repository/auth_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
@@ -43,5 +44,14 @@ class ProfSaludBloc extends Bloc {
   Future<bool> profSaludRegistrado(String uid) async {
      return (await  obtenerInformacion(uid)).exists;
   }
+
+  Stream<QuerySnapshot> chats(){
+    return _fireStoreRepo.chats(currentUser.uid);
+  }
+
+  Future<void> actulizarData(Map<String,dynamic> data){
+    return _fireStoreRepo.actulizarData(data,currentUser.uid);
+  } 
+
 }
 
