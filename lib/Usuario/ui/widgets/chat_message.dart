@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,6 @@ class ChatMessage extends StatelessWidget {
           15.0,
         ),
         //height: 100.0,
-        width: 275.80,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.0),
@@ -45,7 +45,7 @@ class ChatMessage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
-                'HERE HOUR',
+                'Here Hour',
                 style: TextStyle(fontSize: 10.0, color: Colors.grey),
               ),
             ),

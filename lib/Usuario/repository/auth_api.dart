@@ -23,7 +23,7 @@ class AuthAPI {
 
   void signOut() async {
     await _auth.signOut().then((onValue) => print("Sesión finalizada"));
-    // googleSignIn.signOut();
+    googleSignIn.signOut();
   }
 
   Future<auth.UserCredential> signInWithEmailAndPassword(

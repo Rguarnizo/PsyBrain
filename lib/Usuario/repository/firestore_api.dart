@@ -62,5 +62,18 @@ class FireStoreApi {
     _apiFireStore.collection(USUARIO).doc(uid).collection('Encuesta').add(jsonPoll);
   }
 
+  Future<void> escribirChat(String anotherUserUid, String uid,String message) {
+    return _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').collection('$uid-$anotherUserUid').doc().set({
+      'sendUid'  :  uid,
+      'reciveUid': anotherUserUid,
+      'Message'  : message,
+      'Timestamp': Timestamp.now(),
+    });
+  }
+
+  Stream<QuerySnapshot> chat(String anotherUserUid, String uid){
+    return _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').collection('$uid-$anotherUserUid').orderBy('Timestamp').snapshots();
+  }
+
 
 }
