@@ -151,14 +151,16 @@ class PollScreenState extends State<PollScreen> {
 
     });
   }
-  _verificarEncuesta(BuildContext context){
+  bool _verificarEncuesta(BuildContext context){
     if(selectedEdad==0 || selectedFisico==0 || selectedEmocional==0 || selectedCalificacionSaludMental==0 || selectedTristeDosSemanas==0 || selectedEfectoSalud==0 || selectedDiagnostico==0 || selectedUltimoExamen==0 || selectedHistorial==0 || selectedPasadoReciente==0 || selectedMedicacion==0 || selectedHoras==0 || selectedCalidad==0 || selectedMarital==0 || selectedFumador==0 || selectedAlcoholico==0 || selectedPositivismo==0){
       
       //print('No se ha completado la encuesta.');
       createAlertDialog(context);
+      return false;
     }
     else{
       print('Se ha completado la encuesta');
+      return true;
     }
   }
 
@@ -703,10 +705,12 @@ class PollScreenState extends State<PollScreen> {
               Container(height: 20,),
             MyButton(
                   action: (){
-                    _verificarEncuesta(context);
+                    if(_verificarEncuesta(context)==true){
+                    
                     if(!formKey.currentState.validate()){
                       Navigator.pushReplacementNamed(context,'HomePageUser');
                       userBloc.guardarEncuesta(jsonPoll());
+                    }
                     }
                   },
                   buttonName: 'Terminar Encuesta',                  
