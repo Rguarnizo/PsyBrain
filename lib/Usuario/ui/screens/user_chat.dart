@@ -13,6 +13,8 @@ class UserChat extends StatefulWidget {
 
 class _UserChatState extends State<UserChat> {
   String message;
+
+  //TODO: Move API Connection to UserBloc, repo etc. 
   String APIURL =
       "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e36711d7-84aa-4b47-814a-6173e3095506/v1/analyze?version=2018-11-16";
 
