@@ -45,13 +45,8 @@ class _UserChatState extends State<UserChat> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
 
-     Timer(
-      Duration(milliseconds: 200),
-          () => scrollController.jumpTo(scrollController.position.maxScrollExtent),
-      );
-    
     var screenSize = MediaQuery.of(context).size;
     userBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
@@ -61,28 +56,27 @@ class _UserChatState extends State<UserChat> {
             Container(
               padding: EdgeInsets.only(bottom: 125),
               child: StreamBuilder(
-                stream: userBloc.chat('Prueba'),              
-                builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
-                  print(snapshot);
-                  print(snapshot.data.docs[0].data()['sendUid']);
-                  print(userBloc.currentUser.uid);
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator(),);
-                }else{
-                  
-                  return ListView.builder(
-                    controller: scrollController,
-                    physics: BouncingScrollPhysics(),            
-                    itemCount: snapshot.data.size,
-                    itemBuilder: (context, index){                                        
-                      return ChatMessage(
-                          isUserMessage: userBloc.currentUser.uid.compareTo(snapshot.data.docs[index].data()['sendUid']) == 0 ,
-                          message:snapshot.data.docs[index].data()['Message']
-                          );                        
-                    },                  
-                  );                
-                }              
-              }),
+                  stream: userBloc.chat('Prueba'),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {                    
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                        controller: scrollController,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: snapshot.data.size,
+                        itemBuilder: (context, index) {
+                          return ChatMessage(
+                              isUserMessage: isUserMessage(snapshot,index),
+                              message:
+                                  snapshot.data.docs[index].data()['Message'],
+                                  timeStamp:snapshot.data.docs[index].data()['Timestamp']);
+                        },
+                      );
+                    }
+                  }),
             ),
             Positioned(
               bottom: -40,
@@ -94,12 +88,11 @@ class _UserChatState extends State<UserChat> {
                     color: Colors.white),
                 child: Container(
                   margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                  child: TextField(                   
-                    controller: controllerMessage,                    
+                  child: TextField(
+                    controller: controllerMessage,
                     keyboardType: TextInputType.text,
                     cursorColor: Color(0xFFf1e4e8),
                     decoration: InputDecoration(
-                        
                         suffix: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
@@ -118,9 +111,12 @@ class _UserChatState extends State<UserChat> {
                                 Icons.send,
                                 color: color[900],
                               ),
-                              onTap: (){
-                                userBloc.escribirChat('Prueba',controllerMessage.text);
-                                scrollController.jumpTo(scrollController.position.maxScrollExtent+40.0);
+                              onTap: () {
+                                userBloc.escribirChat(
+                                    'Prueba', controllerMessage.text);
+                                scrollController.jumpTo(
+                                    scrollController.position.maxScrollExtent +
+                                        40.0);
                                 controllerMessage.clear();
                               },
                             ),
@@ -145,5 +141,9 @@ class _UserChatState extends State<UserChat> {
             )
           ],
         ));
+  }
+
+  bool isUserMessage(snapshot,index) {
+    return userBloc.currentUser.uid.compareTo(snapshot.data.docs[index].data()['sendUid']) == 0;
   }
 }

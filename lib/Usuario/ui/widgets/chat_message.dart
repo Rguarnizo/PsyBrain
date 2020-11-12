@@ -1,12 +1,15 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatMessage extends StatelessWidget {
   final String message;
   bool isUserMessage;
+  Timestamp timeStamp;
 
-  ChatMessage({Key key, @required this.message, this.isUserMessage});
+  ChatMessage({Key key, @required this.message, this.isUserMessage, this.timeStamp});
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +48,17 @@ class ChatMessage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
-                'Here Hour',
+                dateMessage(),
                 style: TextStyle(fontSize: 10.0, color: Colors.grey),
               ),
             ),
           ],
         ));
+  }
+
+  String dateMessage() {
+    DateTime dateTime = timeStamp.toDate();
+    String hora = DateFormat.jm().format(dateTime);
+    return '${dateTime.day}-${dateTime.month}-${dateTime.year} / $hora';
   }
 }
