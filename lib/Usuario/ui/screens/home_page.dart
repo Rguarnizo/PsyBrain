@@ -2,6 +2,7 @@ import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/UI/screens/singin_screen.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/start_conversation_card.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/user_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class HomePageUser extends StatelessWidget {
               icon: Icon(CupertinoIcons.house_alt),
             ),
             BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.bolt_horizontal_circle)),
+            BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.plus_app),
             ),
           ],
@@ -32,12 +35,23 @@ class HomePageUser extends StatelessWidget {
                   return CupertinoPageScaffold(
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                     child: Center(
-                      child:
-                          CupertinoButton(child: Text('Proximamente...'), onPressed: null),
+                      child: CupertinoButton(
+                          child: Text('Proximamente...'), onPressed: null),
                     ),
                   );
                   break;
                 case 1:
+                  return CupertinoPageScaffold(
+                      child: Column(
+                    children: [
+                      StartConversationCard(
+                        context: context,
+                      ),
+                      //TODO: UserChat history widgets here.
+                    ],
+                  ));
+                  break;
+                case 2:
                   return CupertinoPageScaffold(
                     navigationBar: CupertinoNavigationBar(
                       middle: Text('Más'),
@@ -50,8 +64,7 @@ class HomePageUser extends StatelessWidget {
                           children: [
                             MenuWidget(
                               title: 'Cuenta',
-                              description:
-                                  'Edita la información de tu cuenta',
+                              description: 'Edita la información de tu cuenta',
                               icon: CupertinoIcons.square_list,
                             ),
                             UserCard(context: context, userBloc: userBloc),
@@ -72,24 +85,13 @@ class HomePageUser extends StatelessWidget {
                                       'Haz click en el ícono para cerrar sesión',
                                   icon: CupertinoIcons.square_arrow_right,
                                   action: () {
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(builder: (context) {
-                                    //     return SignInScreen();
-                                    //   },)
-                                    // );
                                     userBloc.signOut();
-                                    // await Navigator.of(context)
-                                    //     .push(MaterialPageRoute(
-                                    //   builder: (context) {
-                                    //     return SignInScreen();
-                                    //   },
-                                    // )).then((value) => Navigator.of(context).pop());
-                                    //
                                   }),
                             ),
                           ],
                         )),
                   );
+                  break;
               }
               return null;
             },
@@ -98,8 +100,4 @@ class HomePageUser extends StatelessWidget {
       ),
     );
   }
-
-
-  
-
 }

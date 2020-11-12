@@ -68,8 +68,8 @@ class UserCard extends StatelessWidget {
                   FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return Text('300',
-                            //snapshot.data['Telefono'],
+                        return Text(
+                            snapshot.data['Telefono'],
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w600));
                       } else {
