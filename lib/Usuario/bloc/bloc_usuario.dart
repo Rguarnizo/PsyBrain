@@ -91,12 +91,20 @@ class UsuarioBloc extends Bloc {
     return _firestore_repo.guardarEncuesta(jsonPoll,currentUser.uid);
   }
 
-  Future<void> escribirChat(String anotherUserUid,String message){
-    return _firestore_repo.escribirChat(anotherUserUid,currentUser.uid,message);
+  Future<void> escribirChat(String chatUID,String message){
+    return _firestore_repo.escribirChat(chatUID,currentUser.uid,message);
   }
 
-  Stream<QuerySnapshot> chat(String anotherUserUid) {
-    return _firestore_repo.chat(anotherUserUid,currentUser.uid);
+  Future<void> iniciarChat(String anotherUserUid,String message){
+    return _firestore_repo.iniciarChat(anotherUserUid,currentUser.uid,message);
+  }
+
+  Stream<QuerySnapshot> chat(String chatUid) {
+    return _firestore_repo.chat(chatUid);
+  }
+
+  Stream<QuerySnapshot> chats(){
+    return _firestore_repo.chats(currentUser.uid);
   }
 
   

@@ -12,15 +12,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
 class UserChat extends StatefulWidget {
+  String chatID;
+  String sendUserUid;
+
+
+   UserChat({this.chatID,this.sendUserUid});
+
   @override
   _UserChatState createState() => _UserChatState();
 }
 
-class _UserChatState extends State<UserChat> {
-  String message;
+class _UserChatState extends State<UserChat> { 
+ 
   UsuarioBloc userBloc;
+
   TextEditingController controllerMessage = TextEditingController();
   ScrollController scrollController = ScrollController();
+
+
+
   //TODO: Move API Connection to UserBloc, repo etc.
   String APIURL =
       "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e36711d7-84aa-4b47-814a-6173e3095506/v1/analyze?version=2018-11-16";
@@ -46,8 +56,7 @@ class _UserChatState extends State<UserChat> {
 
   @override
   Widget build(BuildContext context) {    
-
-    var screenSize = MediaQuery.of(context).size;
+    
     userBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
         backgroundColor: Color(0xFFf1e4e8),
@@ -56,7 +65,7 @@ class _UserChatState extends State<UserChat> {
             Container(
               padding: EdgeInsets.only(bottom: 125),
               child: StreamBuilder(
-                  stream: userBloc.chat('Prueba'),
+                  stream: userBloc.chat(widget.chatID),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {                    
                     if (!snapshot.hasData) {
                       return Center(
@@ -112,13 +121,15 @@ class _UserChatState extends State<UserChat> {
                                 color: color[900],
                               ),
                               onTap: () {
+                                if(controllerMessage.text.isNotEmpty){
                                 userBloc.escribirChat(
-                                    'Prueba', controllerMessage.text);
+                                    widget.chatID, controllerMessage.text);
                                 scrollController.jumpTo(
                                     scrollController.position.maxScrollExtent +
                                         40.0);
                                 controllerMessage.clear();
-                              },
+                                }                                                      
+                                }
                             ),
                           ],
                         ),

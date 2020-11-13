@@ -67,12 +67,20 @@ class FireStoreRepo {
     return await _fireStoreApi.guardarEncuesta(jsonPoll,uid);
   }
 
-  escribirChat(String anotherUserUid, String uid,String message) async{
-    await _fireStoreApi.escribirChat(anotherUserUid,uid,message);
+  escribirChat(String chatUID, String uid,String message) async{
+    await _fireStoreApi.escribirChat(chatUID,uid,message);
   }
 
-  Stream<QuerySnapshot> chat(String anotherUserUid,String uid) {
-    return _fireStoreApi.chat(anotherUserUid, uid);
+  Stream<QuerySnapshot> chat(String chatUid) {
+    return _fireStoreApi.chat(chatUid);
+  }
+
+  Stream<QuerySnapshot> chats(String uid){
+    return _fireStoreApi.chats(uid);
+  }
+
+  Future<void> iniciarChat(String anotherUserUid, String uid, String message) async{
+    _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
   }
   
 }

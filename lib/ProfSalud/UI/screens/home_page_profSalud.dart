@@ -3,6 +3,8 @@ import 'package:PsyBrain/ProfSalud/UI/widgets/user_card.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/start_conversation_card.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/user_card_chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,20 +97,38 @@ class HomePageProfSalud extends StatelessWidget {
                         )),
                   );
                   case 2:
-                    return CupertinoPageScaffold(
-                      child: StreamBuilder(
-                        stream:  userHealthBloc.chats(),
-                        builder:(context,snapshot) {                                                    
-                          if(!snapshot.hasData){
-                            return CircularProgressIndicator();
-                          }else{
-                            print(snapshot.data.docs);                                                                   
-                            return Container();
-                          }
-                          
-                        },                        
-                        )
-                      );
+                    case 1:
+                  return CupertinoPageScaffold(
+                      //TODO: UserChat history widgets here.
+                      child: Column(
+                        children: [
+                          StartConversationCard(
+                                    context: context,
+                                  ),
+                         Expanded(
+                           child:  StreamBuilder<QuerySnapshot>(
+                              stream: userHealthBloc.chats(),
+                              builder: (context, snapshot) {
+                                return ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.hasData? snapshot.data.size : 0,                              
+                                  itemBuilder: (context, index) {                                                                
+                                    print(snapshot.data.docs[index].data());
+                                      if(!snapshot.hasData){
+                                        return Center(child: CircularProgressIndicator());
+                                      }else{
+                                      return Column(
+                                        children: [
+                                          UserCardChat(info: snapshot.data.docs[index],),                                          
+                                        ],
+                                      );
+                                      }
+                                    }                              
+                                );
+                              }),
+                           )
+                        ],
+                      ));
               }
               return null;
             },
@@ -116,5 +136,11 @@ class HomePageProfSalud extends StatelessWidget {
         },
       ),
     );
+    
   }
+  
+  String getUid(AsyncSnapshot snapshot,index) {
+      return snapshot.data.docs[index].data()['Uid'][0] != userHealthBloc.currentUser.uid? snapshot.data.docs[index].data()['Uid'][0]:snapshot.data.docs[index].data()['Uid'][1];
+  }
+  
 }

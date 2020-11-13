@@ -27,6 +27,11 @@ class ProfSaludBloc extends Bloc {
 
 
   Future<DocumentSnapshot> obtenerInformacion(String uid) => _fireStoreRepo.obtenerInformacion(uid);
+
+  Future<Map<String,dynamic>> getUserHealthInfo(String uid) async {
+    return (await _fireStoreRepo.obtenerInformacion(uid)).data();
+  }
+
   auth.User get currentUser => _authRepo.getCurrentUser();
 
   Future<void> guardarInformacion(ProfSalud profSalud, String uid) =>

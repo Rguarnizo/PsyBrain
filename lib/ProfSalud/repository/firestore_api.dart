@@ -31,7 +31,7 @@ class FireStoreApi{
 
 
   Stream<QuerySnapshot> getChats(String uid){
-    return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).collection('Chats').snapshots();
+    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).snapshots();
   
   }
 
