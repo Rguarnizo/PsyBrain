@@ -26,7 +26,7 @@ class Usuario {
       nombres: json['Nombres'],
       apellidos: json['Apellidos'],
       correo: json['Correo'],
-      fechaNacimiento: json['FechaNacimiento'],
+      fechaNacimiento: json['FechaNacimiento'].toDate(),
       telefono: json['Telefono'],
       imageURL: json['ImageURL']
     );

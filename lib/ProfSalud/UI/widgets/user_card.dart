@@ -17,10 +17,6 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userLogged = userHealthBloc.currentUser;
-    // var phone;
-    // userBloc.obtenerInformacion(userLogged.uid).then((documentSnapshot){
-    //   phone = documentSnapshot.data()['phone'];
-    // });
 
     return Container(
       margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 18.0),
@@ -95,51 +91,62 @@ class UserCard extends StatelessWidget {
           return InfoProfSalud();
         }));
       },
-      child: Row(
-        children: [
-          Container(
-            height: 50.0,
-            width: 50.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: userLogged.photoURL != null
-                    ? NetworkImage(userLogged.photoURL)
-                    : AssetImage('assets/imgs/user_defaulticon.jpg'),
+      child: FutureBuilder(
+        future: userHealthBloc.obtenerInformacion(userLogged.uid),
+        builder: (context, snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.done) {
+          return Row(
+          children: [
+            Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image:  NetworkImage(snapshot.data['ImageURL']),                    
+                ),
+                borderRadius: BorderRadius.circular(9.0),
               ),
-              borderRadius: BorderRadius.circular(9.0),
             ),
-          ),
-          Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      //TODO: Modificar nombre cuando no es auth por Google.
-                      userLogged.displayName ?? 'Hola',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'SourceSansPro',
-                          fontSize: 20),
-                    ),
-                    Text(
-                      'Usuario de salud',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'SourceSansPro',
-                          fontSize: 17),
-                    ),
-                  ])),
-          Spacer(),
-          Icon(
-            CupertinoIcons.chevron_forward,
-            color: Colors.grey,
-            size: 20.0,
-          )
-        ],
+            Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [                                              
+                             Text(
+                              snapshot.data['Nombres'] +
+                                  ' ' +
+                                  snapshot.data['Apellidos'],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'SourceSansPro',
+                                  fontSize: 20),
+                            ),                           
+                      Text(
+                        'Usuario ciudadano',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'SourceSansPro',
+                            fontSize: 17),
+                      ),
+                    ])),
+            Spacer(),
+            Icon(
+              CupertinoIcons.chevron_forward,
+              color: Colors.grey,
+              size: 20.0,
+            )
+          ],
+          
+        );
+        
+        }else {
+          return Container();
+        }
+        }
       ),
     );
   }

@@ -99,5 +99,9 @@ class FireStoreApi {
 
   }
 
+  Future<void> actualizarData(Map<String,dynamic > data,String uid) {
+    return _apiFireStore.collection(USUARIO).doc('').update(data);
+  }
+
 
 }

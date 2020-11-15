@@ -1,5 +1,8 @@
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
+import 'package:PsyBrain/Usuario/model/usuario.dart';
+import 'package:PsyBrain/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +17,7 @@ class UserInfoPage extends StatefulWidget {
   @override
   _UserInfoPageState createState() => _UserInfoPageState();
 
-
+ 
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
@@ -22,93 +25,132 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   bool esperandoRegistro = false;
   String mensajeResultante = '';
+  final formKey = GlobalKey<FormState>();
 
   UsuarioBloc usuarioBloc;
+  Map<String,dynamic> userData;
+  Widget _page;
 
 
-  @override
+   @override
   Widget build(BuildContext context) {
-    usuarioBloc = BlocProvider.of<UsuarioBloc>(context);
-    return FutureBuilder(
-        future: usuarioBloc.obtenerInformacion(usuarioBloc.usuario.id),
-        builder:(context, snapshot) {
 
-          return Scaffold(
-            appBar: AppBar(),
-            body: Form(
-              key:_formKey,
-              child: ListView(
+    if(_page == null){
+      _page = _createPage(context);
+    }
+    return _page;
+  }
+
+
+  Widget _createPage(context){
+    usuarioBloc = BlocProvider.of<UsuarioBloc>(context);
+        
+
+    return  CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Información de perfil')),      
+      child: StreamBuilder(
+              stream: usuarioBloc.getUserInfo(usuarioBloc.currentUser.uid).asStream(),
+              builder: (context, snapshot) {
+                if(!snapshot.hasData ){
+                  return Container();                  
+                }else if(snapshot.connectionState == ConnectionState.done){
+                  userData = snapshot.data;               
+                  usuarioBloc.usuario = Usuario.fromJson(userData);
+                     
+                  print('InfoPagePorfSalud: $snapshot');
+                  return Form(
+                key: formKey,
+                child: ListView(
                 children: [
                   SizedBox(height: 20,),
                   GestureDetector(
                     onTap: () {
-
+                      
                     },
                     child: CircleAvatar(
-                      radius: 50,
-                      //child: ClipOval(child: Container(child: Image.network(usuarioBloc.currentUser.photoURL),)),
+                        radius: 50,              
+                        child: ClipOval(child: Container(child: Image.network(userData['ImageURL']),)),
+                      ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(                    
+                       children: [
+                      SizedBox(height: 20,),
+                      nombresField(),
+                      Container(height: 20,),
+                      apellidosField(),
+                      Container(height: 20,),
+                      telefonoField(),
+                      Container(height: 20,),
+                      ]
                     ),
                   ),
-                  SizedBox(height: 20,),
-                  nombresField(),
-                  apellidosField(),
-                  telefonoField(),
-                  fechaNacimientoField(),
-                  guardarCambiosButton(context),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: MyButton(action:  (){                   
+                            usuarioBloc.actualizarData(userData);                                    
+                      },buttonName: 'Actualizar Información',withShadow: true,gradientColors: [color[800]],textColor: Colors.white,),
+                    ),
+                    SizedBox(height: 100,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: MyButton(action:  (){                   
+                            usuarioBloc.actualizarData(userData);                                    
+                      },buttonName: 'Eliminar Cuenta',withShadow: true,gradientColors: [Colors.red[400]],textColor: Colors.white,),
+                    )
+
                 ],
-              ),
-            ),
-          );
-        }
-
+        ),
+              );
+                }else{
+                  return Container();
+                }
+              },              
+          ),                   
     );
-
   }
 
-  Widget nombresField() {
+Widget nombresField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Nombres',
-        helperText: 'Nombres',
-        icon: Icon(Icons.accessibility),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9)),
+        hintText: 'Nombres',    
+        suffixIcon: Icon(Icons.accessibility),
       ),
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
-      },
+      },      
       initialValue: usuarioBloc.usuario.nombres,
-      onChanged: (value) => usuarioBloc.usuario.nombres = value,
-
+      onChanged: (value) => userData['Nombres'] = value,
     );
-
   }
 
   Widget apellidosField() {
     return TextFormField(
       decoration: InputDecoration(
         hintText: 'Apellidos',
-        helperText: 'Apellidos',
-        icon: Icon(Icons.account_circle),
-      ),
-      validator: (value){
-        if(value.isEmpty){
-          return 'Campo obligatorio';
-        }
-        return null;
-      },
-      initialValue: usuarioBloc.usuario.apellidos,
-      onChanged: (value) => usuarioBloc.usuario.apellidos = value,
-
-    );
-  }
-  Widget fechaNacimientoField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Fecha Nacimiento',
-        helperText: 'Fecha de nacimiento',
-        icon: Icon(Icons.calendar_today),
+        suffixIcon: Icon(Icons.account_circle),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -116,43 +158,29 @@ class _UserInfoPageState extends State<UserInfoPage> {
         }
         return null;
       },
-      //initialValue: usuarioBloc.usuario.fechaNacimiento.toString(),
-      //onChanged: (value)=> usuarioBloc.usuario.fechaNacimiento=value,
+      onChanged: (value) => userData['Apellidos'] = value,
+      initialValue: usuarioBloc.usuario.apellidos,
     );
   }
+
 
   Widget telefonoField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Telefono',
-        helperText: 'Telefono',
-        icon: Icon(Icons.phone),
+        hintText: 'Teléfono',
+        suffixIcon: Icon(Icons.phone_android),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
       ),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.phone,      
+      onChanged: (value) => userData['Telefono'] = value,
       initialValue: usuarioBloc.usuario.telefono,
-      onChanged: (value) => usuarioBloc.usuario.telefono = value,
-    );
-  }
-
-  Widget guardarCambiosButton(BuildContext context) {
-    return MyButton(
-      action: () async {
-        setState(() {
-
-        });
-
-        if (_formKey.currentState.validate()) {
-          mensajeResultante =  await usuarioBloc.actualizarInformacionUsuario();
-        }
-        setState(() {
-          esperandoRegistro = false;
-        });
-      },
-      buttonName: 'Guardar Cambios',
-      gradientColors: [Color(0xFFf1e4e8)],
-      textColor: Color(0xFFCEB1BE),
-      width: MediaQuery.of(context).size.width * 0.6,
-      withShadow: false,
     );
   }
 

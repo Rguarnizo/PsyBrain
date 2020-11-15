@@ -82,5 +82,9 @@ class FireStoreRepo {
   Future<void> iniciarChat(String anotherUserUid, String uid, String message) async{
     _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
   }
+
+  Future<void> actualizarData(Map<String, dynamic> data,String uid) {
+    _fireStoreApi.actualizarData(data,uid);
+  }
   
 }

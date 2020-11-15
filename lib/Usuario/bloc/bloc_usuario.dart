@@ -45,6 +45,10 @@ class UsuarioBloc extends Bloc {
 
   Usuario usuario = Usuario();
 
+  Future<void> actualizarData(Map<String,dynamic> data)async{
+    return await _firestore_repo.actualizarData(data,currentUser.uid);
+  }
+
   Future<String> crearUsuario() async {
     return await _firestore_repo.crearUsuario(usuario);
   }
