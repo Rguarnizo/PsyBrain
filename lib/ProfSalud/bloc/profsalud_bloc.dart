@@ -2,7 +2,6 @@ import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/ProfSalud/repository/auth_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
@@ -26,7 +25,10 @@ class ProfSaludBloc extends Bloc {
   }
 
 
-  Future<DocumentSnapshot> obtenerInformacion(String uid) => _fireStoreRepo.obtenerInformacion(uid);
+  Future<DocumentSnapshot> obtenerInformacion(String uid){ 
+     
+    return _fireStoreRepo.obtenerInformacion(uid);
+  }
 
   Future<Map<String,dynamic>> getUserHealthInfo(String uid) async {
     return (await _fireStoreRepo.obtenerInformacion(uid)).data();
@@ -34,8 +36,12 @@ class ProfSaludBloc extends Bloc {
 
   auth.User get currentUser => _authRepo.getCurrentUser();
 
-  Future<void> guardarInformacion(ProfSalud profSalud, String uid) =>
-      _fireStoreRepo.guardarInformacion(profSalud, uid);
+  Future<void> guardarInformacion({ProfSalud profSaludUser, String uid }){
+      profSaludUser??= profSalud;    
+      uid??= currentUser.uid;
+      
+      return _fireStoreRepo.guardarInformacion(profSalud, uid);
+  }
 
   signOut() {
     _authRepo.signOut();

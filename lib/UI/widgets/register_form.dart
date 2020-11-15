@@ -181,7 +181,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           licencia: license,
                           cedula: identification,
                         );
-                        userHealthBloc.guardarInformacion(user, uid);
+                        userHealthBloc.guardarInformacion(profSaludUser: user,uid: uid);
                          showDialog(
                         context: context,
                         builder: (context) {

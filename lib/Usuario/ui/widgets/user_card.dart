@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
@@ -89,13 +90,7 @@ class UserCard extends StatelessWidget {
     var userLoggedId = userBloc.getCurrentUser().uid;
     return InkWell(
       onTap: () {
-        Navigator.of(this.context).push(CupertinoPageRoute(builder: (context) {
-          //TODO: Consulta, modificación de la información del usuario ciudadano
-          return CupertinoPageScaffold(
-              navigationBar:
-                  CupertinoNavigationBar(middle: Text('Editar información')),
-              child: Center(child: Text('Hola')));
-        }));
+       Navigator.of(context).pushNamed('InfoProfSalud');
       },
       child: Row(
         children: [

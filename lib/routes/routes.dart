@@ -1,5 +1,6 @@
 
 import 'package:PsyBrain/ProfSalud/UI/screens/home_page_profSalud.dart';
+import 'package:PsyBrain/ProfSalud/UI/screens/info_page_profsalud.dart';
 import 'package:PsyBrain/UI/screens/register_page.dart';
 import 'package:PsyBrain/Usuario/ui/screens/poll_screen.dart';
 import 'package:PsyBrain/Usuario/ui/screens/user_chat.dart';
@@ -16,6 +17,7 @@ final rutas = <String,WidgetBuilder>{
         'UserChat'              : (BuildContext context) => UserChat(),    
         'RegisterPage'          : (BuildContext context) => RegisterPage(),
         'HomePageProfSalud'     : (BuildContext context) => HomePageProfSalud(),
+        'InfoProfSalud'         : (BuildContext context) => InfoProfSalud(),
         'HomePageUser'          : (BuildContext context) => HomePageUser(),
        // 'UserRegisterPageGoogle': (BuildContext context) => UserRegisterPageGoogle(),
        'UsuarioPoll'            : (BuildContext context) => PollScreen(),

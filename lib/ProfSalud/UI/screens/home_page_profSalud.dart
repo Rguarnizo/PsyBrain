@@ -24,11 +24,12 @@ class HomePageProfSalud extends StatelessWidget {
               icon: Icon(CupertinoIcons.house_alt),
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.plus_app),
+              icon: Icon(CupertinoIcons.chat_bubble),
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.chat_bubble),
-            )
+              icon: Icon(CupertinoIcons.plus_app),
+            ),
+            
           ],
         ),
         tabBuilder: (BuildContext context, int index) {
@@ -40,8 +41,41 @@ class HomePageProfSalud extends StatelessWidget {
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                     child: Center(child: Text('Proximamente'),)
                   );
-                  break;
-                case 1:
+                  break;                
+                  case 1:                    
+                  return CupertinoPageScaffold(
+                      //TODO: UserChat history widgets here.
+                      child: Column(
+                        children: [
+                          StartConversationCard(
+                                    context: context,
+                                  ),
+                         Expanded(
+                           child:  StreamBuilder<QuerySnapshot>(
+                              stream: userHealthBloc.chats(),
+                              builder: (context, snapshot) {
+                                return ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.hasData? snapshot.data.size : 0,                              
+                                  itemBuilder: (context, index) {                                                                
+                                    print(snapshot.data.docs[index].data());
+                                      if(!snapshot.hasData){
+                                        return Center(child: CircularProgressIndicator());
+                                      }else{
+                                      return Column(
+                                        children: [
+                                          UserCardChat(info: snapshot.data.docs[index],),                                          
+                                        ],
+                                      );
+                                      }
+                                    }                              
+                                );
+                              }),
+                           )
+                        ],
+                      ));
+                      break;
+                      case 2:
                   return CupertinoPageScaffold(
                     navigationBar: CupertinoNavigationBar(
                       middle: Text('Más'),
@@ -96,45 +130,15 @@ class HomePageProfSalud extends StatelessWidget {
                           ],
                         )),
                   );
-                  case 2:
-                    case 1:
-                  return CupertinoPageScaffold(
-                      //TODO: UserChat history widgets here.
-                      child: Column(
-                        children: [
-                          StartConversationCard(
-                                    context: context,
-                                  ),
-                         Expanded(
-                           child:  StreamBuilder<QuerySnapshot>(
-                              stream: userHealthBloc.chats(),
-                              builder: (context, snapshot) {
-                                return ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: snapshot.hasData? snapshot.data.size : 0,                              
-                                  itemBuilder: (context, index) {                                                                
-                                    print(snapshot.data.docs[index].data());
-                                      if(!snapshot.hasData){
-                                        return Center(child: CircularProgressIndicator());
-                                      }else{
-                                      return Column(
-                                        children: [
-                                          UserCardChat(info: snapshot.data.docs[index],),                                          
-                                        ],
-                                      );
-                                      }
-                                    }                              
-                                );
-                              }),
-                           )
-                        ],
-                      ));
+                  break;
               }
               return null;
             },
           );
         },
+        
       ),
+    
     );
     
   }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:PsyBrain/ProfSalud/UI/screens/info_page_profsalud.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -91,10 +92,7 @@ class UserCard extends StatelessWidget {
       onTap: () {
         Navigator.of(this.context).push(CupertinoPageRoute(builder: (context) {
           //TODO: Consulta, modificación de la información del usuario ciudadano
-          return CupertinoPageScaffold(
-              navigationBar:
-                  CupertinoNavigationBar(middle: Text('Editar información')),
-              child: Center(child: Text('Hola')));
+          return InfoProfSalud();
         }));
       },
       child: Row(

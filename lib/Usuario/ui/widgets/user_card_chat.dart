@@ -50,7 +50,7 @@ class UserCardChat extends StatelessWidget {
                           children: [
                             GestureDetector(
                                 child: CircleAvatar(
-                              child: Text('Img \n User'),
+                              child: Image.network('https://www.pngkit.com/png/detail/869-8693356_viaja-a-travs-de-los-libros-brain-cartoon.png'),
                               maxRadius: 30,
                             ),
                             onTap: () => print('Usuario Data'),
@@ -136,6 +136,8 @@ class UserCardChat extends StatelessWidget {
                 return Container();
               },
             );
+          }else{
+            return Container();
           }
         });
   }

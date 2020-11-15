@@ -2,7 +2,6 @@
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
 class FireStoreApi{
 
@@ -21,7 +20,8 @@ class FireStoreApi{
 
 
   Future<void> guardarInformacion(ProfSalud profSalud,String uid){
-      profSalud.id = _apiFireAuth.currentUser.uid;
+      profSalud.id = uid;
+      profSalud.imageURL = _apiFireAuth.currentUser.photoURL;
       return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).set(profSalud.json());
   }
 
@@ -31,12 +31,11 @@ class FireStoreApi{
 
 
   Stream<QuerySnapshot> getChats(String uid){
-    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).snapshots();
-  
+    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).snapshots();  
   }
 
   Future<void> actulizarData(Map<String,dynamic> data,String uid){
-    return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).collection('Chats').add(data);
+    return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).update(data);
   } 
 
 }
