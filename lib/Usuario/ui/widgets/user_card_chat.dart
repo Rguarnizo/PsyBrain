@@ -50,7 +50,7 @@ class UserCardChat extends StatelessWidget {
                           children: [
                             GestureDetector(
                                 child: CircleAvatar(
-                              child: Image.network(snapshot.data['ImageURL']),
+                              backgroundImage:  NetworkImage(snapshot.data['ImageURL']),
                               maxRadius: 30,
                             ),
                             onTap: () => print('Usuario Data'),
