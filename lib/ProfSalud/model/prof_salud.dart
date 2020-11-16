@@ -12,6 +12,8 @@ class ProfSalud {
   DateTime fechaNacimiento;
   String contrasena;
 
+  String imageURL;
+
 
   ProfSalud({
     this.id,
@@ -21,7 +23,8 @@ class ProfSalud {
     this.correo,
     this.licencia,
     this.fechaNacimiento,
-    this.cedula
+    this.cedula,
+    this.imageURL
   });
 
   factory ProfSalud.fromJson(json){
@@ -30,10 +33,11 @@ class ProfSalud {
         nombres: json['Nombres'],
         apellidos: json['Apellidos'],
         correo: json['Correo'],
-        fechaNacimiento: json['FechaNacimiento'],
+        fechaNacimiento: json['FechaNacimiento'].toDate(),
         licencia: json['Licencia'],
         cedula: json['Cedula'],
         telefono: json['Telefono'],
+        imageURL: json['ImageURL']
     );
   }
 
@@ -63,6 +67,7 @@ class ProfSalud {
           'Licencia'       : licencia,
           'Cedula'         : cedula,
           'Telefono'       : telefono,
+          'ImageURL'       : imageURL
         };
   }
 

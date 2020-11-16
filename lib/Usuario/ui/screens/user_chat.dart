@@ -1,20 +1,37 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/chat_message.dart';
+import 'package:PsyBrain/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
 class UserChat extends StatefulWidget {
+  String chatID;
+  String sendUserUid;
+
+
+   UserChat({this.chatID,this.sendUserUid});
+
   @override
   _UserChatState createState() => _UserChatState();
 }
 
-class _UserChatState extends State<UserChat> {
-  String message;
+class _UserChatState extends State<UserChat> { 
+ 
+  UsuarioBloc userBloc;
 
-  //TODO: Move API Connection to UserBloc, repo etc. 
+  TextEditingController controllerMessage = TextEditingController();
+  ScrollController scrollController = ScrollController();
+
+
+
+  //TODO: Move API Connection to UserBloc, repo etc.
   String APIURL =
       "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/e36711d7-84aa-4b47-814a-6173e3095506/v1/analyze?version=2018-11-16";
 
@@ -38,101 +55,106 @@ class _UserChatState extends State<UserChat> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+  Widget build(BuildContext context) {    
+    
+    userBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
         backgroundColor: Color(0xFFf1e4e8),
         body: Stack(
           children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 125),
+              child: StreamBuilder(
+                  stream: userBloc.chat(widget.chatID),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {                    
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                        controller: scrollController,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: snapshot.data.size,
+                        itemBuilder: (context, index) {
+                          return ChatMessage(
+                              isUserMessage: isUserMessage(snapshot,index),
+                              message:
+                                  snapshot.data.docs[index].data()['Message'],
+                                  timeStamp:snapshot.data.docs[index].data()['Timestamp']);
+                        },
+                      );
+                    }
+                  }),
+            ),
             Positioned(
-                top: 95.0,
+              bottom: -40,
+              height: 160,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32.60),
+                    color: Colors.white),
                 child: Container(
-                  padding: EdgeInsets.only(left: 15.0),
-                  height: screenSize.height - 230,
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        ChatMessage(
-                            isUserMessage: false,
-                            message:
-                                'Ut dolor mollit non ullamco sit tempor cupidatat sint ipsum labore consequat. Ullamco minim excepteur ea sit laboris dolor velit. Nostrud sit non fugiat id pariatur ullamco duis eiusmod fugiat reprehenderit sit est. Deserunt quis veniam nisi ullamco aliquip aute in nostrud ut nulla minim cupidatat dolore. Velit nostrud ad Lorem voluptate do consequat tempor incididunt adipisicing anim nisi minim veniam. Ut aliquip minim sint et. Ex velit ea proident irure excepteur consectetur quis aliqua nulla id.'),
-                        ChatMessage(
-                            isUserMessage: true,
-                            message:
-                                'Deserunt ex excepteur ea ullamco Lorem est ullamco. Proident commodo excepteur irure eu pariatur ex proident ullamco aliquip consequat irure labore aliquip. Adipisicing irure veniam dolor duis tempor voluptate. Cupidatat aliquip incididunt do cillum ipsum. Id do ullamco anim laboris occaecat sit enim adipisicing pariatur consectetur ex do enim. Aute incididunt excepteur Lorem minim nulla esse anim aute dolore duis. Reprehenderit enim minim pariatur occaecat aliqua consectetur duis consectetur ipsum et laborum.'),
-                        ChatMessage(
-                          message: this.message ?? 'Buenas buenas',
-                          isUserMessage: true,
-                        )
-                      ],
-                    ),
-                  ),
-                )),
-            Positioned(
-                bottom: -10,
-                height: 150,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32.60),
-                      color: Colors.white),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 300,
-                        margin:
-                            EdgeInsets.only(bottom: 72.5, left: 20.0, top: 10),
-                        child: TextField(
-                          onChanged: (value) {
-                            message = value;
-                          },
-                          onSubmitted: (txt) async {
-                            print(txt);
-                            this.getInfoML(txt).then((value) {
-                              print(value);
-                              setState(() {});  
-                            });
-                          },
-                          keyboardType: TextInputType.text,
-                          cursorColor: Color(0xFFf1e4e8),
-                          decoration: InputDecoration(
-                              suffixIcon: InkWell(child: Icon(Icons.tag_faces)),
-                              hintText: 'Escribe algo ...',
-                              fillColor: Color(0XFFcdd6dd).withOpacity(0.40),
-                              focusColor: Color(0XFFcdd6dd),
-                              filled: true,
-                              contentPadding:
-                                  EdgeInsets.only(left: 14.0, right: 14.0),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(25.0),
+                  margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: TextField(
+                    controller: controllerMessage,
+                    keyboardType: TextInputType.text,
+                    cursorColor: Color(0xFFf1e4e8),
+                    decoration: InputDecoration(
+                        suffix: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              child: Icon(
+                                Icons.emoji_emotions,
+                                color: color[700],
                               ),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(25.0))),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            GestureDetector(
+                              child: Icon(
+                                Icons.send,
+                                color: color[900],
+                              ),
+                              onTap: () {
+                                if(controllerMessage.text.isNotEmpty){                                                                  
+                                userBloc.escribirChat(
+                                    widget.chatID, controllerMessage.text);
+                                scrollController.jumpTo(
+                                    scrollController.position.maxScrollExtent +
+                                        40.0);
+                                controllerMessage.clear();
+                                }                                                      
+                                }
+                            ),
+                          ],
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          bottom: 80,
-                          top: 20,
-                          left: 5,
+                        hintText: 'Escribe algo ...',
+                        fillColor: Color(0XFFcdd6dd).withOpacity(0.40),
+                        focusColor: Color(0XFFcdd6dd),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            left: 14.0, right: 14.0, bottom: 10),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(25.0),
                         ),
-                        width: 55,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18.0),
-                            color: Color(0xFFceb1be)),
-                        child: Center(
-                            child: Icon(
-                          Icons.camera_enhance,
-                          color: Colors.white,
-                        )),
-                      )
-                    ],
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(25.0))),
                   ),
-                ))
+                ),
+              ),
+            )
           ],
         ));
+  }
+
+  bool isUserMessage(snapshot,index) {
+    return userBloc.currentUser.uid.compareTo(snapshot.data.docs[index].data()['sendUid']) == 0;
   }
 }

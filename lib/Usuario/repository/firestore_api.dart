@@ -16,6 +16,7 @@ class FireStoreApi {
 
   Future<void> guardarInformacion(Usuario usuario, String uid) {
     usuario.id = uid;
+    usuario.imageURL = _apiFireAuth.currentUser.photoURL;
     return _apiFireStore.collection(USUARIO).doc(uid).set(usuario.json());
   }
 
@@ -60,6 +61,46 @@ class FireStoreApi {
 
   guardarEncuesta(Map<String, dynamic> jsonPoll,String uid) {
     _apiFireStore.collection(USUARIO).doc(uid).collection('Encuesta').add(jsonPoll);
+  }
+
+  Future<void> iniciarChat(String anotherUserUid, String uid,String message) async {
+    
+    await _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').set({
+      'Uid': [uid,anotherUserUid],
+      'LastEditingTime': Timestamp.now(),
+    });
+
+    return _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').collection('$uid-$anotherUserUid').doc().set({
+      'sendUid'  :  uid,
+      'reciveUid': anotherUserUid,
+      'Message'  : message,
+      'Timestamp': Timestamp.now(),
+    });
+  }
+
+  Stream<QuerySnapshot> chat(String chatUid){        
+    return _apiFireStore.collection('Chats').doc(chatUid).collection(chatUid).orderBy('Timestamp').snapshots();
+  }
+
+  Stream<QuerySnapshot> chats(String uid){
+    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).orderBy('LastEditingTime').snapshots();
+  }
+
+  escribirChat(String chatUID, String uid, String message) async {
+    await _apiFireStore.collection('Chats').doc(chatUID).update({      
+      'LastEditingTime': Timestamp.now(),
+    });
+
+    return _apiFireStore.collection('Chats').doc(chatUID).collection(chatUID).doc().set({
+      'sendUid'  :  uid,      
+      'Message'  : message,
+      'Timestamp': Timestamp.now(),
+    });
+
+  }
+
+  Future<void> actualizarData(Map<String,dynamic > data,String uid) {
+    return _apiFireStore.collection(USUARIO).doc('').update(data);
   }
 
 

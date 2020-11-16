@@ -1,8 +1,14 @@
 
-/*
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
+import 'package:PsyBrain/UI/widgets/datetime_picker_selector.dart';
+import 'package:PsyBrain/UI/widgets/login_buttons.dart';
+import 'package:PsyBrain/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 
 class InfoProfSalud extends StatefulWidget {
@@ -17,128 +23,193 @@ class InfoProfSalud extends StatefulWidget {
 class _InfoProfSaludState extends State<InfoProfSalud> {
   
   ProfSaludBloc profSaludBloc;
+  final formKey = GlobalKey<FormState>();
+
+
+
+
+  Map<String,dynamic> userHealtData;
+  Widget _page;
+
 
   @override
   Widget build(BuildContext context) {
 
+    if(_page == null){
+      _page = _createPage(context);
+    }
+    return _page;
+  }
+
+
+  Widget _createPage(context){
     profSaludBloc = BlocProvider.of<ProfSaludBloc>(context);
+        
 
-    return FutureBuilder(
-       future: profSaludBloc.obtenerInformacion(),
-       builder:(context, snapshot) {
-
-          return Scaffold(
-            appBar: AppBar(),
-            body: ListView(
-            children: [
-              SizedBox(height: 20,),
-              GestureDetector(
-                onTap: () {
-                  
-                },
-                child: CircleAvatar(
-                    radius: 50,              
-                    child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
+    return  CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Información de perfil')),      
+      child: StreamBuilder(
+              stream: profSaludBloc.getUserHealthInfo(profSaludBloc.currentUser.uid).asStream(),
+              builder: (context, snapshot) {
+                if(!snapshot.hasData ){
+                  return Container();                  
+                }else if(snapshot.connectionState == ConnectionState.done){
+                  userHealtData = snapshot.data;               
+                  profSaludBloc.profSalud = ProfSalud.fromJson(userHealtData);
+                     
+                  print('InfoPagePorfSalud: $snapshot');
+                  return Form(
+                key: formKey,
+                child: ListView(
+                children: [
+                  SizedBox(height: 20,),
+                  GestureDetector(
+                    onTap: () {
+                      
+                    },
+                    child: CircleAvatar(
+                        radius: 50,              
+                        child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
+                      ),
                   ),
-              ),
-                SizedBox(height: 20,),
-                nombresField(),
-                apellidosField(),
-                cedulaField(),            
-                telefonoField(),
-                licenciaField(),
 
-            ],
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(                    
+                       children: [
+                      SizedBox(height: 20,),
+                      nombresField(),
+                      Container(height: 20,),
+                      apellidosField(),
+                      Container(height: 20,),
+                      telefonoField(),
+                      Container(height: 20,),
+                      licenciaField(),
+                      Container(height: 20,),
+                      ]
+                    ),
+                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: MyButton(action:  (){                   
+                            profSaludBloc.actulizarData(userHealtData);                                    
+                      },buttonName: 'Actualizar Información',withShadow: true,gradientColors: [color[800]],textColor: Colors.white,),
+                    ),
+                    SizedBox(height: 100,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 80),
+                      child: MyButton(action:  (){                   
+                            profSaludBloc.actulizarData(userHealtData);                                    
+                      },buttonName: 'Eliminar Cuenta',withShadow: true,gradientColors: [Colors.red[400]],textColor: Colors.white,),
+                    )
+
+                ],
         ),
-          );
-       }
-       
+              );
+                }else{
+                  return Container();
+                }
+              },              
+          ),                   
     );
-
   }
 
- Widget nombresField() {
+Widget nombresField() {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Nombres',
-        helperText: 'Nombres',
-        icon: Icon(Icons.accessibility),        
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9)),
+        hintText: 'Nombres',    
+        suffixIcon: Icon(Icons.accessibility),
       ),
-      validator: (value){
-        if(value.isEmpty){
-          return 'Campo obligatorio';
-        }
-        return null;
-      },
-      initialValue: profSaludBloc.profSalud.nombres,
-      onChanged: (value) => profSaludBloc.profSalud.nombres = value,
-      
-    );
-
-  }
-
-  Widget apellidosField() {
-      return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Apellidos',
-        helperText: 'Apellidos',
-        icon: Icon(Icons.account_circle),        
-      ),
-      validator: (value){
-        if(value.isEmpty){
-          return 'Campo obligatorio';
-        }
-        return null;
-      },          
-      initialValue: profSaludBloc.profSalud.apellidos,
-      onChanged: (value) => profSaludBloc.profSalud.apellidos = value,
-
-    );
-  }
-
-  Widget cedulaField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: 'Cedula',
-        helperText: 'Cedula',
-        icon: Icon(Icons.credit_card),        
-      ),      
-      validator: (value){
-        if(value.isEmpty){
+      validator: (value) {
+        if (value.isEmpty) {
           return 'Campo obligatorio';
         }
         return null;
       },      
-      keyboardType: TextInputType.number,
-      initialValue: profSaludBloc.profSalud.cedula,
-      onChanged: (value) => profSaludBloc.profSalud.cedula = value,
-    );    
+      initialValue: profSaludBloc.profSalud.nombres,
+      onChanged: (value) => userHealtData['Nombres'] = value,
+    );
   }
 
-   Widget licenciaField() {
-      return TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Licencia',
-          helperText: 'Licencia profesional. Si aún no la tienes deja este campo vacio.',
-          icon: Icon(Icons.card_membership),        
-        ),      
-      initialValue: profSaludBloc.profSalud.licencia,
-      onChanged: (value) => profSaludBloc.profSalud.licencia = value,
-        
-      );    
+  Widget apellidosField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Apellidos',
+        suffixIcon: Icon(Icons.account_circle),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Campo obligatorio';
+        }
+        return null;
+      },
+      onChanged: (value) => userHealtData['Apellidos'] = value,
+      initialValue: profSaludBloc.profSalud.apellidos,
+    );
   }
+
 
   Widget telefonoField() {
-      return TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Telefono',
-          helperText: 'Telefono',
-          icon: Icon(Icons.phone),        
-        ),      
-        keyboardType: TextInputType.number,
-              initialValue: profSaludBloc.profSalud.telefono,
-      onChanged: (value) => profSaludBloc.profSalud.telefono = value,
-      );    
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Teléfono',
+        suffixIcon: Icon(Icons.phone_android),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
+      ),
+      keyboardType: TextInputType.phone,      
+      onChanged: (value) => userHealtData['Telefono'] = value,
+      initialValue: profSaludBloc.profSalud.telefono,
+    );
   }
+
+  licenciaField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Licencia Profesional',
+        suffixIcon: Icon(Icons.card_membership),
+        contentPadding: EdgeInsets.only(left: 14.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xFFceb1be), width: 2.0),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9))
+      ),
+      validator: (value) {
+        if(value.isEmpty){
+          return 'Licencia Obligatoria';
+        }
+        return null;
+      },
+      onChanged: (value) => userHealtData['Licencia'] = value,
+      initialValue: profSaludBloc.profSalud.licencia,
+    );
+  }
+
+
 }
-*/

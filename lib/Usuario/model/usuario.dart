@@ -8,6 +8,8 @@ class Usuario {
   DateTime fechaNacimiento;
   String contrasena;
 
+  String imageURL;
+
   Usuario({
     this.id,
     this.nombres,
@@ -15,6 +17,7 @@ class Usuario {
     this.telefono,
     this.correo,
     this.fechaNacimiento,
+    this.imageURL
   });
 
   factory Usuario.fromJson(json) {
@@ -23,8 +26,9 @@ class Usuario {
       nombres: json['Nombres'],
       apellidos: json['Apellidos'],
       correo: json['Correo'],
-      fechaNacimiento: json['FechaNacimiento'],
+      fechaNacimiento: json['FechaNacimiento'].toDate(),
       telefono: json['Telefono'],
+      imageURL: json['ImageURL']
     );
   }
 
@@ -35,7 +39,8 @@ class Usuario {
       'Apellidos': apellidos,
       'Correo': correo,
       'FechaNacimiento': fechaNacimiento,
-      'Telefono': telefono
+      'Telefono': telefono,
+      'ImageURL': imageURL
     };
   }
 

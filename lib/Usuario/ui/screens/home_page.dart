@@ -1,9 +1,12 @@
+
+import 'package:PsyBrain/ProfSalud/UI/screens/search_users_page.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
-import 'package:PsyBrain/UI/screens/singin_screen.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/start_conversation_card.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/user_card.dart';
+import 'package:PsyBrain/Usuario/ui/widgets/user_card_chat.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +25,7 @@ class HomePageUser extends StatelessWidget {
             ),
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.bolt_horizontal_circle)),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.search)),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.plus_app),
             ),
@@ -42,16 +46,41 @@ class HomePageUser extends StatelessWidget {
                   break;
                 case 1:
                   return CupertinoPageScaffold(
+                      //TODO: UserChat history widgets here.                      
                       child: Column(
-                    children: [
-                      StartConversationCard(
-                        context: context,
-                      ),
-                      //TODO: UserChat history widgets here.
-                    ],
-                  ));
+                        children: [
+                          StartConversationCard(
+                                    context: context,
+                                  ),
+                         Expanded(
+                           child:  StreamBuilder<QuerySnapshot>(
+                              stream: userBloc.chats(),
+                              builder: (context, snapshot) {
+                                return ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.hasData? snapshot.data.size : 0,                              
+                                  itemBuilder: (context, index) {                                                                
+                                    print(snapshot.data.docs[index].id);                             
+                                    print(snapshot.data.docs[index].data()['LastEditingTime']);
+                                      if(!snapshot.hasData){
+                                        
+                                      }else{
+                                      return Column(
+                                        children: [
+                                          UserCardChat(info: snapshot.data.docs[index]),                                          
+                                        ],
+                                      );
+                                      }
+                                    }                              
+                                );
+                              }),
+                           )
+                        ],
+                      ));
                   break;
                 case 2:
+                 return SearchUserPage();
+                case 3:              
                   return CupertinoPageScaffold(
                     navigationBar: CupertinoNavigationBar(
                       middle: Text('Más'),

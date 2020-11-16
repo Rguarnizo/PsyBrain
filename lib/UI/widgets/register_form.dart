@@ -155,8 +155,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   //TODO: Revisar campos, algunos faltantes. Campo nombres por Google Auth.
                   setState(() {});
                   print(license);
-                  if (_formKey.currentState.validate()) {
-                    print('hasja00');
+                  if (_formKey.currentState.validate()) {                    
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -182,19 +181,8 @@ class _RegisterFormState extends State<RegisterForm> {
                           licencia: license,
                           cedula: identification,
                         );
-                        userHealthBloc.guardarInformacion(user, uid);
-                      } else {
-                        Usuario user = new Usuario(
-                          nombres: displayName,
-                          apellidos: '',
-                          correo: email,
-                          fechaNacimiento: bornDate,
-                          telefono: phone,
-                        );
-                        userBloc.guardarInformacion(user, uid);
-                      }
-
-                      showDialog(
+                        userHealthBloc.guardarInformacion(profSaludUser: user,uid: uid);
+                         showDialog(
                         context: context,
                         builder: (context) {
                           return CupertinoAlertDialog(
@@ -205,19 +193,41 @@ class _RegisterFormState extends State<RegisterForm> {
                               CupertinoDialogAction(
                                 child: Text('OK'),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) {
-                                      return SignInScreen();
-                                    },
-                                  ));
+                                  Navigator.pushNamedAndRemoveUntil(context,'HomePageProfSalud', (route) => false);
                                 },
                               ),
                             ],
                           );
                         },
                       );
+                      } else {
+                        Usuario user = new Usuario(
+                          nombres: displayName,
+                          apellidos: '',
+                          correo: email,
+                          fechaNacimiento: bornDate,
+                          telefono: phone,
+                        );
+                        userBloc.guardarInformacion(user, uid);
+                         showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text('¡Todo salió bien!'),
+                            content: Text(
+                                'Los datos han sido registrados correctamente'),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(context,'UsuarioPoll', (route) => false);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      }                     
                     });
                   }
                 },

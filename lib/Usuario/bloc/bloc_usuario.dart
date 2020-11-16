@@ -45,6 +45,10 @@ class UsuarioBloc extends Bloc {
 
   Usuario usuario = Usuario();
 
+  Future<void> actualizarData(Map<String,dynamic> data)async{
+    return await _firestore_repo.actualizarData(data,currentUser.uid);
+  }
+
   Future<String> crearUsuario() async {
     return await _firestore_repo.crearUsuario(usuario);
   }
@@ -90,4 +94,22 @@ class UsuarioBloc extends Bloc {
   Future<void> guardarEncuesta(Map<String, dynamic> jsonPoll) {
     return _firestore_repo.guardarEncuesta(jsonPoll,currentUser.uid);
   }
+
+  Future<void> escribirChat(String chatUID,String message){
+    return _firestore_repo.escribirChat(chatUID,currentUser.uid,message);
+  }
+
+  Future<void> iniciarChat(String anotherUserUid,String message){
+    return _firestore_repo.iniciarChat(anotherUserUid,currentUser.uid,message);
+  }
+
+  Stream<QuerySnapshot> chat(String chatUid) {
+    return _firestore_repo.chat(chatUid);
+  }
+
+  Stream<QuerySnapshot> chats(){
+    return _firestore_repo.chats(currentUser.uid);
+  }
+
+  
 }
