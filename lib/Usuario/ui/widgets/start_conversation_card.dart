@@ -9,15 +9,14 @@ class StartConversationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return 
         InkWell(
           onTap: () {
             Navigator.of(this.context).push(CupertinoPageRoute(builder: (context) {
               return CupertinoPageScaffold(
                 navigationBar:
                       CupertinoNavigationBar(middle: Text('Chat')),
-                child: UserChat(chatID: 'Hola',),
+                child: UserChat(chatID: 'BOT',),
               );
             }));
           },
@@ -77,8 +76,7 @@ class StartConversationCard extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ],
-    );
+        );
+      
   }
 }

@@ -41,5 +41,13 @@ class FireStoreRepo {
   }
   Future<void> actulizarData(Map<String,dynamic> data,String uid){
     return _fireStoreApi.actulizarData(data, uid);
+  }
+
+  Stream<QuerySnapshot> getListUsers(String query) {
+    return _fireStoreApi.getListUsers(query);
   } 
+
+  Future<void> iniciarChat(String anotherUserUid, String uid, String message) async{
+    _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
+  }
 }

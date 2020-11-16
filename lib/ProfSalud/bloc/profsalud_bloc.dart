@@ -62,7 +62,16 @@ class ProfSaludBloc extends Bloc {
 
   Future<void> actulizarData(Map<String,dynamic> data){
     return _fireStoreRepo.actulizarData(data,currentUser.uid);
+  }
+
+  Stream<QuerySnapshot> getListUsers(String query) {
+    return _fireStoreRepo.getListUsers(query);
   } 
+
+  Future<void> iniciarChat(String anotherUserUid,String message){
+    return _fireStoreRepo.iniciarChat(anotherUserUid,currentUser.uid,message);
+  }
+
 
 }
 

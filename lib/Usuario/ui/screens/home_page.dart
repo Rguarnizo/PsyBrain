@@ -1,3 +1,5 @@
+
+import 'package:PsyBrain/ProfSalud/UI/screens/search_users_page.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/services_card.dart';
@@ -23,6 +25,7 @@ class HomePageUser extends StatelessWidget {
             ),
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.bolt_horizontal_circle)),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.search)),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.plus_app),
             ),
@@ -43,7 +46,7 @@ class HomePageUser extends StatelessWidget {
                   break;
                 case 1:
                   return CupertinoPageScaffold(
-                      //TODO: UserChat history widgets here.
+                      //TODO: UserChat history widgets here.                      
                       child: Column(
                         children: [
                           StartConversationCard(
@@ -76,6 +79,8 @@ class HomePageUser extends StatelessWidget {
                       ));
                   break;
                 case 2:
+                 return SearchUserPage();
+                case 3:              
                   return CupertinoPageScaffold(
                     navigationBar: CupertinoNavigationBar(
                       middle: Text('Más'),

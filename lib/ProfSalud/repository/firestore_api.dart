@@ -36,6 +36,25 @@ class FireStoreApi{
 
   Future<void> actulizarData(Map<String,dynamic> data,String uid){
     return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).update(data);
+  }
+
+  Stream<QuerySnapshot> getListUsers(String query) {
+    return _apiFireStore.collection('Usuario').snapshots();
   } 
+
+  Future<void> iniciarChat(String anotherUserUid, String uid,String message) async {
+    
+    await _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').set({
+      'Uid': [uid,anotherUserUid],
+      'LastEditingTime': Timestamp.now(),
+    });
+
+    return _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').collection('$uid-$anotherUserUid').doc().set({
+      'sendUid'  :  uid,
+      'reciveUid': anotherUserUid,
+      'Message'  : message,
+      'Timestamp': Timestamp.now(),
+    });
+  }
 
 }

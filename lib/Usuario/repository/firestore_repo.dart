@@ -84,7 +84,7 @@ class FireStoreRepo {
   }
 
   Future<void> actualizarData(Map<String, dynamic> data,String uid) {
-    _fireStoreApi.actualizarData(data,uid);
+    return _fireStoreApi.actualizarData(data,uid);
   }
   
 }

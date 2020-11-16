@@ -121,7 +121,7 @@ class _UserChatState extends State<UserChat> {
                                 color: color[900],
                               ),
                               onTap: () {
-                                if(controllerMessage.text.isNotEmpty){
+                                if(controllerMessage.text.isNotEmpty){                                                                  
                                 userBloc.escribirChat(
                                     widget.chatID, controllerMessage.text);
                                 scrollController.jumpTo(
