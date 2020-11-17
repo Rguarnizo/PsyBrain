@@ -70,7 +70,7 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                     },
                     child: CircleAvatar(
                         radius: 50,              
-                        child: ClipOval(child: Container(child: Image.network(profSaludBloc.currentUser.photoURL),)),
+                        child: ClipOval(child: Container(child: Image.network(snapshot.data['ImageURL']),)),
                       ),
                   ),
 

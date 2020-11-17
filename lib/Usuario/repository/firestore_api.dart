@@ -16,7 +16,7 @@ class FireStoreApi {
 
   Future<void> guardarInformacion(Usuario usuario, String uid) {
     usuario.id = uid;
-    usuario.imageURL = _apiFireAuth.currentUser.photoURL;
+    usuario.imageURL = _apiFireAuth.currentUser.photoURL?? 'https://www.pngkit.com/png/full/383-3836644_thinking-brain-png-png.png';
     return _apiFireStore.collection(USUARIO).doc(uid).set(usuario.json());
   }
 
