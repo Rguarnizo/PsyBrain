@@ -236,10 +236,11 @@ class PollScreenState extends State<PollScreen> {
                     decoration: InputDecoration(
                       
                     ),
-                    validator: (String value){
+                    validator: (value){
                       if(value.isEmpty){
                         return 'Campo requerido';
                       }
+                      return null;
                     },
                   ),
                   Text('En las ultimas 4 semanas, ¿ Has tenido problemas con tu trabajo o vida diaria debido a tu salud fisica?'),
@@ -705,9 +706,9 @@ class PollScreenState extends State<PollScreen> {
               Container(height: 20,),
             MyButton(
                   action: (){
-                    if(_verificarEncuesta(context)==true){
+                    if(_verificarEncuesta(context)){
                     
-                    if(!formKey.currentState.validate()){
+                    if(formKey.currentState.validate()){
                       Navigator.pushReplacementNamed(context,'HomePageUser');
                       userBloc.guardarEncuesta(jsonPoll());
                     }

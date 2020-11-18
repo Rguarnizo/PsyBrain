@@ -31,7 +31,7 @@ class FireStoreApi{
 
 
   Stream<QuerySnapshot> getChats(String uid){
-    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).snapshots();  
+    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).orderBy('LastEditingTime',descending: true).snapshots();  
   }
 
   Future<void> actulizarData(Map<String,dynamic> data,String uid){

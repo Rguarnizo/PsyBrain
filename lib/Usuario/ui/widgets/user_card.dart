@@ -15,7 +15,7 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userLogged = userBloc.getCurrentUser();
+    var userLogged = userBloc.currentUser;
     // var phone;
     // userBloc.obtenerInformacion(userLogged.uid).then((documentSnapshot){
     //   phone = documentSnapshot.data()['phone'];

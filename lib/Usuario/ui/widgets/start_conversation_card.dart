@@ -36,7 +36,7 @@ class StartConversationCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Image(
-                      image: AssetImage('assets/imgs/live_chat.png'),
+                      image: AssetImage('assets/imgs/live_chat.png'), 
                       height: 55.0,
                       width: 70,
                     ),
