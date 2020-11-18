@@ -39,7 +39,14 @@ class FireStoreApi{
   }
 
   Stream<QuerySnapshot> getListUsers(String query) {
-    return _apiFireStore.collection('Usuario').snapshots();
+    String limit;
+    if(query != ''){
+    final strFrontCode = query.substring(0, query.length - 1);
+    final strEndCode = query.split('').last;
+    limit =
+      strFrontCode + String.fromCharCode(strEndCode.codeUnitAt(0) + 1);
+    }
+    return _apiFireStore.collection('Usuario').where('Nombres',isGreaterThanOrEqualTo: query).where('Nombres',isLessThan: limit).snapshots();
   } 
 
   Future<void> iniciarChat(String anotherUserUid, String uid,String message) async {

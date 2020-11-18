@@ -83,7 +83,7 @@ class FireStoreApi {
   }
 
   Stream<QuerySnapshot> chats(String uid){
-    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).orderBy('LastEditingTime').snapshots();
+    return _apiFireStore.collection('Chats').where('Uid',arrayContains: uid).orderBy('LastEditingTime',descending: true).snapshots();
   }
 
   escribirChat(String chatUID, String uid, String message) async {
@@ -100,7 +100,7 @@ class FireStoreApi {
   }
 
   Future<void> actualizarData(Map<String,dynamic > data,String uid) {
-    return _apiFireStore.collection(USUARIO).doc('').update(data);
+    return _apiFireStore.collection(USUARIO).doc(uid).update(data);
   }
 
 

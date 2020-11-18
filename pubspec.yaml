@@ -35,6 +35,7 @@ dependencies:
   intl: ^0.16.1
   vibration: ^1.7.1
   http: ^0.12.2
+  image_picker:
 
 dev_dependencies:
   flutter_test:

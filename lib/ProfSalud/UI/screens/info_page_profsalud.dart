@@ -1,14 +1,11 @@
 
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
-import 'package:PsyBrain/UI/widgets/datetime_picker_selector.dart';
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/main.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 
 class InfoProfSalud extends StatefulWidget {
@@ -65,14 +62,18 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                 children: [
                   SizedBox(height: 20,),
                   GestureDetector(
-                    onTap: () {
-                      
+                    onTap: () async {
+                      profSaludBloc.cambiarFotoPerfil();
                     },
                     child: CircleAvatar(
-                        radius: 50,              
-                        child: ClipOval(child: Container(child: Image.network(snapshot.data['ImageURL']),)),
-                      ),
-                  ),
+                        radius: (50),      
+                        backgroundColor: Colors.white,        
+                        child: ClipRRect(
+                          borderRadius:BorderRadius.circular(50),
+                          child: Image.network(snapshot.data['ImageURL'],fit: BoxFit.fill),
+                      ),                    
+                    ),                     
+                      ),                  
 
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -90,9 +91,9 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                       ]
                     ),
                   ),
-                    Padding(
+                    Padding( 
                       padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: MyButton(action:  (){                   
+                      child: MyButton(action:  (){
                             profSaludBloc.actulizarData(userHealtData);                                    
                       },buttonName: 'Actualizar Información',withShadow: true,gradientColors: [color[800]],textColor: Colors.white,),
                     ),

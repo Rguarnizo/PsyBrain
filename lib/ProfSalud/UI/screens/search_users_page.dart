@@ -16,11 +16,11 @@ class SearchUserPage extends StatefulWidget {
 class _SearchUserPageState extends State<SearchUserPage> {
 
   ProfSaludBloc userHealthBloc;
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
-    userHealthBloc = BlocProvider.of<ProfSaludBloc>(context);
-    String query = '';
+    userHealthBloc = BlocProvider.of<ProfSaludBloc>(context);    
 
     return CupertinoPageScaffold(
                       navigationBar: CupertinoNavigationBar(
@@ -40,8 +40,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
                             ),
                             onChanged: (value) {
                               setState(() {
-                                query = value;
-                                print(query);
+                                query = value;                                
                               });
                             },
                           ),
@@ -52,8 +51,9 @@ class _SearchUserPageState extends State<SearchUserPage> {
                           builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {                                                       
                             if(snapshot.hasData){                              
                               return ListView.builder(
+                                
                                 itemCount: snapshot.data.docs.length,
-                                itemBuilder: (context, index) {                                  
+                                itemBuilder: (context, index) {                                                                    
                                   return SearchUserCard(data: snapshot.data.docs[index],);
                                 },
                                 );

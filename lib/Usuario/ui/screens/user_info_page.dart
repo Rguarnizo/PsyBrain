@@ -66,7 +66,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   SizedBox(height: 20,),
                   GestureDetector(
                     onTap: () {
-                      
+                      usuarioBloc.cambiarFotoPerfil();
                     },
                     child: CircleAvatar(
                         radius: 50,              

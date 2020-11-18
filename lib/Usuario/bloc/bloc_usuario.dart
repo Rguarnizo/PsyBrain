@@ -1,3 +1,4 @@
+import 'package:PsyBrain/Usuario/repository/cloud_storage_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:PsyBrain/Usuario/repository/firestore_repo.dart';
 class UsuarioBloc extends Bloc {
   final _auth_repo = AuthRepo();
   final _firestore_repo = FireStoreRepo();
+  final _cloudStorageRepo = CloudStorageRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;
@@ -109,6 +111,22 @@ class UsuarioBloc extends Bloc {
 
   Stream<QuerySnapshot> chats(){
     return _firestore_repo.chats(currentUser.uid);
+  }
+
+     guardarImagen(){
+      return _cloudStorageRepo.guardarImagen();
+    }
+
+  seleccionarImagen() {
+    return _cloudStorageRepo.seleccionarImagen();
+  }
+
+  void cambiarFotoPerfil() async{
+    String photoURL = await  guardarImagen();
+    actualizarData({
+      'ImageURL': photoURL
+    });
+
   }
 
   

@@ -1,5 +1,6 @@
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/ProfSalud/repository/auth_repo.dart';
+import 'package:PsyBrain/ProfSalud/repository/cloud_storage_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ class ProfSaludBloc extends Bloc {
   ProfSalud profSalud = ProfSalud();
   FireStoreRepo _fireStoreRepo = FireStoreRepo();
   AuthRepo _authRepo = AuthRepo();
+  CloudStorageRepo _cloudStorageRepo = CloudStorageRepo();
 
   ProfSaludBloc({initialState}) : super({initialState});
 
@@ -70,6 +72,23 @@ class ProfSaludBloc extends Bloc {
 
   Future<void> iniciarChat(String anotherUserUid,String message){
     return _fireStoreRepo.iniciarChat(anotherUserUid,currentUser.uid,message);
+  }
+
+
+    guardarImagen(){
+      return _cloudStorageRepo.guardarImagen();
+    }
+
+  seleccionarImagen() {
+    return _cloudStorageRepo.seleccionarImagen();
+  }
+
+  void cambiarFotoPerfil() async{
+    String photoURL = await  guardarImagen();
+    actulizarData({
+      'ImageURL': photoURL
+    });
+
   }
 
 
