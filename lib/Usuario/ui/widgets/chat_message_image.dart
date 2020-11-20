@@ -2,16 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ChatMessage extends StatelessWidget {
-  final String message;
+class ChatMessageImage extends StatelessWidget {
+  final String title;
+  final String description;
+  final String imgURL;
   bool isUserMessage;
   DateTime timeStamp;
 
-  ChatMessage(
+  ChatMessageImage(
       {Key key,
-      @required this.message,
       this.isUserMessage,
-      @required this.timeStamp});
+      @required this.timeStamp,
+      this.title,
+      this.description,
+      @required this.imgURL});
 
   @override
   Widget build(BuildContext context) {
@@ -79,22 +83,42 @@ class ChatMessage extends StatelessWidget {
         ),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: !isUserMessage
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              message ?? 'null',
-              style: TextStyle(
-                fontSize: 16.0,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Image.network(
+                imgURL,
+                height: 180,
+                width: 300,
+                fit: BoxFit.fill,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 15.0),
               child: Text(
-                DateFormat('kk:mm').format(timeStamp),
-                style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                title,
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
               ),
+            ),
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 14.0,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                !isUserMessage ? Spacer() : null,
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    DateFormat('kk:mm').format(timeStamp),
+                    style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                  ),
+                ),
+              ],
             ),
           ],
         ));

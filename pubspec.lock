@@ -385,6 +385,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.2"
+  watson_assistant_v2:
+    dependency: "direct main"
+    description:
+      name: watson_assistant_v2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   xml:
     dependency: transitive
     description:

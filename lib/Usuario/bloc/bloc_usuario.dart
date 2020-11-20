@@ -1,3 +1,4 @@
+import 'package:PsyBrain/Usuario/repository/watson_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
@@ -10,10 +11,10 @@ import 'package:PsyBrain/Usuario/repository/firestore_repo.dart';
 class UsuarioBloc extends Bloc {
   final _auth_repo = AuthRepo();
   final _firestore_repo = FireStoreRepo();
+  final _watson_repo = WatsonRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;
-  
 
   Stream<auth.User> authStateChanges() => _auth_repo.authStateChanges();
 
@@ -26,8 +27,9 @@ class UsuarioBloc extends Bloc {
   //Caso de uso: Cerrar sesion de Google
   void signOut() => _auth_repo.signOut();
   //Caso de uso: Inicio de sesión con email y password
-  Future<auth.UserCredential> signInWithEmailAndPassword(String email, String password, BuildContext context) => _auth_repo.signInWithEmailAndPassword(email, password, context);
-
+  Future<auth.UserCredential> signInWithEmailAndPassword(
+          String email, String password, BuildContext context) =>
+      _auth_repo.signInWithEmailAndPassword(email, password, context);
 
   //Verificar si el usuario logueado con Google esta registrado en Firebase
   Future<DocumentSnapshot> obtenerInformacion(String uid) =>
@@ -49,19 +51,25 @@ class UsuarioBloc extends Bloc {
     return await _firestore_repo.crearUsuario(usuario);
   }
 
-
   //Caso de uso: Modificar información de usuario
-  Future<String> actualizarInformacionUsuario() async{
-
-    String mensaje = await _firestore_repo.actualizarInformacionUsuario(usuario);
+  Future<String> actualizarInformacionUsuario() async {
+    String mensaje =
+        await _firestore_repo.actualizarInformacionUsuario(usuario);
     return mensaje;
   }
 
+  //Obtener un session ID para la conversación (Watson)
+  Future<Map<String, dynamic>> getSessionID() => _watson_repo.getSessionID();
 
+  //Enviar un mensaje a Watson
+  Future<Map<String, dynamic>> sendMessage(String text, String sessionID) =>
+      _watson_repo.sendMessage(text, sessionID);
 
+  // Servicio de analisis de texto con Functions
+  Future<Map<String, dynamic>> sendAnalysis(String text) =>
+      _watson_repo.sendAnalysis(text);
 
   auth.User get currentUser => _auth_repo.getCurrentUser();
-
 
   @override
   void dispose() {
@@ -74,16 +82,16 @@ class UsuarioBloc extends Bloc {
     throw UnimplementedError();
   }
 
-  void setUsuarioInfo(Map<String,dynamic> data) {
-    if(data['Contraseña'] == null){
+  void setUsuarioInfo(Map<String, dynamic> data) {
+    if (data['Contraseña'] == null) {
       usuario = Usuario.fromJson(data);
-    }else{
+    } else {
       //TODO: Corrección en la forma de trabajar
       usuario = Usuario.fromJsonPassword(data);
     }
   }
 
   Future<bool> usuarioRegistrado(String uid) async {
-     return (await  obtenerInformacion(uid)).exists;
+    return (await obtenerInformacion(uid)).exists;
   }
 }
