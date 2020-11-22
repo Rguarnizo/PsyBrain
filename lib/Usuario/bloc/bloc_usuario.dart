@@ -90,4 +90,7 @@ class UsuarioBloc extends Bloc {
   Future<void> guardarEncuesta(Map<String, dynamic> jsonPoll) {
     return _firestore_repo.guardarEncuesta(jsonPoll,currentUser.uid);
   }
+  Future<void> guardarEncuestaChat(Map<String, dynamic> jsonAfterChatPoll){
+    return _firestore_repo.guardarEncuestaChat(jsonAfterChatPoll,currentUser.uid);
+  }
 }

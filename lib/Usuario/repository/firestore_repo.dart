@@ -66,5 +66,7 @@ class FireStoreRepo {
   Future<void> guardarEncuesta(Map<String, dynamic> jsonPoll,String uid)async {
     return await _fireStoreApi.guardarEncuesta(jsonPoll,uid);
   }
-  
+  Future<void> guardarEncuestaChat(Map<String, dynamic> jsonAfterChatPoll,String uid)async {
+    return await _fireStoreApi.guardarEncuestaChat(jsonAfterChatPoll,uid);
+  }
 }
