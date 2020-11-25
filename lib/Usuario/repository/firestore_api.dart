@@ -79,7 +79,7 @@ class FireStoreApi {
   }
 
   Stream<QuerySnapshot> chat(String chatUid){        
-    return _apiFireStore.collection('Chats').doc(chatUid).collection(chatUid).orderBy('Timestamp').snapshots();
+    return _apiFireStore.collection('Chats').doc(chatUid).collection(chatUid).orderBy('Timestamp',descending: true).snapshots();
   }
 
   Stream<QuerySnapshot> chats(String uid){
@@ -101,6 +101,19 @@ class FireStoreApi {
 
   Future<void> actualizarData(Map<String,dynamic > data,String uid) {
     return _apiFireStore.collection(USUARIO).doc(uid).update(data);
+  }
+
+  Future<void> escribirChatImagen(chatUID, url,uid) async  {
+     await _apiFireStore.collection('Chats').doc(chatUID).update({      
+      'LastEditingTime': Timestamp.now(),
+    });
+
+    return _apiFireStore.collection('Chats').doc(chatUID).collection(chatUID).doc().set({
+      'sendUid': uid,
+      'ImageUrl': url,
+      'Timestamp': Timestamp.now(),
+    });
+
   }
 
 

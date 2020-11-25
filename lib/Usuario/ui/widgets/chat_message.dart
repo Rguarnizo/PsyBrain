@@ -6,10 +6,11 @@ import 'package:intl/intl.dart';
 
 class ChatMessage extends StatelessWidget {
   final String message;
+  String image;
   bool isUserMessage;
   Timestamp timeStamp;
 
-  ChatMessage({Key key, @required this.message, this.isUserMessage, this.timeStamp});
+  ChatMessage({Key key, @required this.message, this.isUserMessage, this.timeStamp, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +41,12 @@ class ChatMessage extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: [
             Text(
-              message,
+              message?? '',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
+            hasImage()? FadeInImage.assetNetwork(placeholder: 'assets/imgs/loading2.gif', image: image): Container(),            
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
@@ -60,5 +62,10 @@ class ChatMessage extends StatelessWidget {
     DateTime dateTime = timeStamp.toDate();
     String hora = DateFormat.jm().format(dateTime);
     return '${dateTime.day}-${dateTime.month}-${dateTime.year} / $hora';
+  }
+
+  bool hasImage(){
+    bool hasImage = image.runtimeType == String;
+    return hasImage;
   }
 }

@@ -36,8 +36,8 @@ class UserCardChat extends StatelessWidget {
                   ? profSaludBloc.getUserHealthInfo(uidUserInfo)
                   : userBloc.getUserInfo(uidUserInfo),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                if (snapshot.connectionState == ConnectionState.waiting) {         
+
                 } else if (snapshot.hasData) {
                   return GestureDetector(
                     child: Container(
@@ -96,13 +96,22 @@ class UserCardChat extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'UltimoMensaje',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.grey,
-                                          fontFamily: 'SourceSansPro',
-                                        ),
+                                      StreamBuilder<QuerySnapshot>(
+                                        stream: userBloc.chat(info.id),
+                                        builder: (context, snapshot) {
+                                          if(snapshot.hasData){
+                                          return Text(
+                                            lastMessage(snapshot),
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey,
+                                              fontFamily: 'SourceSansPro',
+                                            ),
+                                          );
+                                          }else{
+                                            return Container();
+                                          }
+                                        }
                                       ),
                                       Text(
                                         getLastTime(),
@@ -157,4 +166,19 @@ class UserCardChat extends StatelessWidget {
       return await profSaludBloc.profSaludRegistrado(info.data()['Uid'][1]);
     }
   }
+
+  String lastMessage(snapshot) {
+    dynamic data = snapshot.data.docs.first.data()['Message'];
+    if( data.runtimeType == String){
+      if(data.length >= 25){
+        return data.substring(0,25) + '...';
+      }
+      return data;
+      
+    }else{
+      return 'Imagen';
+    }
+  }
+
+  
 }

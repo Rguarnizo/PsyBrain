@@ -55,15 +55,18 @@ class HomePageProfSalud extends StatelessWidget {
                         child: StreamBuilder<QuerySnapshot>(
                             stream: userHealthBloc.chats(),
                             builder: (context, snapshot) {
+                              print('Aqui paso');
+                              print(snapshot);
+                              if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){                               
+                                return Center(child: CircularProgressIndicator());
+                              } else {
                               return ListView.builder(
                                   physics: BouncingScrollPhysics(),
                                   itemCount:
                                       snapshot.hasData ? snapshot.data.size : 0,
-                                  itemBuilder: (context, index) {
-                                    print(snapshot.data.docs[index].data());
+                                  itemBuilder: (context, index) {                                    
                                     if (!snapshot.hasData) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
+                                      
                                     } else {
                                       return Column(
                                         children: [
@@ -74,6 +77,7 @@ class HomePageProfSalud extends StatelessWidget {
                                       );
                                     }
                                   });
+                              }
                             }),
                       )
                     ],

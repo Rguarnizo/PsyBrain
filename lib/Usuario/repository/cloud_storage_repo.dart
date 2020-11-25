@@ -17,6 +17,4 @@ class CloudStorageRepo{
     return _cloudStorageApi.seleccionarImagen();
   }
 
-
-
  }

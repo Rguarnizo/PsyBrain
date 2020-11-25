@@ -129,5 +129,9 @@ class UsuarioBloc extends Bloc {
 
   }
 
+  Future<void> escribirChatImagen(chatUID, url) {
+    return _firestore_repo.escribirChatImagen(chatUID,url,currentUser.uid);
+  }
+
   
 }

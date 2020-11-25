@@ -27,7 +27,6 @@ class _UserChatState extends State<UserChat> {
   UsuarioBloc userBloc;
 
   TextEditingController controllerMessage = TextEditingController();
-  ScrollController scrollController = ScrollController();
 
 
 
@@ -73,15 +72,15 @@ class _UserChatState extends State<UserChat> {
                       );
                     } else {
                       return ListView.builder(
-                        controller: scrollController,
+                        reverse: true,                        
                         physics: BouncingScrollPhysics(),
                         itemCount: snapshot.data.size,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (context, index) {                                                    
                           return ChatMessage(
                               isUserMessage: isUserMessage(snapshot,index),
-                              message:
-                                  snapshot.data.docs[index].data()['Message'],
-                                  timeStamp:snapshot.data.docs[index].data()['Timestamp']);
+                              image:   snapshot.data.docs[index].data()['ImageUrl'],
+                              message: snapshot.data.docs[index].data()['Message'],
+                              timeStamp: snapshot.data.docs[index].data()['Timestamp']);
                         },
                       );
                     }
@@ -108,9 +107,21 @@ class _UserChatState extends State<UserChat> {
                           children: [
                             GestureDetector(
                               child: Icon(
+                                CupertinoIcons.camera,
+                                 color: color[700],                                                             
+                              ),                              
+                              onTap: () async {
+                                dynamic url = await userBloc.guardarImagen();
+                                userBloc.escribirChatImagen(widget.chatID, url);
+                              },
+                            ),
+                            SizedBox(width: 20,),
+                            GestureDetector(
+                              child: Icon(
                                 Icons.emoji_emotions,
                                 color: color[700],
                               ),
+                              
                             ),
                             SizedBox(
                               width: 20,
@@ -123,10 +134,7 @@ class _UserChatState extends State<UserChat> {
                               onTap: () {
                                 if(controllerMessage.text.isNotEmpty){                                                                  
                                 userBloc.escribirChat(
-                                    widget.chatID, controllerMessage.text);
-                                scrollController.jumpTo(
-                                    scrollController.position.maxScrollExtent +
-                                        40.0);
+                                    widget.chatID, controllerMessage.text);                              
                                 controllerMessage.clear();
                                 }                                                      
                                 }
@@ -157,4 +165,7 @@ class _UserChatState extends State<UserChat> {
   bool isUserMessage(snapshot,index) {
     return userBloc.currentUser.uid.compareTo(snapshot.data.docs[index].data()['sendUid']) == 0;
   }
+
+
+  
 }

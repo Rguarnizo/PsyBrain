@@ -86,5 +86,9 @@ class FireStoreRepo {
   Future<void> actualizarData(Map<String, dynamic> data,String uid) {
     return _fireStoreApi.actualizarData(data,uid);
   }
+
+  Future<void> escribirChatImagen(chatUID, url,uid) {
+    return _fireStoreApi.escribirChatImagen(chatUID,url,uid);
+  }
   
 }
