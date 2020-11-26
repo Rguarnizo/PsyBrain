@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
-class UserChat extends StatefulWidget {
+class BotChat extends StatefulWidget {
   @override
-  _UserChatState createState() => _UserChatState();
+  _BotChatState createState() => _BotChatState();
 }
 
-class _UserChatState extends State<UserChat> {
+class _BotChatState extends State<BotChat> {
   String message;
   UsuarioBloc userBloc;
   ScrollController controller = new ScrollController();

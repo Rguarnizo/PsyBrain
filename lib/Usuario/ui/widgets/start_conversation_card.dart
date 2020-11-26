@@ -1,4 +1,4 @@
-import 'package:PsyBrain/Usuario/ui/screens/user_chat.dart';
+import 'package:PsyBrain/UI/screens/bot_chat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +13,8 @@ class StartConversationCard extends StatelessWidget {
       onTap: () {
         Navigator.of(this.context).push(CupertinoPageRoute(builder: (context) {
           return CupertinoPageScaffold(
-            navigationBar:
-                  CupertinoNavigationBar(middle: Text('Chat')),
-            child: UserChat(),
+            navigationBar: CupertinoNavigationBar(middle: Text('Chat')),
+            child: BotChat(),
           );
         }));
       },
