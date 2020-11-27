@@ -1,8 +1,7 @@
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
+
 import 'package:PsyBrain/Usuario/repository/cloud_storage_repo.dart';
-========================================================================
 import 'package:PsyBrain/Usuario/repository/watson_repo.dart';
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> chat_task121
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
@@ -15,11 +14,8 @@ import 'package:PsyBrain/Usuario/repository/firestore_repo.dart';
 class UsuarioBloc extends Bloc {
   final _auth_repo = AuthRepo();
   final _firestore_repo = FireStoreRepo();
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
   final _cloudStorageRepo = CloudStorageRepo();
-========================================================================
   final _watson_repo = WatsonRepo();
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> chat_task121
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;

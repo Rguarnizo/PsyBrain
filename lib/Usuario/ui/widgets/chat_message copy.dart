@@ -12,12 +12,54 @@ class ChatMessage extends StatelessWidget {
 
   ChatMessage({Key key, @required this.message, this.isUserMessage, this.timeStamp, this.image});
 
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> message = [messageBubble()];
+    if (isUserMessage) {
+      message.add(messageAvatar());
+    } else {
+      message.insert(0, messageAvatar());
+    }
+
+    return Container(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      width: MediaQuery.of(context).size.width - 20,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: message,
+      ),
+    );
+  }
+
+  Widget messageAvatar() {
+    if (isUserMessage) {
+      return CircleAvatar(
+        radius: 20.0,
+        child: Icon(
+          CupertinoIcons.person,
+          color: Colors.white,
+        ),
+        backgroundColor: Color(0xFFceb1be),
+      );
+    } else {
+      return CircleAvatar(
+        radius: 20.0,
+        child: Icon(
+          CupertinoIcons.bolt_horizontal_fill,
+          color: Colors.white,
+        ),
+        backgroundColor: Color(0xFFceb1be),
+      );
+    }
+  }
+
+  Widget messageBubble() {
     return Container(
         margin: !isUserMessage
-            ? EdgeInsets.only(top: 0, right: 80.0, bottom: 20)
-            : EdgeInsets.only(top: 0, left: 80.0, bottom: 20),
+            ? EdgeInsets.only(top: 0, right: 30.0, bottom: 0)
+            : EdgeInsets.only(top: 0, left: 20.0, bottom: 0),
         padding: EdgeInsets.all(
           15.0,
         ),
@@ -46,18 +88,17 @@ class ChatMessage extends StatelessWidget {
                 fontSize: 16.0,
               ),
             ),
-            hasImage()? FadeInImage.assetNetwork(placeholder: 'assets/imgs/loading2.gif', image: image): Container(),
+            hasImage()? FadeInImage.assetNetwork(placeholder: 'assets/imgs/loading2.gif', image: image): Container(),            
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
-                dateMessage(),
-                style: TextStyle(fontSize: 10.0, color: Colors.grey),
+                dateMessage(),                
+                style: TextStyle(fontSize: 13.0, color: Colors.grey),
               ),
             ),
           ],
         ));
   }
-
 
   String dateMessage() {
     DateTime dateTime = timeStamp.toDate();

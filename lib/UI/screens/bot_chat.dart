@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/chat_message.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/chat_message_analysis.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/chat_message_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 
 class BotChat extends StatefulWidget {
   @override
@@ -22,7 +20,7 @@ class _BotChatState extends State<BotChat> {
   ScrollController controller = new ScrollController();
   List<Widget> conversation = [
     ChatMessage(
-      timeStamp: DateTime.now(),
+      timeStamp: Timestamp.now(),
       isUserMessage: false,
       message:
           "👾 Bienvenido a nuestro servicio de chat 🤖 \n Prueba decir cosas como: \n ¿Cuáles son los sintomas de COVID-19? \n Casos de COVID-19 en Reino Unido \n Reporte COVID-19 en Colombia ",
@@ -98,7 +96,7 @@ class _BotChatState extends State<BotChat> {
                                       conversation.add(ChatMessage(
                                         isUserMessage: true,
                                         message: message,
-                                        timeStamp: DateTime.now(),
+                                        timeStamp: Timestamp.now(),
                                       ));
                                     }
 
@@ -114,7 +112,7 @@ class _BotChatState extends State<BotChat> {
                                       //     .then((value) {
                                       //   conversation.add(ChatMessage(
                                       //     message: 'El mensaje es: ' +value.toString(),
-                                      //     timeStamp: DateTime.now(),
+                                      //     timeStamp: Timestamp.now(),
                                       //     isUserMessage: false,
                                       //   ));
                                       // });
@@ -139,7 +137,7 @@ class _BotChatState extends State<BotChat> {
                                             conversation.add(ChatMessage(
                                               isUserMessage: false,
                                               message: response['text'],
-                                              timeStamp: DateTime.now(),
+                                              timeStamp: Timestamp.now(),
                                             ));
 
                                             controller.jumpTo(controller
