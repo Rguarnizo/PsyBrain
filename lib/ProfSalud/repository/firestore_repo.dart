@@ -22,9 +22,9 @@ class FireStoreRepo {
 
       return 'Registro Exitoso';
     } catch (e) {
-      print(e.code);
+      // print(e.code);
       var traslation = await translator.translate(e.code, from: 'en', to: 'es');
-      print(traslation);
+      // print(traslation);
       return traslation.text;
     }
   }
@@ -35,19 +35,23 @@ class FireStoreRepo {
   Future<void> guardarInformacion(ProfSalud profSalud, String uid) =>
       _fireStoreApi.guardarInformacion(profSalud, uid);
 
-
-  Stream<QuerySnapshot> chats(String uid){
+  Stream<QuerySnapshot> chats(String uid) {
     return _fireStoreApi.getChats(uid);
   }
-  Future<void> actulizarData(Map<String,dynamic> data,String uid){
+
+  Future<void> actulizarData(Map<String, dynamic> data, String uid) {
     return _fireStoreApi.actulizarData(data, uid);
   }
 
   Stream<QuerySnapshot> getListUsers(String query) {
     return _fireStoreApi.getListUsers(query);
-  } 
+  }
 
-  Future<void> iniciarChat(String anotherUserUid, String uid, String message) async{
+  Future<void> iniciarChat(
+      String anotherUserUid, String uid, String message) async {
     _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
   }
+
+  Future<List<String>> getChatsPS(String currentUserID) =>
+      _fireStoreApi.getChatsPS(currentUserID);
 }

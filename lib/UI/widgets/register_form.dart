@@ -135,7 +135,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 setState(() {
                   isUserHealth = !isUserHealth;
                 });
-                print(isUserHealth);
+                //print(isUserHealth);
               },
             ),
             isUserHealth
@@ -154,8 +154,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 action: () {
                   //TODO: Revisar campos, algunos faltantes. Campo nombres por Google Auth.
                   setState(() {});
-                  print(license);
-                  if (_formKey.currentState.validate()) {                    
+                  //print(license);
+                  if (_formKey.currentState.validate()) {
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -181,25 +181,27 @@ class _RegisterFormState extends State<RegisterForm> {
                           licencia: license,
                           cedula: identification,
                         );
-                        userHealthBloc.guardarInformacion(profSaludUser: user,uid: uid);
-                         showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: Text('¡Todo salió bien!'),
-                            content: Text(
-                                'Los datos han sido registrados correctamente'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.pushNamedAndRemoveUntil(context,'HomePageProfSalud', (route) => false);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                        userHealthBloc.guardarInformacion(
+                            profSaludUser: user, uid: uid);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text('¡Todo salió bien!'),
+                              content: Text(
+                                  'Los datos han sido registrados correctamente'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        'HomePageProfSalud', (route) => false);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       } else {
                         Usuario user = new Usuario(
                           nombres: displayName,
@@ -209,25 +211,26 @@ class _RegisterFormState extends State<RegisterForm> {
                           telefono: phone,
                         );
                         userBloc.guardarInformacion(user, uid);
-                         showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: Text('¡Todo salió bien!'),
-                            content: Text(
-                                'Los datos han sido registrados correctamente'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  Navigator.pushNamedAndRemoveUntil(context,'UsuarioPoll', (route) => false);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      }                     
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text('¡Todo salió bien!'),
+                              content: Text(
+                                  'Los datos han sido registrados correctamente'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        'UsuarioPoll', (route) => false);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     });
                   }
                 },

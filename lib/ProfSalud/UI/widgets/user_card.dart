@@ -9,10 +9,7 @@ class UserCard extends StatelessWidget {
   final ProfSaludBloc userHealthBloc;
   final BuildContext context;
 
-  UserCard(
-      {Key key,
-      @required this.context,
-      @required this.userHealthBloc});
+  UserCard({Key key, @required this.context, @required this.userHealthBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -92,29 +89,28 @@ class UserCard extends StatelessWidget {
         }));
       },
       child: FutureBuilder(
-        future: userHealthBloc.obtenerInformacion(userLogged.uid),
-        builder: (context, snapshot) {
-
-          if (snapshot.connectionState == ConnectionState.done) {
-          return Row(
-          children: [
-            Container(
-              height: 50.0,
-              width: 50.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image:  NetworkImage(snapshot.data['ImageURL']),                    
-                ),
-                borderRadius: BorderRadius.circular(9.0),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [                                              
-                             Text(
+          future: userHealthBloc.obtenerInformacion(userLogged.uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Row(
+                children: [
+                  Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(snapshot.data['ImageURL']),
+                      ),
+                      borderRadius: BorderRadius.circular(9.0),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
                               snapshot.data['Nombres'] +
                                   ' ' +
                                   snapshot.data['Apellidos'],
@@ -123,31 +119,28 @@ class UserCard extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'SourceSansPro',
                                   fontSize: 20),
-                            ),                           
-                      Text(
-                        'Usuario ciudadano',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'SourceSansPro',
-                            fontSize: 17),
-                      ),
-                    ])),
-            Spacer(),
-            Icon(
-              CupertinoIcons.chevron_forward,
-              color: Colors.grey,
-              size: 20.0,
-            )
-          ],
-          
-        );
-        
-        }else {
-          return Container();
-        }
-        }
-      ),
+                            ),
+                            Text(
+                              'Usuario profesional de salud',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'SourceSansPro',
+                                  fontSize: 17),
+                            ),
+                          ])),
+                  Spacer(),
+                  Icon(
+                    CupertinoIcons.chevron_forward,
+                    color: Colors.grey,
+                    size: 20.0,
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 }
