@@ -61,45 +61,46 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget _handleCurrentSession() {
     //TODO: Inicio de sesión de forma usual.
-    
+
     return StreamBuilder(
       builder: (context, snapshot) {
-        
-        print(snapshot);
+        // print(snapshot);
 
-        if(snapshot.connectionState == ConnectionState.waiting){
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: CircularProgressIndicator(),
           );
         }
         if (!snapshot.hasData || snapshot.hasError) {
           return signInUI();
-        } else {            
+        } else {
           return FutureBuilder(
             future: typeUser(snapshot),
             builder: (context, snapshot) {
-              print(snapshot.data);
-               if(snapshot.data == 'Usuario'){
-                   return HomePageUser(userBloc: userBloc,);
-               }else if(snapshot.data == 'ProfSalud'){
-                 return HomePageProfSalud(userHealthBloc: userHealthBloc);
-               }
-               return signInUI();
-          },);
+              //print(snapshot.data);
+              if (snapshot.data == 'Usuario') {
+                return HomePageUser(
+                  userBloc: userBloc,
+                );
+              } else if (snapshot.data == 'ProfSalud') {
+                return HomePageProfSalud(userHealthBloc: userHealthBloc);
+              }
+              return signInUI();
+            },
+          );
         }
       },
       stream: userBloc.authStatus,
     );
   }
 
-
-  Future<String> typeUser(AsyncSnapshot snapshot) async{
-      if(await userBloc.usuarioRegistrado(snapshot.data.uid)){
-        return 'Usuario';
-      }else if(await userHealthBloc.profSaludRegistrado(snapshot.data.uid)){
-        return 'ProfSalud';
-      }
-      return null;
+  Future<String> typeUser(AsyncSnapshot snapshot) async {
+    if (await userBloc.usuarioRegistrado(snapshot.data.uid)) {
+      return 'Usuario';
+    } else if (await userHealthBloc.profSaludRegistrado(snapshot.data.uid)) {
+      return 'ProfSalud';
+    }
+    return null;
   }
 
   Future<bool> determineUser(String userLoggedId) async {
@@ -254,8 +255,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                                             userBloc: userBloc,
                                                             userHealthBloc:
                                                                 userHealthBloc,
-                                                          )
-                                                          ));
+                                                          )));
                                             }
                                           })
                                         }

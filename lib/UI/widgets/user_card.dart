@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  final UsuarioBloc userBloc;  
+  final UsuarioBloc userBloc;
   final BuildContext context;
 
   UserCard({Key key, @required this.context, @required this.userBloc});
@@ -117,7 +117,7 @@ class UserCard extends StatelessWidget {
                   children: [
                     FutureBuilder(
                       builder: (context, snapshot) {
-                        print(snapshot);
+                        //print(snapshot);
                         if (snapshot.connectionState == ConnectionState.done) {
                           return Text(
                             snapshot.data['Nombres'] +

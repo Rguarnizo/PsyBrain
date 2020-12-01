@@ -1,5 +1,5 @@
-
 import 'package:PsyBrain/ProfSalud/UI/screens/search_users_page.dart';
+import 'package:PsyBrain/ProfSalud/UI/widgets/relevant_words_card.dart';
 import 'package:PsyBrain/ProfSalud/UI/widgets/user_card.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
@@ -38,10 +38,15 @@ class HomePageProfSalud extends StatelessWidget {
               switch (index) {
                 case 0:
                   return CupertinoPageScaffold(
-                      //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
-                      child: Center(
-                    child: Text('Proximamente'),
-                  ));
+                    //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
+                    child: Column(
+                      children: [
+                        RelevantWordsCard(
+                          userHealthBloc: userHealthBloc,
+                        )
+                      ],
+                    ),
+                  );
                   break;
                 case 1:
                   return CupertinoPageScaffold(
@@ -55,28 +60,31 @@ class HomePageProfSalud extends StatelessWidget {
                         child: StreamBuilder<QuerySnapshot>(
                             stream: userHealthBloc.chats(),
                             builder: (context, snapshot) {
-                              print('Aqui paso');
-                              print(snapshot);
-                              if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){                               
-                                return Center(child: CircularProgressIndicator());
+                              //print('Aqui paso');
+                              //print(snapshot);
+                              if (!snapshot.hasData ||
+                                  snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
                               } else {
-                              return ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount:
-                                      snapshot.hasData ? snapshot.data.size : 0,
-                                  itemBuilder: (context, index) {                                    
-                                    if (!snapshot.hasData) {
-                                      
-                                    } else {
-                                      return Column(
-                                        children: [
-                                          UserCardChat(
-                                            info: snapshot.data.docs[index],
-                                          ),
-                                        ],
-                                      );
-                                    }
-                                  });
+                                return ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: snapshot.hasData
+                                        ? snapshot.data.size
+                                        : 0,
+                                    itemBuilder: (context, index) {
+                                      if (!snapshot.hasData) {
+                                      } else {
+                                        return Column(
+                                          children: [
+                                            UserCardChat(
+                                              info: snapshot.data.docs[index],
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    });
                               }
                             }),
                       )

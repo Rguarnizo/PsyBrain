@@ -36,8 +36,7 @@ class UserCardChat extends StatelessWidget {
                   ? profSaludBloc.getUserHealthInfo(uidUserInfo)
                   : userBloc.getUserInfo(uidUserInfo),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {         
-
+                if (snapshot.connectionState == ConnectionState.waiting) {
                 } else if (snapshot.hasData) {
                   return GestureDetector(
                     child: Container(
@@ -49,11 +48,12 @@ class UserCardChat extends StatelessWidget {
                         child: Row(
                           children: [
                             GestureDetector(
-                                child: CircleAvatar(
-                              backgroundImage:  NetworkImage(snapshot.data['ImageURL']),
-                              maxRadius: 30,
-                            ),
-                            onTap: () => print('Usuario Data'),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(snapshot.data['ImageURL']),
+                                maxRadius: 30,
+                              ),
+                              //onTap: () => print('Usuario Data'),
                             ),
                             Container(
                               padding: EdgeInsets.only(left: 10),
@@ -97,22 +97,21 @@ class UserCardChat extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       StreamBuilder<QuerySnapshot>(
-                                        stream: userBloc.chat(info.id),
-                                        builder: (context, snapshot) {
-                                          if(snapshot.hasData){
-                                          return Text(
-                                            lastMessage(snapshot),
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.grey,
-                                              fontFamily: 'SourceSansPro',
-                                            ),
-                                          );
-                                          }else{
-                                            return Container();
-                                          }
-                                        }
-                                      ),
+                                          stream: userBloc.chat(info.id),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                lastMessage(snapshot),
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.grey,
+                                                  fontFamily: 'SourceSansPro',
+                                                ),
+                                              );
+                                            } else {
+                                              return Container();
+                                            }
+                                          }),
                                       Text(
                                         getLastTime(),
                                         style: TextStyle(
@@ -128,24 +127,24 @@ class UserCardChat extends StatelessWidget {
                             ),
                           ],
                         )),
-                        onTap: (){
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(builder: (context) {
-                return CupertinoPageScaffold(
-                  navigationBar:
-                        CupertinoNavigationBar(middle: Text('Chat')),
-                  child: UserChat(chatID: info.id,),
-                );
-                }
-                    )
-                    );
-                  },
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(CupertinoPageRoute(builder: (context) {
+                        return CupertinoPageScaffold(
+                          navigationBar:
+                              CupertinoNavigationBar(middle: Text('Chat')),
+                          child: UserChat(
+                            chatID: info.id,
+                          ),
+                        );
+                      }));
+                    },
                   );
                 }
                 return Container();
               },
             );
-          }else{
+          } else {
             return Container();
           }
         });
@@ -169,16 +168,13 @@ class UserCardChat extends StatelessWidget {
 
   String lastMessage(snapshot) {
     dynamic data = snapshot.data.docs.first.data()['Message'];
-    if( data.runtimeType == String){
-      if(data.length >= 25){
-        return data.substring(0,25) + '...';
+    if (data.runtimeType == String) {
+      if (data.length >= 25) {
+        return data.substring(0, 25) + '...';
       }
       return data;
-      
-    }else{
+    } else {
       return 'Imagen';
     }
   }
-
-  
 }

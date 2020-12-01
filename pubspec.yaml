@@ -37,7 +37,7 @@ dependencies:
   http: ^0.12.2
   image_picker:
   watson_assistant_v2: ^0.0.1
-
+  
 
 dev_dependencies:
   flutter_test:

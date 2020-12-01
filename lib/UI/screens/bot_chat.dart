@@ -18,6 +18,7 @@ class _BotChatState extends State<BotChat> {
   String message;
   UsuarioBloc userBloc;
   ScrollController controller = new ScrollController();
+  TextEditingController controllerMessage = new TextEditingController();
   List<Widget> conversation = [
     ChatMessage(
       timeStamp: Timestamp.now(),
@@ -73,6 +74,7 @@ class _BotChatState extends State<BotChat> {
                         margin:
                             EdgeInsets.only(bottom: 72.5, left: 20.0, top: 10),
                         child: TextField(
+                          controller: controllerMessage,
                           onChanged: (value) {
                             message = value;
                           },
@@ -81,7 +83,8 @@ class _BotChatState extends State<BotChat> {
                           decoration: InputDecoration(
                               suffixIcon: InkWell(
                                   onTap: () async {
-                                    print(analysisFlag);
+                                    controllerMessage.clear();
+                                    //print(analysisFlag);
                                     FocusScope.of(context).unfocus();
 
                                     if (analysisFlag) {
