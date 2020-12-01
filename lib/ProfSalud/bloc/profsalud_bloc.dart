@@ -38,11 +38,10 @@ class ProfSaludBloc extends Bloc {
 
   auth.User get currentUser => _authRepo.getCurrentUser();
 
-  Future<void> guardarInformacion({ProfSalud profSaludUser, String uid }){
-      profSaludUser??= profSalud;    
-      uid??= currentUser.uid;
-      
-      return _fireStoreRepo.guardarInformacion(profSalud, uid);
+  Future<void> guardarInformacion(ProfSalud profSaludUser, String uid ){
+
+     
+      return _fireStoreRepo.guardarInformacion(profSaludUser, uid);
   }
 
   signOut() {
