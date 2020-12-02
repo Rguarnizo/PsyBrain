@@ -56,7 +56,7 @@ class UserProfile extends StatelessWidget {
                               Text('¡Puntua la atención!'),
                               RatingBar.builder(
                                 initialRating:
-                                    promedioCalificacion(data['Calificaciones']),
+                                    promedioCalificacion(data['Calificaciones'])??0,
                                 itemSize: 30,
                                 allowHalfRating: true,
                                 itemCount: 5,
