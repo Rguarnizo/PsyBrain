@@ -105,4 +105,8 @@ class FireStoreApi {
     });
     return chatRecopilationString;
   }
+
+  Future<bool> chatExist(String chatID)async {
+      return await _apiFireStore.collection('Chats').doc(chatID).get().then((value) => value.exists);
+  }
 }

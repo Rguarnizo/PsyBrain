@@ -5,12 +5,14 @@ import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:PsyBrain/ProfSalud/repository/watson_repo.dart';
 
 class ProfSaludBloc extends Bloc {
   ProfSalud profSalud = ProfSalud();
   FireStoreRepo _fireStoreRepo = FireStoreRepo();
   AuthRepo _authRepo = AuthRepo();
   CloudStorageRepo _cloudStorageRepo = CloudStorageRepo();
+  WatsonRepo _watsonRepo = WatsonRepo();
 
   ProfSaludBloc({initialState}) : super({initialState});
 
@@ -87,9 +89,21 @@ class ProfSaludBloc extends Bloc {
     actulizarData({
       'ImageURL': photoURL
     });
-
   }
+    Future<List<String>> getChatsPS() =>
+      _fireStoreRepo.getChatsPS(currentUser.uid);
 
+  Future<Map<String, dynamic>> sendAnalysis(String text) =>
+      _watsonRepo.sendAnalysis(text);
+
+  Future<bool> chatExist(String chatID) {
+    return _fireStoreRepo.chatExist(chatID);
+  }
+  
 
 }
+
+
+
+
 

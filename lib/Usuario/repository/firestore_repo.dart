@@ -82,9 +82,11 @@ class FireStoreRepo {
     return _fireStoreApi.chats(uid);
   }
 
-  Future<void> iniciarChat(
-      String anotherUserUid, String uid, String message) async {
-    _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
+  Future<Stream<QuerySnapshot>> iniciarChat(
+      String anotherUserUid, String uid, String message) async{
+    
+    
+    return await _fireStoreApi.iniciarChat(anotherUserUid, uid, message);
   }
 
   Future<void> actualizarData(Map<String, dynamic> data, String uid) {
@@ -93,5 +95,9 @@ class FireStoreRepo {
 
   Future<void> escribirChatImagen(chatUID, url, uid) {
     return _fireStoreApi.escribirChatImagen(chatUID, url, uid);
+  }
+
+  Future<bool> chatExist(String chatID){
+    return _fireStoreApi.chatExist(chatID);
   }
 }

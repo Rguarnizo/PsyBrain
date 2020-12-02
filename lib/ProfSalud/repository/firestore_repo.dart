@@ -54,4 +54,8 @@ class FireStoreRepo {
 
   Future<List<String>> getChatsPS(String currentUserID) =>
       _fireStoreApi.getChatsPS(currentUserID);
+
+  Future<bool> chatExist(String chatID) {
+    return _fireStoreApi.chatExist(chatID);
+  }
 }

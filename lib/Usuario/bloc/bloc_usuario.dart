@@ -111,11 +111,14 @@ class UsuarioBloc extends Bloc {
     return _firestore_repo.escribirChat(chatUID,currentUser.uid,message);
   }
 
-  Future<void> iniciarChat(String anotherUserUid,String message){
+  Future<Stream<QuerySnapshot>> iniciarChat(String anotherUserUid,String message){
     return _firestore_repo.iniciarChat(anotherUserUid,currentUser.uid,message);
   }
 
   Stream<QuerySnapshot> chat(String chatUid) {
+    if(chatUid == null){
+      return null;
+    }
     return _firestore_repo.chat(chatUid);
   }
 
@@ -141,6 +144,10 @@ class UsuarioBloc extends Bloc {
 
   Future<void> escribirChatImagen(chatUID, url) {
     return _firestore_repo.escribirChatImagen(chatUID,url,currentUser.uid);
+  }
+
+  Future<bool> chatExist(String chatID) {
+    return _firestore_repo.chatExist(chatID);
   }
 
   

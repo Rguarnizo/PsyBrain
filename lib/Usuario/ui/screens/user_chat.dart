@@ -14,21 +14,18 @@ import 'package:http/http.dart' as http;
 class UserChat extends StatefulWidget {
   String chatID;
   String sendUserUid;
+  String reciveUserUid;
 
-
-   UserChat({this.chatID,this.sendUserUid});
+  UserChat({this.chatID, this.sendUserUid, this.reciveUserUid});
 
   @override
   _UserChatState createState() => _UserChatState();
 }
 
-class _UserChatState extends State<UserChat> { 
- 
+class _UserChatState extends State<UserChat> {
   UsuarioBloc userBloc;
 
   TextEditingController controllerMessage = TextEditingController();
-
-
 
   //TODO: Move API Connection to UserBloc, repo etc.
   String APIURL =
@@ -54,8 +51,7 @@ class _UserChatState extends State<UserChat> {
   }
 
   @override
-  Widget build(BuildContext context) {    
-    
+  Widget build(BuildContext context) {
     userBloc = BlocProvider.of<UsuarioBloc>(context);
     return Scaffold(
         backgroundColor: Color(0xFFf1e4e8),
@@ -63,28 +59,31 @@ class _UserChatState extends State<UserChat> {
           children: [
             Container(
               padding: EdgeInsets.only(bottom: 125),
-              child: StreamBuilder(
-                  stream: userBloc.chat(widget.chatID),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {                    
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return ListView.builder(
-                        reverse: true,                        
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data.size,
-                        itemBuilder: (context, index) {                                                    
-                          return ChatMessage(
-                              isUserMessage: isUserMessage(snapshot,index),
-                              image:   snapshot.data.docs[index].data()['ImageUrl'],
-                              message: snapshot.data.docs[index].data()['Message'],
-                              timeStamp: snapshot.data.docs[index].data()['Timestamp']);
-                        },
-                      );
-                    }
-                  }),
+              child:StreamBuilder(
+                    stream: userBloc.chat(widget.chatID),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return ListView.builder(
+                          reverse: true,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data.size,
+                          itemBuilder: (context, index) {
+                            return ChatMessage(
+                                isUserMessage: isUserMessage(snapshot, index),
+                                image:
+                                    snapshot.data.docs[index].data()['ImageUrl'],
+                                message:
+                                    snapshot.data.docs[index].data()['Message'],
+                                timeStamp: snapshot.data.docs[index]
+                                    .data()['Timestamp']);
+                          },
+                        );
+                      }
+                    })
             ),
             Positioned(
               bottom: -40,
@@ -108,37 +107,37 @@ class _UserChatState extends State<UserChat> {
                             GestureDetector(
                               child: Icon(
                                 CupertinoIcons.camera,
-                                 color: color[700],                                                             
-                              ),                              
+                                color: color[700],
+                              ),
                               onTap: () async {
                                 dynamic url = await userBloc.guardarImagen();
                                 userBloc.escribirChatImagen(widget.chatID, url);
                               },
-                            ),
-                            SizedBox(width: 20,),
-                            GestureDetector(
-                              child: Icon(
-                                Icons.emoji_emotions,
-                                color: color[700],
-                              ),
-                              
                             ),
                             SizedBox(
                               width: 20,
                             ),
                             GestureDetector(
                               child: Icon(
-                                Icons.send,
-                                color: color[900],
+                                Icons.emoji_emotions,
+                                color: color[700],
                               ),
-                              onTap: () {
-                                if(controllerMessage.text.isNotEmpty){                                                                  
-                                userBloc.escribirChat(
-                                    widget.chatID, controllerMessage.text);                              
-                                controllerMessage.clear();
-                                }                                                      
-                                }
                             ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            GestureDetector(
+                                child: Icon(
+                                  Icons.send,
+                                  color: color[900],
+                                ),
+                                onTap: () {
+                                  if (controllerMessage.text.isNotEmpty) {
+                                    userBloc.escribirChat(
+                                        widget.chatID, controllerMessage.text);
+                                    controllerMessage.clear();
+                                  }
+                                }),
                           ],
                         ),
                         hintText: 'Escribe algo ...',
@@ -162,10 +161,12 @@ class _UserChatState extends State<UserChat> {
         ));
   }
 
-  bool isUserMessage(snapshot,index) {
-    return userBloc.currentUser.uid.compareTo(snapshot.data.docs[index].data()['sendUid']) == 0;
+  bool isUserMessage(snapshot, index) {
+    return userBloc.currentUser.uid
+            .compareTo(snapshot.data.docs[index].data()['sendUid']) ==
+        0;
   }
 
 
-  
+
 }

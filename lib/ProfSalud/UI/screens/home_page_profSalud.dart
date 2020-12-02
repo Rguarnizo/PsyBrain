@@ -68,6 +68,9 @@ class HomePageProfSalud extends StatelessWidget {
                                 return Center(
                                     child: CircularProgressIndicator());
                               } else {
+                                if(snapshot.data.size == 0){
+                                  return Center(child:Text('Aún no tienes mensajes. Busca alguien con quien chatear 🧐'));
+                                }
                                 return ListView.builder(
                                     physics: BouncingScrollPhysics(),
                                     itemCount: snapshot.hasData
@@ -75,6 +78,7 @@ class HomePageProfSalud extends StatelessWidget {
                                         : 0,
                                     itemBuilder: (context, index) {
                                       if (!snapshot.hasData) {
+                                        return Container();
                                       } else {
                                         return Column(
                                           children: [

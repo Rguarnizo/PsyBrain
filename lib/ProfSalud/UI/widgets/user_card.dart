@@ -111,9 +111,7 @@ class UserCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              snapshot.data['Nombres'] +
-                                  ' ' +
-                                  snapshot.data['Apellidos'],
+                              visibleName(snapshot),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
@@ -142,5 +140,17 @@ class UserCard extends StatelessWidget {
             }
           }),
     );
+  }
+
+  String visibleName(snapshot) {
+    String visibleName = snapshot.data['Nombres'] +
+                                  ' ' +
+                                  snapshot.data['Apellidos'];
+
+    if(visibleName.length > 20){
+      return visibleName.substring(0,20);
+    } else{
+      return visibleName;
+    }                                 
   }
 }

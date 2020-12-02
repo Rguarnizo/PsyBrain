@@ -68,14 +68,14 @@ class FireStoreApi {
         .add(jsonPoll);
   }
 
-  Future<void> iniciarChat(
-      String anotherUserUid, String uid, String message) async {
-    await _apiFireStore.collection('Chats').doc('$uid-$anotherUserUid').set({
+  Future<Stream<QuerySnapshot>> iniciarChat(String anotherUserUid, String uid, String message) async {
+        String chatUid = '$uid-$anotherUserUid';
+    await _apiFireStore.collection('Chats').doc(chatUid).set({
       'Uid': [uid, anotherUserUid],
       'LastEditingTime': Timestamp.now(),
     });
 
-    return _apiFireStore
+    await _apiFireStore
         .collection('Chats')
         .doc('$uid-$anotherUserUid')
         .collection('$uid-$anotherUserUid')
@@ -86,15 +86,21 @@ class FireStoreApi {
       'Message': message,
       'Timestamp': Timestamp.now(),
     });
+
+    return chat(chatUid);
   }
 
   Stream<QuerySnapshot> chat(String chatUid) {
-    return _apiFireStore
-        .collection('Chats')
-        .doc(chatUid)
-        .collection(chatUid)
-        .orderBy('Timestamp', descending: true)
-        .snapshots();
+    try {
+      return _apiFireStore
+          .collection('Chats')
+          .doc(chatUid)
+          .collection(chatUid)
+          .orderBy('Timestamp', descending: true)
+          .snapshots();
+    } on Exception catch (e) {
+          return null;
+    }
   }
 
   Stream<QuerySnapshot> chats(String uid) {
@@ -141,5 +147,9 @@ class FireStoreApi {
       'ImageUrl': url,
       'Timestamp': Timestamp.now(),
     });
+  }
+
+  Future<bool> chatExist(String chatID) async{
+    return await _apiFireStore.collection('Chats').doc(chatID).get().then((value) => value.exists);
   }
 }

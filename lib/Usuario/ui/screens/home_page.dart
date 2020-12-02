@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:PsyBrain/ProfSalud/UI/screens/search_users_page.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/widgets/menu_widget.dart';
@@ -55,6 +57,17 @@ class HomePageUser extends StatelessWidget {
                         child: StreamBuilder<QuerySnapshot>(
                             stream: userBloc.chats(),
                             builder: (context, snapshot) {
+                              if (snapshot.hasData && snapshot.data.size == 0) {
+                                return Center(
+                                    child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 60),
+                                        child: Text(
+                                          'Aún no tienes mensajes. Busca alguien con quien chatear 🔍',
+                                          style: TextStyle(color: Colors.grey),
+                                        )));
+                              }
+
                               return ListView.builder(
                                   physics: BouncingScrollPhysics(),
                                   itemCount:
