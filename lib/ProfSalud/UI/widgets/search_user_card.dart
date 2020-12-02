@@ -1,3 +1,4 @@
+import 'package:PsyBrain/ProfSalud/UI/widgets/user_profile.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:PsyBrain/Usuario/ui/screens/user_chat.dart';
@@ -28,7 +29,7 @@ class SearchUserCard extends StatelessWidget {
             context: context,
             builder: (dialogContext) {
               return Container(
-                child: userProfile(dialogContext),
+                child: UserProfile(data: data.data(),),
                 height: 200,
                 width: 400,
               );
@@ -37,131 +38,7 @@ class SearchUserCard extends StatelessWidget {
     );
   }
 
-  userProfile(context) {
-    return Stack(
-      alignment: Alignment.center,
-      overflow: Overflow.visible,
-      children: [
-        Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Center(
-                    child: Text(
-                      data.data()['Nombres'],
-                      style: TextStyle(
-                        fontFamily: 'SourceSansPro',
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Telefono:  ${data.data()['Telefono']}',
-                      style: TextStyle(
-                        fontFamily: 'SourceSansPro',
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Correo: ${data.data()['Correo']}',
-                      style: TextStyle(
-                        fontFamily: 'SourceSansPro',
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FlatButton(
-                          onPressed: () async{
-                            String currentUserId = blocProfSalud.currentUser.uid;
-                            if(await blocProfSalud.chatExist('${currentUserId}-${data.id}') || await blocProfSalud.chatExist('${data.id}-${currentUserId}')){
-                              String chatID = await blocProfSalud.chatExist('${currentUserId}-${data.id}')? '${currentUserId}-${data.id}': '${data.id}-${currentUserId}';
-                              Navigator.of(context)
-                                .push(CupertinoPageRoute(builder: (context) {
-                              return CupertinoPageScaffold(
-                                navigationBar: CupertinoNavigationBar(
-                                    middle: Text('Chat')),
-                                child: UserChat(
-                                  chatID: chatID,
-                                ),
-                              );
-                            }));
-                            }else{
-                              blocProfSalud.iniciarChat(data.id,'...');
-                              Navigator.of(context)
-                                .push(CupertinoPageRoute(builder: (context) {
-                              return CupertinoPageScaffold(
-                                navigationBar: CupertinoNavigationBar(
-                                    middle: Text('Chat')),
-                                child: UserChat(
-                                  chatID: '${currentUserId}-${data.id}',
-                                ),
-                              );
-                            }));
-                            }
 
-                           
-                          },
-                          child: Text(
-                            'Chatear',
-                            style: TextStyle(
-                              fontFamily: 'SourceSansPro',
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )),
-                      FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();                            
-                          },
-                          child: Text(
-                            'Salir',
-                            style: TextStyle(
-                              fontFamily: 'SourceSansPro',
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )),
-                    ],
-                  )
-                ],
-              ),
-            )),
-        Positioned(
-          top: 220,
-          child: CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage(data.data()['ImageURL']),
-          ),
-        )
-      ],
-    );
-  }
 }
+
+

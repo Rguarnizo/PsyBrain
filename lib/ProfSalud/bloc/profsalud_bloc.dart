@@ -99,6 +99,10 @@ class ProfSaludBloc extends Bloc {
   Future<bool> chatExist(String chatID) {
     return _fireStoreRepo.chatExist(chatID);
   }
+
+  Future<void> calificarProfSalud(String uid,double calificacion) {
+    return _fireStoreRepo.calificarProfSalud(uid,calificacion);
+  }
   
 
 }

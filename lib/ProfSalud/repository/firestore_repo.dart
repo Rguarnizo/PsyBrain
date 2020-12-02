@@ -58,4 +58,8 @@ class FireStoreRepo {
   Future<bool> chatExist(String chatID) {
     return _fireStoreApi.chatExist(chatID);
   }
+
+  Future<void> calificarProfSalud(String uid,double calificacion) {
+    return _fireStoreApi.calificarProfSalud(uid,calificacion);
+  }
 }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:PsyBrain/ProfSalud/UI/widgets/user_profile.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/user_chat.dart';
@@ -72,7 +73,7 @@ class UserCardChat extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        snapshot.data['Nombres'],
+                                        visibleName(snapshot),
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'SourceSansPro',
@@ -131,8 +132,26 @@ class UserCardChat extends StatelessWidget {
                       Navigator.of(context)
                           .push(CupertinoPageRoute(builder: (context) {
                         return CupertinoPageScaffold(
-                          navigationBar:
-                              CupertinoNavigationBar(middle: Text('Chat')),
+                          navigationBar: CupertinoNavigationBar(
+                            middle: Text('Chat'),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return Container(
+                                        child: UserProfile(data: snapshot.data),
+                                        height: 200,
+                                        width: 400,
+                                      );
+                                    });
+                              },
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(snapshot.data['ImageURL']),
+                              ),
+                            ),
+                          ),
                           child: UserChat(
                             chatID: info.id,
                           ),
@@ -175,6 +194,17 @@ class UserCardChat extends StatelessWidget {
       return data;
     } else {
       return 'Imagen';
+    }
+  }
+
+  String visibleName(snapshot) {
+    String visibleName =
+        snapshot.data['Nombres'] + ' ' + snapshot.data['Apellidos'];
+
+    if (visibleName.length > 20) {
+      return visibleName.substring(0, 20);
+    } else {
+      return visibleName;
     }
   }
 }

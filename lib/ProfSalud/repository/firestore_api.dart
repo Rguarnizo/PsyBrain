@@ -109,4 +109,15 @@ class FireStoreApi {
   Future<bool> chatExist(String chatID)async {
       return await _apiFireStore.collection('Chats').doc(chatID).get().then((value) => value.exists);
   }
+
+  Future<void> calificarProfSalud(String uid, double calificacion) async{
+    
+    List data = (await obtenerInformacion(uid)).data()['Calificaciones'];
+    data??= [];
+
+    data.add(calificacion);
+    return _apiFireStore.collection(PROFESIONALSALUD).doc(uid).update({
+      'Calificaciones': data,
+    });
+  }
 }

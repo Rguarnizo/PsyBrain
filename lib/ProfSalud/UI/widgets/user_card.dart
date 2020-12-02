@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:PsyBrain/ProfSalud/UI/screens/info_page_profsalud.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class UserCard extends StatelessWidget {
   final ProfSaludBloc userHealthBloc;
@@ -17,7 +20,7 @@ class UserCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 18.0),
-      height: 250.0,
+      
       decoration: BoxDecoration(
         color: Color(0xFFf1e4e8),
         borderRadius: BorderRadius.circular(12.0),
@@ -25,9 +28,35 @@ class UserCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          
           Container(
             padding: EdgeInsets.all(20),
             child: UserInformation(userLogged),
+          ),
+          FutureBuilder(
+            future: userHealthBloc.getUserHealthInfo(userLogged.uid),
+            builder: (context, snapshot) {
+              if(snapshot.hasData){
+                
+              return Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(              
+                  children: [
+                    Text('Calificación: ',style: TextStyle(fontSize: 16.0),),
+                    RatingBarIndicator(
+                      itemBuilder: (context, index) => Icon(
+                        FlutterIcons.brain_mco,
+                        color: color[900],
+                      ),
+                      itemCount: 5,
+                      itemSize: 20,
+                      rating: promedioCalificacion(snapshot),
+                    ),
+                  ],
+                ),
+              );
+              }
+            }
           ),
           Container(
               margin: EdgeInsets.only(left: 20.0, top: 5.0, bottom: 12.0),
@@ -74,7 +103,8 @@ class UserCard extends StatelessWidget {
                     future: userHealthBloc.obtenerInformacion(userLogged.uid),
                   )
                 ],
-              ))
+              )),
+          
         ],
       ),
     );
@@ -143,14 +173,20 @@ class UserCard extends StatelessWidget {
   }
 
   String visibleName(snapshot) {
-    String visibleName = snapshot.data['Nombres'] +
-                                  ' ' +
-                                  snapshot.data['Apellidos'];
+    String visibleName =
+        snapshot.data['Nombres'] + ' ' + snapshot.data['Apellidos'];
 
-    if(visibleName.length > 20){
-      return visibleName.substring(0,20);
-    } else{
+    if (visibleName.length > 20) {
+      return visibleName.substring(0, 20);
+    } else {
       return visibleName;
-    }                                 
+    }
+  }
+
+  double promedioCalificacion(AsyncSnapshot snapshot) {
+    List calificaciones = snapshot.data['Calificaciones'];
+
+    double sum = calificaciones.reduce((value, element) => value+element);
+    return sum/calificaciones.length;
   }
 }
