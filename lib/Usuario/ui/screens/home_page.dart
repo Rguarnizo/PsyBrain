@@ -39,9 +39,24 @@ class HomePageUser extends StatelessWidget {
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                     child: Center(
                       child: CupertinoButton(
-                          child: Text('Proximamente...'), onPressed: null),
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.only(top: 30,bottom: 30),
+                          child: Column(
+                            children: [
+                              _mensajeBienvenida(),
+                              SizedBox(height: 20,),
+                              _registroDiarioCard(),
+                              SizedBox(height: 20,),
+                              _sentimientosDiariosCard(),
+                              SizedBox(height: 20,),
+                              _informacionSaludMentalCard(),
+                              Image.asset('assets/imgs/dashboard.png'),
+                              SizedBox(height: 10,),
+                            ],
+                          ),
+                        )
                     ),
-                  );
+                  ));
                   break;
                 case 1:
                   return CupertinoPageScaffold(
@@ -125,6 +140,125 @@ class HomePageUser extends StatelessWidget {
             },
           );
         },
+      ),
+    );
+  }
+  _mensajeBienvenida(){
+    return Text(
+      'Ten en cuenta las recomendaciones de los expertos para combatir el covid 19, usa tapabocas.',
+      style: TextStyle(
+          color: Colors.black,
+          fontFamily: 'SourceSansPro',
+          fontSize: 24,
+          fontWeight: FontWeight.w400
+      )
+    );
+  }
+  _registroDiarioCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+              print('Esto debe llevar a una nueva vista') ;
+            },
+              child: const ListTile(
+                leading: Icon(Icons.book),
+                title: Text('Registro de situaciones postivas',
+                    style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'SourceSansPro',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600
+                )),
+                subtitle: Text('Si quieres anotar algo que te haya gustado puedes hacerlo aquí',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  _sentimientosDiariosCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.emoji_emotions),
+                title: Text('Libro de Sentimientos',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )
+                ),
+                subtitle: Text('Aquí puedes anotar las emociones sentiste hoy',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  _informacionSaludMentalCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.masks),
+                title: Text('¿Estás en cuarentena?',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )
+                ),
+                subtitle: Text('Consulta recomendaciones para pasar la cuarentena ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
       ),
     );
   }

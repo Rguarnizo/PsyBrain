@@ -38,10 +38,25 @@ class HomePageProfSalud extends StatelessWidget {
               switch (index) {
                 case 0:
                   return CupertinoPageScaffold(
-                      //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
+                    //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                       child: Center(
-                    child: Text('Proximamente'),
-                  ));
+                        child: CupertinoButton(
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.only(top: 30,bottom: 30),
+                              child: Column(
+                                children: [
+                                  _mensajeBienvenida(),
+                                  SizedBox(height: 20,),
+                                  _anotacionesCard(),
+                                  SizedBox(height: 20,),
+                                  _informacionSaludMentalCard(),
+                                  Image.asset('assets/imgs/dashboard.png'),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            )
+                        ),
+                      ));
                   break;
                 case 1:
                   return CupertinoPageScaffold(
@@ -57,16 +72,16 @@ class HomePageProfSalud extends StatelessWidget {
                             builder: (context, snapshot) {
                               print('Aqui paso');
                               print(snapshot);
-                              if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){                               
+                              if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
                                 return Center(child: CircularProgressIndicator());
                               } else {
                               return ListView.builder(
                                   physics: BouncingScrollPhysics(),
                                   itemCount:
                                       snapshot.hasData ? snapshot.data.size : 0,
-                                  itemBuilder: (context, index) {                                    
+                                  itemBuilder: (context, index) {
                                     if (!snapshot.hasData) {
-                                      
+
                                     } else {
                                       return Column(
                                         children: [
@@ -156,5 +171,88 @@ class HomePageProfSalud extends StatelessWidget {
             userHealthBloc.currentUser.uid
         ? snapshot.data.docs[index].data()['Uid'][0]
         : snapshot.data.docs[index].data()['Uid'][1];
+  }
+  _mensajeBienvenida(){
+    return Text(
+        'Ten en cuenta las recomendaciones de los expertos para combatir el covid 19, usa tapabocas.',
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'SourceSansPro',
+            fontSize: 24,
+            fontWeight: FontWeight.w400
+        )
+    );
+  }
+  _anotacionesCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.book),
+                title: Text('Anotaciones',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )),
+                subtitle: Text('Si quieres anotar algo puedes hacerlo aquí',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  _informacionSaludMentalCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.masks),
+                title: Text('Mantente Actualizado',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )
+                ),
+                subtitle: Text('Consulta las últimas noticias sobre salud mental ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
   }
 }
