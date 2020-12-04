@@ -70,8 +70,8 @@ class FireStoreRepo {
     return await _fireStoreApi.guardarEncuesta(jsonPoll, uid);
   }
 
-  escribirChat(String chatUID, String uid, String message) async {
-    await _fireStoreApi.escribirChat(chatUID, uid, message);
+  Future<void> escribirChat(String chatUID, String uid, String message,String deviceToken){
+    return _fireStoreApi.escribirChat(chatUID, uid, message,deviceToken);
   }
 
   Stream<QuerySnapshot> chat(String chatUid) {

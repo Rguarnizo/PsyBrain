@@ -15,8 +15,10 @@ class UserChat extends StatefulWidget {
   String chatID;
   String sendUserUid;
   String reciveUserUid;
+  Map<String,dynamic> infoReciver;
+  
 
-  UserChat({this.chatID, this.sendUserUid, this.reciveUserUid});
+  UserChat({this.chatID, this.sendUserUid, this.reciveUserUid, this.infoReciver});
 
   @override
   _UserChatState createState() => _UserChatState();
@@ -131,10 +133,10 @@ class _UserChatState extends State<UserChat> {
                                   Icons.send,
                                   color: color[900],
                                 ),
-                                onTap: () {
+                                onTap: () async{
                                   if (controllerMessage.text.isNotEmpty) {
-                                    userBloc.escribirChat(
-                                        widget.chatID, controllerMessage.text);
+                                    await userBloc.escribirChat(
+                                        widget.chatID, controllerMessage.text,widget.infoReciver['DeviceToken']);
                                     controllerMessage.clear();
                                   }
                                 }),

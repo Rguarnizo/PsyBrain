@@ -1,5 +1,6 @@
 
 import 'package:PsyBrain/Usuario/repository/cloud_storage_repo.dart';
+import 'package:PsyBrain/Usuario/repository/notifications_repo.dart';
 import 'package:PsyBrain/Usuario/repository/watson_repo.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,9 +17,12 @@ class UsuarioBloc extends Bloc {
   final _firestore_repo = FireStoreRepo();
   final _cloudStorageRepo = CloudStorageRepo();
   final _watson_repo = WatsonRepo();
+  final _notificationsRepo = NotificationsRepo();
 
   Stream<auth.User> userStream = auth.FirebaseAuth.instance.authStateChanges();
   Stream<auth.User> get authStatus => userStream;
+
+  get reciveMessage => _notificationsRepo.reciveMessage;
 
   Stream<auth.User> authStateChanges() => _auth_repo.authStateChanges();
 
@@ -107,8 +111,8 @@ class UsuarioBloc extends Bloc {
     return _firestore_repo.guardarEncuesta(jsonPoll,currentUser.uid);
   }
 
-  Future<void> escribirChat(String chatUID,String message){
-    return _firestore_repo.escribirChat(chatUID,currentUser.uid,message);
+  Future<void> escribirChat(String chatUID,String message,String deviceToken){
+    return _firestore_repo.escribirChat(chatUID,currentUser.uid,message,deviceToken);
   }
 
   Future<Stream<QuerySnapshot>> iniciarChat(String anotherUserUid,String message){
@@ -148,6 +152,10 @@ class UsuarioBloc extends Bloc {
 
   Future<bool> chatExist(String chatID) {
     return _firestore_repo.chatExist(chatID);
+  }
+
+  permitirNotificaciones(){
+    _notificationsRepo.permitirNotificaciones(currentUser.uid);
   }
 
   

@@ -153,7 +153,8 @@ class UserCardChat extends StatelessWidget {
                             ),
                           ),
                           child: UserChat(
-                            chatID: info.id,
+                            chatID: info.id,                            
+                            infoReciver: snapshot.data,
                           ),
                         );
                       }));

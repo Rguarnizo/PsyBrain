@@ -2,6 +2,7 @@ import 'package:PsyBrain/Usuario/model/usuario.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'notifications_api.dart';
 
 class FireStoreApi {
   final _apiFireStore = FirebaseFirestore.instance;
@@ -111,21 +112,32 @@ class FireStoreApi {
         .snapshots();
   }
 
-  escribirChat(String chatUID, String uid, String message) async {
+  Future<void> escribirChat(String chatUID, String uid, String message,String deviceToken) async {
     await _apiFireStore.collection('Chats').doc(chatUID).update({
       'LastEditingTime': Timestamp.now(),
     });
-
-    return _apiFireStore
+    
+    Map<String,dynamic> data = {
+      'sendUid': uid,
+      'Message': message,
+      'Timestamp': Timestamp.now(),
+    }; 
+    
+    await _apiFireStore
         .collection('Chats')
         .doc(chatUID)
         .collection(chatUID)
         .doc()
-        .set({
-      'sendUid': uid,
-      'Message': message,
-      'Timestamp': Timestamp.now(),
-    });
+        .set(data);
+
+    NotificationsApi notificationsApi = NotificationsApi();
+    Map<String,dynamic> notificationData = await getUserInfo(uid)?? await getUserHealtInfo(uid);
+    notificationData.addAll({'ChatUid':chatUID,'Message':message});
+    notificationData.remove('FechaNacimiento');
+
+    notificationsApi.sendAndRetrieveMessage(deviceToken,notificationData);
+
+    
   }
 
   Future<void> actualizarData(Map<String, dynamic> data, String uid) {
@@ -151,5 +163,9 @@ class FireStoreApi {
 
   Future<bool> chatExist(String chatID) async{
     return await _apiFireStore.collection('Chats').doc(chatID).get().then((value) => value.exists);
+  }
+
+  Future<Map<String,dynamic>> getUserHealtInfo(String uid) async {
+    return (await _apiFireStore.collection('ProfesionalSalud').doc(uid).get()).data();
   }
 }
