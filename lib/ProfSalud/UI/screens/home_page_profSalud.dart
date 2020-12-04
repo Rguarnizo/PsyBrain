@@ -39,6 +39,7 @@ class HomePageProfSalud extends StatelessWidget {
                 case 0:
                   return CupertinoPageScaffold(
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                     child: Column(
                       children: [
                         RelevantWordsCard(
@@ -47,6 +48,26 @@ class HomePageProfSalud extends StatelessWidget {
                       ],
                     ),
                   );
+========================================================================
+                      child: Center(
+                        child: CupertinoButton(
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.only(top: 30,bottom: 30),
+                              child: Column(
+                                children: [
+                                  _mensajeBienvenida(),
+                                  SizedBox(height: 20,),
+                                  _anotacionesCard(),
+                                  SizedBox(height: 20,),
+                                  _informacionSaludMentalCard(),
+                                  Image.asset('assets/imgs/dashboard.png'),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            )
+                        ),
+                      ));
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                   break;
                 case 1:
                   return CupertinoPageScaffold(
@@ -60,6 +81,7 @@ class HomePageProfSalud extends StatelessWidget {
                         child: StreamBuilder<QuerySnapshot>(
                             stream: userHealthBloc.chats(),
                             builder: (context, snapshot) {
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                               //print('Aqui paso');
                               //print(snapshot);
                               if (!snapshot.hasData ||
@@ -67,18 +89,33 @@ class HomePageProfSalud extends StatelessWidget {
                                       ConnectionState.waiting) {
                                 return Center(
                                     child: CircularProgressIndicator());
+========================================================================
+                              print('Aqui paso');
+                              print(snapshot);
+                              if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
+                                return Center(child: CircularProgressIndicator());
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                               } else {
                                 if(snapshot.data.size == 0){
-                                  return Center(child:Text('Aún no tienes mensajes. Busca alguien con quien chatear 🧐'));
+                                  return Center(child:Text('Aún no tienes mensajes. Busca alguien con quien chatear 🧝'));
                                 }
                                 return ListView.builder(
                                     physics: BouncingScrollPhysics(),
                                     itemCount: snapshot.hasData
                                         ? snapshot.data.size
                                         : 0,
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                                     itemBuilder: (context, index) {
+========================================================================
+                                  itemBuilder: (context, index) {
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                                       if (!snapshot.hasData) {
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                                         return Container();
+                                      } else {
+========================================================================
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                                       } else {
                                         return Column(
                                           children: [
@@ -168,5 +205,88 @@ class HomePageProfSalud extends StatelessWidget {
             userHealthBloc.currentUser.uid
         ? snapshot.data.docs[index].data()['Uid'][0]
         : snapshot.data.docs[index].data()['Uid'][1];
+  }
+  _mensajeBienvenida(){
+    return Text(
+        'Ten en cuenta las recomendaciones de los expertos para combatir el covid 19, usa tapabocas.',
+        style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'SourceSansPro',
+            fontSize: 24,
+            fontWeight: FontWeight.w400
+        )
+    );
+  }
+  _anotacionesCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.book),
+                title: Text('Anotaciones',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )),
+                subtitle: Text('Si quieres anotar algo puedes hacerlo aquí',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  _informacionSaludMentalCard(){
+    return Center(
+      child: Card(
+        color: Color(0xFFf1e4e8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              onTap: (){
+                print('Esto debe llevar a una nueva vista') ;
+              },
+              child: const ListTile(
+                leading: Icon(Icons.masks),
+                title: Text('Mantente Actualizado',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    )
+                ),
+                subtitle: Text('Consulta las últimas noticias sobre salud mental ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'SourceSansPro',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
   }
 }
