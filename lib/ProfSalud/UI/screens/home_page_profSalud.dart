@@ -37,24 +37,17 @@ class HomePageProfSalud extends StatelessWidget {
             builder: (BuildContext context) {
               switch (index) {
                 case 0:
-                  return CupertinoPageScaffold(
-                    //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
-                    child: Column(
-                      children: [
-                        RelevantWordsCard(
-                          userHealthBloc: userHealthBloc,
-                        )
-                      ],
-                    ),
-                  );
-========================================================================
+                  return CupertinoPageScaffold(                        
                       child: Center(
                         child: CupertinoButton(
                             child: SingleChildScrollView(
                               padding: EdgeInsets.only(top: 30,bottom: 30),
                               child: Column(
+
                                 children: [
+                                  RelevantWordsCard(
+                          userHealthBloc: userHealthBloc,
+                                  ),
                                   _mensajeBienvenida(),
                                   SizedBox(height: 20,),
                                   _anotacionesCard(),
@@ -67,7 +60,6 @@ class HomePageProfSalud extends StatelessWidget {
                             )
                         ),
                       ));
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                   break;
                 case 1:
                   return CupertinoPageScaffold(
@@ -81,7 +73,6 @@ class HomePageProfSalud extends StatelessWidget {
                         child: StreamBuilder<QuerySnapshot>(
                             stream: userHealthBloc.chats(),
                             builder: (context, snapshot) {
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                               //print('Aqui paso');
                               //print(snapshot);
                               if (!snapshot.hasData ||
@@ -89,34 +80,26 @@ class HomePageProfSalud extends StatelessWidget {
                                       ConnectionState.waiting) {
                                 return Center(
                                     child: CircularProgressIndicator());
-========================================================================
-                              print('Aqui paso');
-                              print(snapshot);
+                              }
                               if(!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
                                 return Center(child: CircularProgressIndicator());
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
                               } else {
                                 if(snapshot.data.size == 0){
-                                  return Center(child:Text('Aún no tienes mensajes. Busca alguien con quien chatear 🧝'));
+                                  return Center(child:Text('Aún no tienes mensajes. Busca alguien con quien chatear'));
                                 }
                                 return ListView.builder(
                                     physics: BouncingScrollPhysics(),
                                     itemCount: snapshot.hasData
                                         ? snapshot.data.size
                                         : 0,
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
                                     itemBuilder: (context, index) {
-========================================================================
-                                  itemBuilder: (context, index) {
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
+                                  
+
                                       if (!snapshot.hasData) {
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< main
+
                                         return Container();
                                       } else {
-========================================================================
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dashboard_design
-                                      } else {
                                         return Column(
                                           children: [
                                             UserCardChat(
@@ -126,11 +109,14 @@ class HomePageProfSalud extends StatelessWidget {
                                         );
                                       }
                                     });
-                              }
-                            }),
-                      )
-                    ],
-                  ));
+                              
+                            }
+                          }                        
+                      ),
+                    ),
+                  ],
+                      ),
+                  );
                   break;
                 case 2:
                   return SearchUserPage();
@@ -172,19 +158,7 @@ class HomePageProfSalud extends StatelessWidget {
                                       'Haz click en el ícono para cerrar sesión',
                                   icon: CupertinoIcons.square_arrow_right,
                                   action: () {
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(builder: (context) {
-                                    //     return SignInScreen();
-                                    //   },)
-                                    // );
                                     userHealthBloc.signOut();
-                                    // await Navigator.of(context)
-                                    //     .push(MaterialPageRoute(
-                                    //   builder: (context) {
-                                    //     return SignInScreen();
-                                    //   },
-                                    // )).then((value) => Navigator.of(context).pop());
-                                    //
                                   }),
                             ),
                           ],
@@ -206,6 +180,7 @@ class HomePageProfSalud extends StatelessWidget {
         ? snapshot.data.docs[index].data()['Uid'][0]
         : snapshot.data.docs[index].data()['Uid'][1];
   }
+  
   _mensajeBienvenida(){
     return Text(
         'Ten en cuenta las recomendaciones de los expertos para combatir el covid 19, usa tapabocas.',

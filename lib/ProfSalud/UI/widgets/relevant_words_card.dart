@@ -14,9 +14,9 @@ class RelevantWordsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     getRelevantWords();
     return Padding(
-      padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
+      padding: EdgeInsets.only( left: 5.0, right: 5.0),
       child: Container(
-        height: 200.0,
+        height: 170.0,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15.0),
