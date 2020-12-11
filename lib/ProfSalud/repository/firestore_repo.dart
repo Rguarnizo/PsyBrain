@@ -62,4 +62,8 @@ class FireStoreRepo {
   Future<void> calificarProfSalud(String uid,double calificacion) {
     return _fireStoreApi.calificarProfSalud(uid,calificacion);
   }
+
+  getListHealth(String query) {
+    return _fireStoreApi.getListHealts(query);
+  }
 }

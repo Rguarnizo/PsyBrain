@@ -1,6 +1,7 @@
 import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FireStoreApi {
   final _apiFireStore = FirebaseFirestore.instance;
@@ -48,11 +49,33 @@ class FireStoreApi {
       final strEndCode = query.split('').last;
       limit = strFrontCode + String.fromCharCode(strEndCode.codeUnitAt(0) + 1);
     }
-    return _apiFireStore
+
+    Stream<QuerySnapshot> users =_apiFireStore
         .collection('Usuario')
         .where('Nombres', isGreaterThanOrEqualTo: query)
         .where('Nombres', isLessThan: limit)
         .snapshots();
+    
+
+        return users;
+  }
+
+  Stream<QuerySnapshot> getListHealts(String query) {
+    String limit;
+    if (query != '') {
+      final strFrontCode = query.substring(0, query.length - 1);
+      final strEndCode = query.split('').last;
+      limit = strFrontCode + String.fromCharCode(strEndCode.codeUnitAt(0) + 1);
+    }
+
+    Stream<QuerySnapshot> healts =_apiFireStore
+        .collection('ProfesionalSalud')
+        .where('Nombres', isGreaterThanOrEqualTo: query)
+        .where('Nombres', isLessThan: limit)
+        .snapshots();
+    
+
+        return healts;
   }
 
   Future<void> iniciarChat(

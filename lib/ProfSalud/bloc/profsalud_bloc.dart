@@ -103,6 +103,10 @@ class ProfSaludBloc extends Bloc {
   Future<void> calificarProfSalud(String uid,double calificacion) {
     return _fireStoreRepo.calificarProfSalud(uid,calificacion);
   }
+
+  getListHealth(String query) {
+    return _fireStoreRepo.getListHealth(query);
+  }
   
 
 }

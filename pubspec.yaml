@@ -40,6 +40,7 @@ dependencies:
   flutter_rating_bar: 
   flutter_icons: 
   firebase_messaging:
+  rxdart: 
 
 dev_dependencies:
   flutter_test:

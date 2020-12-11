@@ -185,6 +185,7 @@ class UserCard extends StatelessWidget {
 
   double promedioCalificacion(AsyncSnapshot snapshot) {
     List calificaciones = snapshot.data['Calificaciones'];
+    calificaciones??= [0.0];
 
     double sum = calificaciones.reduce((value, element) => value+element);
     return sum/calificaciones.length;

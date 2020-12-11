@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:async/async.dart';
 
 class SearchUserPage extends StatefulWidget {
   SearchUserPage({Key key}) : super(key: key);
@@ -17,6 +18,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
 
   ProfSaludBloc userHealthBloc;
   String query = '';
+  bool shereFriends = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +29,18 @@ class _SearchUserPageState extends State<SearchUserPage> {
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Buscar',style: TextStyle(
-                              fontFamily: 'SourceSansPro',
-                              fontSize: 20.0,             
-                              fontWeight: FontWeight.bold,               
+                              GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    shereFriends = !shereFriends;
+                                  });
+                                },
+                                child: Text(shereFriends?'Amigos':'Medicos',style: TextStyle(
+                                fontFamily: 'SourceSansPro',
+                                fontSize: 20.0,             
+                                fontWeight: FontWeight.bold,               
                             ),),
+                              ),
                             ],
                           ),
                           middle: TextField(
@@ -47,7 +56,7 @@ class _SearchUserPageState extends State<SearchUserPage> {
                           trailing: Icon(CupertinoIcons.search)),
 
                       child: StreamBuilder(
-                          stream: userHealthBloc.getListUsers(query),
+                          stream: shereFriends? userHealthBloc.getListUsers(query):userHealthBloc.getListHealth(query),
                           builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {                                                       
                             if(snapshot.hasData){                              
                               return ListView.builder(
