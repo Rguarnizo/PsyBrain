@@ -105,7 +105,18 @@ class _InfoProfSaludState extends State<InfoProfSalud> {
                   ),
                   SizedBox(
                     height: 100,
-                  ),
+                  ),                  
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 80),
+                    child: MyButton(
+                      action: () async { 
+                        await profSaludBloc.permitirNotificaciones();
+                      },
+                      buttonName: 'Permitir Notificaciones',
+                      withShadow: true,
+                      gradientColors: [Colors.green[400]],
+                      textColor: Colors.white,
+                    ),),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 80),
                     child: MyButton(

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:PsyBrain/Usuario/repository/firestore_api.dart';
+import 'package:PsyBrain/ProfSalud/repository/firestore_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http; 
 
@@ -16,7 +16,7 @@ class NotificationsApi{
     bool acepted = await _firebaseMessagingApi.requestNotificationPermissions();
     print(acepted);
 
-    _firebaseMessagingApi.getToken().then((token) => _fireStoreApi.actualizarData({'DeviceToken': token},uid));
+    _firebaseMessagingApi.getToken().then((token) => _fireStoreApi.actulizarData({'DeviceToken': token},uid));
 
     _firebaseMessagingApi.configure(
         onLaunch: (message) {
@@ -30,9 +30,7 @@ class NotificationsApi{
 
         onResume: (message) {
           print(message);
-        },
-
-        onBackgroundMessage: myBackgroundMessageHandler,
+        },        
         
     );
   }

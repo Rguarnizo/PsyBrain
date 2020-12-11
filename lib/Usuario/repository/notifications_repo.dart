@@ -14,6 +14,5 @@ class NotificationsRepo{
     _notificationsApi.initNotifications(uid);
   }
   
-
-
+  
 }

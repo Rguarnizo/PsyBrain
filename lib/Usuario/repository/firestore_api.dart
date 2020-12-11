@@ -137,6 +137,8 @@ class FireStoreApi {
 
     notificationsApi.sendAndRetrieveMessage(deviceToken,notificationData);
 
+    print(notificationData);
+    print(deviceToken);
     
   }
 

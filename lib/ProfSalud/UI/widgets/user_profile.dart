@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
+import 'package:PsyBrain/Usuario/bloc/bloc_usuario.dart';
 import 'package:PsyBrain/Usuario/ui/screens/user_chat.dart';
 import 'package:PsyBrain/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,10 +21,12 @@ class UserProfile extends StatelessWidget {
 
   final Map<String, dynamic> data;
   ProfSaludBloc blocProfSalud;
+  UsuarioBloc blocUser;
 
   @override
   Widget build(BuildContext context) {
     blocProfSalud = BlocProvider.of<ProfSaludBloc>(context);
+    blocUser = BlocProvider.of<UsuarioBloc>(context);
     return Stack(
       alignment: Alignment.center,
       overflow: Overflow.visible,
@@ -151,15 +154,17 @@ class UserProfile extends StatelessWidget {
                                 );
                               }));
                             } else {
+                              Map<String,dynamic> infoUser = await blocUser.usuarioRegistrado(data['Uid'])? 
+                              await blocUser.getUserInfo(data['Uid']):await blocProfSalud.getUserHealthInfo(data['Uid']);
                               blocProfSalud.iniciarChat(data['Uid'], '...');
+                              
                               Navigator.of(context)
                                   .push(CupertinoPageRoute(builder: (context) {
                                 return CupertinoPageScaffold(
                                   navigationBar: CupertinoNavigationBar(
                                       middle: Text('Chat')),
                                   child: UserChat(
-                                    chatID: '${currentUserId}-${data['Uid']}',
-                                  ),
+                                    chatID: '${currentUserId}-${data['Uid']}',infoReciver:infoUser),                                  
                                 );
                               }));
                             }

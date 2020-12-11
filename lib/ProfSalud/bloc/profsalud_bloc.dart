@@ -2,6 +2,7 @@ import 'package:PsyBrain/ProfSalud/model/prof_salud.dart';
 import 'package:PsyBrain/ProfSalud/repository/auth_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/cloud_storage_repo.dart';
 import 'package:PsyBrain/ProfSalud/repository/firestore_repo.dart';
+import 'package:PsyBrain/Usuario/repository/notifications_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -13,6 +14,7 @@ class ProfSaludBloc extends Bloc {
   AuthRepo _authRepo = AuthRepo();
   CloudStorageRepo _cloudStorageRepo = CloudStorageRepo();
   WatsonRepo _watsonRepo = WatsonRepo();
+  NotificationsRepo _notificationsRepo = NotificationsRepo();
 
   ProfSaludBloc({initialState}) : super({initialState});
 
@@ -106,6 +108,10 @@ class ProfSaludBloc extends Bloc {
 
   getListHealth(String query) {
     return _fireStoreRepo.getListHealth(query);
+  }
+
+  permitirNotificaciones() {
+    return _notificationsRepo.permitirNotificaciones(currentUser.uid);
   }
   
 
