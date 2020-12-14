@@ -7,6 +7,7 @@ class AuthAPI {
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+  /// Accede al servicio de Google para iniciar sesion con este. Retorna la instancia de Usuario de Firebase Auth correspondiente.
   Future<auth.UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication gSA =
@@ -19,11 +20,13 @@ class AuthAPI {
     return await _auth.signInWithCredential(credential);
   }
 
+  /// Cierrra sesion del usuario actualmente loggeado.
   void signOut() async {
     await _auth.signOut().then((onValue) => print("Sesión finalizada"));
     googleSignIn.signOut();
   }
 
+  /// Inicia sesion (si existe) al usuario con correo y contraseña especificado. Si no existe retorna null,
   Future<auth.UserCredential> signInWithEmailAndPassword(
       String email, String password, BuildContext context) async {
     try {
@@ -39,7 +42,8 @@ class AuthAPI {
       return null;
     }
   }
-
+  
+  /// Retorna la instancia de Usuario de Firebase Auth que esta actualmente loggeado.
   auth.User getCurrentUser(){
     return _auth.currentUser;
   }

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class WatsonAPI {
+
+  /// Manda el analisis a la API de IBM Watson a traves de http post, retorna el analisis lanzado por la API en formato Json.
   Future<Map<String, dynamic>> sendAnalysis(String text) async {
     var data = json.encode({
       "text": text,
