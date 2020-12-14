@@ -13,6 +13,6 @@ Implementamos la metodología agil SCRUM para llevar a cabo el desarrollo de la 
 
 ## Nota para desarrolladores
 
-Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia 😊💪 </br>
+Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia. Para ello lee el archivo Contribute.md 😊💪 </br>
 
 Una idea del ❤. Finalement, profitez bien et bon developing 💯💯 . 
