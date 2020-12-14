@@ -18,6 +18,7 @@ Este proyecto se trabaja bajo la Arquitectura BLoC,  (Si aún no la conoces pued
 
 ### Directorios
 Si deseas agregar una nueva entidad los pasos a seguir serán crear una carpeta con el nombre de la entidad y allí se necesitará crear otros directorios así:
+
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/2qwYbsf/directories.png" alt="directories" border="0"></a>
 
 Crearas la carpeta BloC donde estará el bloc de la entidad, Model, donde estará el modelo, Repository donde estará la información de transacciones entre API's y UI en donde estarán dos subdirectorios, uno para widgets que tengan que ver con la entidad y otro con pages completas que tengan que ver con la entidad también.
