@@ -114,14 +114,44 @@ class ProfSaludBloc extends Bloc {
     });
   }
 
+
+
+
+
+
+
+
+
+
+
   /// Obtiene todos los chats que el Profesional de la salud Loggeado en ese momento tenga, retorna una lista completa de
   /// todas las conversaciones que halla tenido en ese momento.
     Future<List<String>> getChatsPS() =>
       _fireStoreRepo.getChatsPS(currentUser.uid);
 
+
+
+
+
+
+
+
+
+
+
   /// Accede a la Api de analisis de texto de IBM y retorna el resultado del analisis.
-  Future<Map<String, dynamic>> sendAnalysis(String text) =>
-      _watsonRepo.sendAnalysis(text);
+  Future<Map<String, dynamic>> sendAnalysis(String text) 
+                                       =>  _watsonRepo.sendAnalysis(text);
+
+
+
+
+
+
+
+
+
+
 
   /// Retorna true si el chat con el correspondiente ID existe de lo contrario retorna false
   Future<bool> chatExist(String chatID) {
