@@ -17,7 +17,7 @@ Lo que se ha desarrollado hasta el momento es lo siguiente:
 ### Inicio de Sesión y Registro.
 La aplicación permite la creación de usuarios por correo y contraseña o/y inicio de sesión por Google.
 
-![Alt text](https://drive.google.com/uc?export=view&id=1teahjF383Hpv4VuDozFKGP6ylUeCDzwI&authuser=0 "Optional title")
+![](https://drive.google.com/uc?export=view&id=1teahjF383Hpv4VuDozFKGP6ylUeCDzwI&authuser=0)
 
 
 
