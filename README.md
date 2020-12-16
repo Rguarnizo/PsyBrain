@@ -19,6 +19,11 @@ La aplicación permite la creación de usuarios por correo y contraseña o/y ini
 
 <img src="https://media.giphy.com/media/EDcUkCzHPVcFLYlGJy/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/7mKPeiyaTweK7QEFHa/giphy.gif"  width="200" height="400" />
 
+### Información de cuenta y modificación de datos.
+La aplicación permite observar información relevante de la cuenta y poder modificar datos de la misma.
+
+<img src="https://media.giphy.com/media/Fw8i9ManoUoVqJYIKl/giphy.gif"  width="200" height="400" />
+
 
 
 ## Nota para desarrolladores
