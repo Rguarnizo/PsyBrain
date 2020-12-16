@@ -29,6 +29,9 @@ La aplicación permite hablar con un bot para pedirle datos sobre la situación 
 
 <img src="https://media.giphy.com/media/OOSBarghDJwKULiH4q/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/nRZKwe6GXW9MzUPNTe/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/NVwUhhoHiGFUGYJZTG/giphy.gif"  width="200" height="400" />
 
+### Chat y notificaciones.
+La aplicación permite hablar con otros usuarios y recibir notificaciones de esos mensajes. 
+<img src="https://media.giphy.com/media/dg4KMjaA6ZlYddzvM4/giphy.gif"  width="200" height="400" />
 
 ## Nota para desarrolladores
 
