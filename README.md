@@ -11,6 +11,16 @@ La aplicación ha sido pensada como móvil, en este contexto usaremos Flutter <3
 
 Implementamos la metodología agil SCRUM para llevar a cabo el desarrollo de la app de la mejor forma: agil, rápida, centralizada y de calidad. 
 
+## Desarrollado
+
+Lo que se ha desarrollado hasta el momento es lo siguiente:
+### Inicio de Sesión y Registro.
+La aplicación permite la creación de usuarios por correo y contraseña o/y inicio de sesión por Google.
+
+![Alt text](https://drive.google.com/uc?export=view&id=1teahjF383Hpv4VuDozFKGP6ylUeCDzwI&authuser=0 "Optional title")
+
+
+
 ## Nota para desarrolladores
 
 Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia. Para ello lee el archivo Contribute.md 😊💪 </br>
