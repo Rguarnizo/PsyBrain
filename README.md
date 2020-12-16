@@ -27,7 +27,7 @@ La aplicación permite observar información relevante de la cuenta y poder modi
 ### Sistema de bot 
 La aplicación permite hablar con un bot para pedirle datos sobre la situación del COVID-19 en cada país, información relevante y recomendaciones de COVID-19, también permite un analisis de sentimiento a través de NLP y NLU de un parrafo escrito.
 
-<img src="https://media.giphy.com/media/OOSBarghDJwKULiH4q/giphy.gif"  width="200" height="400" />
+<img src="https://media.giphy.com/media/OOSBarghDJwKULiH4q/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/nRZKwe6GXW9MzUPNTe/giphy.gif"  width="200" height="400" />
 
 
 ## Nota para desarrolladores
