@@ -31,6 +31,7 @@ La aplicación permite hablar con un bot para pedirle datos sobre la situación 
 
 ### Chat y notificaciones.
 La aplicación permite hablar con otros usuarios y recibir notificaciones de esos mensajes. 
+
 <img src="https://media.giphy.com/media/dg4KMjaA6ZlYddzvM4/giphy.gif"  width="200" height="400" />
 
 ## Nota para desarrolladores
