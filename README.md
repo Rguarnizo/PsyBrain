@@ -11,8 +11,31 @@ La aplicación ha sido pensada como móvil, en este contexto usaremos Flutter <3
 
 Implementamos la metodología agil SCRUM para llevar a cabo el desarrollo de la app de la mejor forma: agil, rápida, centralizada y de calidad. 
 
+## Desarrollado
+
+Lo que se ha desarrollado hasta el momento es lo siguiente:
+### Inicio de Sesión y Registro.
+La aplicación permite la creación de usuarios por correo y contraseña o/y inicio de sesión por Google.
+
+<img src="https://media.giphy.com/media/EDcUkCzHPVcFLYlGJy/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/7mKPeiyaTweK7QEFHa/giphy.gif"  width="200" height="400" />
+
+### Información de cuenta y modificación de datos.
+La aplicación permite observar información relevante de la cuenta y poder modificar datos de la misma.
+
+<img src="https://media.giphy.com/media/Fw8i9ManoUoVqJYIKl/giphy.gif"  width="200" height="400" />
+
+### Sistema de bot 
+La aplicación permite hablar con un bot para pedirle datos sobre la situación del COVID-19 en cada país, información relevante y recomendaciones de COVID-19, también permite un analisis de sentimiento a través de NLP y NLU de un parrafo escrito.
+
+<img src="https://media.giphy.com/media/OOSBarghDJwKULiH4q/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/nRZKwe6GXW9MzUPNTe/giphy.gif"  width="200" height="400" /> <img src="https://media.giphy.com/media/NVwUhhoHiGFUGYJZTG/giphy.gif"  width="200" height="400" />
+
+### Chat y notificaciones.
+La aplicación permite hablar con otros usuarios y recibir notificaciones de esos mensajes. 
+
+<img src="https://media.giphy.com/media/dg4KMjaA6ZlYddzvM4/giphy.gif"  width="200" height="400" />
+
 ## Nota para desarrolladores
 
-Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia 😊💪 </br>
+Aún hay mucho trabajo en esta aplicación, ayudennos y así ayudaremos a las personas que necesitan compañia en esta pandemia. Para ello lee el archivo Contribute.md 😊💪 </br>
 
 Una idea del ❤. Finalement, profitez bien et bon developing 💯💯 . 
