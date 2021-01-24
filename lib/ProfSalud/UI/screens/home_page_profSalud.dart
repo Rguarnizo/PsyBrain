@@ -40,6 +40,7 @@ class HomePageProfSalud extends StatelessWidget {
                   return CupertinoPageScaffold(                        
                       child: Center(
                         child: CupertinoButton(
+                          onPressed: (){},
                             child: SingleChildScrollView(
                               padding: EdgeInsets.only(top: 30,bottom: 30),
                               child: Column(

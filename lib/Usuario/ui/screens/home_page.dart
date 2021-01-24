@@ -39,6 +39,7 @@ class HomePageUser extends StatelessWidget {
                     //TODO: Otros requirimientos relacionados con informacion principal, deberían ir aqui
                     child: Center(
                       child: CupertinoButton(
+                        onPressed: (){},
                         child: SingleChildScrollView(
                           padding: EdgeInsets.only(top: 30,bottom: 30),
                           child: Column(
