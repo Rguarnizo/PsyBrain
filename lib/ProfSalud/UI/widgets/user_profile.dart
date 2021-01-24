@@ -74,7 +74,7 @@ class UserProfile extends StatelessWidget {
                                   await Future.delayed(Duration(microseconds: 500));
                                   showDialog(
                                       context: context,
-                                      child: Dialog(
+                                     builder: (context) => Dialog(
                                         child: Container(
                                           child: Padding(
                                             padding: const EdgeInsets.all(20),
