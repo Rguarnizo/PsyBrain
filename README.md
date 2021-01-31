@@ -11,6 +11,10 @@ La aplicación ha sido pensada como móvil, en este contexto usaremos Flutter <3
 
 Implementamos la metodología agil SCRUM para llevar a cabo el desarrollo de la app de la mejor forma: agil, rápida, centralizada y de calidad. 
 
+## Aplicacion web
+
+Puede encontrar una versión no finalizada aún y con algunos errores en el siguiente  [link](https://psybrain-3d391.web.app/#/)
+
 ## Desarrollado
 
 Lo que se ha desarrollado hasta el momento es lo siguiente:
