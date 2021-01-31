@@ -127,6 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 '¡Bienvenido de nuevo!',
                 style: TextStyle(
                     color: Colors.black,
+                    
                     fontFamily: 'SourceSansPro',
                     fontSize: 28.2,
                     fontWeight: FontWeight.w400
@@ -147,7 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       left: 30.0, right: 30.0, top: 60.5, bottom: 30.5),
                   child: Image.asset('assets/imgs/login_img.png')),
               Container(
-                height: 108.0,
+              
                 child: Form(
                   key: formKey,
                   child: Column(
