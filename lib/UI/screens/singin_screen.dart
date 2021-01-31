@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:PsyBrain/ProfSalud/UI/screens/home_page_profSalud.dart';
 import 'package:PsyBrain/ProfSalud/bloc/profsalud_bloc.dart';
 import 'package:PsyBrain/UI/screens/register_page.dart';
@@ -8,6 +10,7 @@ import 'package:PsyBrain/UI/widgets/login_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -120,7 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget signInUI() {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 100,left: 20,right: 20),
+        padding: EdgeInsets.all(20),
         child: ListView(          
             children: [
               Text(
@@ -146,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(
                   margin: EdgeInsets.only(
                       left: 30.0, right: 30.0, top: 60.5, bottom: 30.5),
-                  child: Image.asset('assets/imgs/login_img.png')),
+                  child: kIsWeb? Container(): Image.asset('assets/imgs/login_img.png',scale: 0.4,)),
               Container(
               
                 child: Form(
